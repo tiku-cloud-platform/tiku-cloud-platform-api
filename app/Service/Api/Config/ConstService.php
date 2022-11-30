@@ -44,7 +44,7 @@ class ConstService implements ApiServiceInterface
      */
     public function serviceSelect(array $requestParams): array
     {
-        return $this->configRepository->repositorySelect(self::searchWhere((array)$requestParams),
+        return $this->configRepository->repositorySelect(self::searchWhere($requestParams),
             (int)$requestParams['size'] ?? 20);
     }
 

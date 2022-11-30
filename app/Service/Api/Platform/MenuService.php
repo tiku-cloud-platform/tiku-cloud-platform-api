@@ -50,7 +50,7 @@ class MenuService implements ApiServiceInterface
      */
     public function serviceSelect(array $requestParams): array
     {
-        return $this->menuRepository->repositorySelect(self::searchWhere((array)$requestParams),
+        return $this->menuRepository->repositorySelect(self::searchWhere($requestParams),
             (int)$requestParams['size'] ?? 20);
     }
 

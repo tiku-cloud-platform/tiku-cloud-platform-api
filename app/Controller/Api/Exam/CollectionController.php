@@ -30,9 +30,8 @@ class CollectionController extends ApiBaseController
      */
     public function index()
     {
-        $items = $this->service->serviceSelect((array)$this->request->all());
-
-        return $this->httpResponse->success((array)$items);
+        $items = $this->service->serviceSelect($this->request->all());
+        return $this->httpResponse->success($items);
     }
 
     /**
@@ -41,8 +40,7 @@ class CollectionController extends ApiBaseController
      */
     public function show()
     {
-        $bean = $this->service->serviceFind((array)$this->request->all());
-
-        return $this->httpResponse->success((array)$bean);
+        $bean = $this->service->serviceFind($this->request->all());
+        return $this->httpResponse->success($bean);
     }
 }

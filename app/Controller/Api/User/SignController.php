@@ -3,7 +3,6 @@ declare(strict_types = 1);
 
 namespace App\Controller\Api\User;
 
-
 use App\Controller\ApiBaseController;
 use App\Middleware\Auth\UserAuthMiddleware;
 use App\Service\Api\User\SignHistoryService;
@@ -37,7 +36,7 @@ class SignController extends ApiBaseController
      */
     public function sign()
     {
-        $signResult = $this->service->serviceCreate((array)$this->request->all());
+        $signResult = $this->service->serviceCreate($this->request->all());
 
         return $signResult ? $this->httpResponse->success() : $this->httpResponse->error();
     }

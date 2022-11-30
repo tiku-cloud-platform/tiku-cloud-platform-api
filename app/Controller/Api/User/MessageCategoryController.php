@@ -3,7 +3,6 @@ declare(strict_types = 1);
 
 namespace App\Controller\Api\User;
 
-
 use App\Controller\ApiBaseController;
 use App\Middleware\Auth\UserAuthMiddleware;
 use App\Service\Api\User\MessageCategoryService;
@@ -37,8 +36,7 @@ class MessageCategoryController extends ApiBaseController
      */
     public function index()
     {
-        $items = $this->service->serviceSelect((array)$this->request->all());
-
-        return $this->httpResponse->success((array)$items);
+        $items = $this->service->serviceSelect($this->request->all());
+        return $this->httpResponse->success($items);
     }
 }

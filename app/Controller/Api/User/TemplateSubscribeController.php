@@ -38,7 +38,7 @@ class TemplateSubscribeController extends ApiBaseController
      */
     public function create(SubscribeValidate $subscribeValidate)
     {
-        $result = $this->service->serviceCreate((array)$this->request->all());
+        $result = $this->service->serviceCreate($this->request->all());
 
         if ($result) return $this->httpResponse->success();
         return $this->httpResponse->error();

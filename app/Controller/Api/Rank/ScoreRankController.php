@@ -30,8 +30,7 @@ class ScoreRankController extends ApiBaseController
      */
     public function index()
     {
-        $items = $this->service->serviceGroup((array)$this->request->all());
-
-        return $this->httpResponse->success((array)$items);
+        $items = $this->service->serviceGroup($this->request->all());
+        return $this->httpResponse->success($items);
     }
 }

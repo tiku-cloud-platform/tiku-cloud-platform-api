@@ -35,9 +35,9 @@ class WeChatUserController extends ApiBaseController
      */
     public function show(): ResponseInterface
     {
-        $userInfo = $this->service->serviceFind((array)$this->request->all());
+        $userInfo = $this->service->serviceFind($this->request->all());
 
-        return $this->httpResponse->success((array)$userInfo);
+        return $this->httpResponse->success($userInfo);
     }
 
     /**
@@ -48,7 +48,7 @@ class WeChatUserController extends ApiBaseController
      */
     public function update(UpdateInfoValidate $validate): ResponseInterface
     {
-        $updateResult = $this->service->serviceUpdate((array)$validate->validated());
+        $updateResult = $this->service->serviceUpdate($validate->validated());
 
         return $updateResult ? $this->httpResponse->success() : $this->httpResponse->success();
     }

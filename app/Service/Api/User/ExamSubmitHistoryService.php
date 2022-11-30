@@ -55,7 +55,7 @@ class ExamSubmitHistoryService implements ApiServiceInterface
      */
     public function serviceSelect(array $requestParams): array
     {
-        return $this->historyRepository->repositorySelect(self::searchWhere((array)$requestParams),
+        return $this->historyRepository->repositorySelect(self::searchWhere($requestParams),
             (int)$requestParams['size'] ?? 20);
     }
 
@@ -123,10 +123,10 @@ class ExamSubmitHistoryService implements ApiServiceInterface
         }
 
         /** @var array $optionsArray 用户选择的试题对应数据 */
-        $optionsArray = (new OptionService())->serviceIdWhereIn((array)array_column($selectArray, 'uuid'));
+        $optionsArray = (new OptionService())->serviceIdWhereIn(array_column($selectArray, 'uuid'));
 
         /** @var array $collection 试卷信息 */
-        $collection = (new CollectionService())->serviceFind((array)['uuid' => $requestParams['collection_uuid']]);
+        $collection = (new CollectionService())->serviceFind(['uuid' => $requestParams['collection_uuid']]);
 
         /** @var string $useTime 答题时间 */
         $useTime = $requestParams['cutDownTime']['hour'] . ':' . $requestParams['cutDownTime']['minutes'] . ':' . $requestParams['cutDownTime']['seconds'];
@@ -169,7 +169,7 @@ class ExamSubmitHistoryService implements ApiServiceInterface
             ];
         }
 
-        $scoreConfig  = (new ScoreConfigService())->serviceFind((array)['key' => 'wechat_exam']);
+        $scoreConfig  = (new ScoreConfigService())->serviceFind(['key' => 'wechat_exam']);
         $score        = !empty($scoreConfig) ? $scoreConfig['score'] + $totalScore : $totalScore;
         $scoreHistory = [
             'uuid' => UUID::getUUID(),
@@ -181,10 +181,10 @@ class ExamSubmitHistoryService implements ApiServiceInterface
             'store_uuid' => $userInfo['store_uuid'],
         ];
 
-        $insertResult = $this->historyRepository->repositoryCreate((array)['exam' => $insertInfoArray, 'score' => $scoreHistory]);
+        $insertResult = $this->historyRepository->repositoryCreate(['exam' => $insertInfoArray, 'score' => $scoreHistory]);
         if ($insertInfoArray) {
             // 向协程写入数据
-            Context::set('score', ['score' => (double)$totalScore, 'time' => $useTime, 'success' => $successNumber]);
+            Context::set('score', ['score' => $totalScore, 'time' => $useTime, 'success' => $successNumber]);
         }
 
         return $insertResult;
@@ -198,6 +198,6 @@ class ExamSubmitHistoryService implements ApiServiceInterface
      */
     public function serviceSubmitCount(array $requestParams): int
     {
-        return $this->historyRepository->repositoryCountGroup(self::searchWhere((array)$requestParams));
+        return $this->historyRepository->repositoryCountGroup(self::searchWhere($requestParams));
     }
 }

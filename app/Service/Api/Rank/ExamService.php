@@ -41,7 +41,7 @@ class ExamService implements ApiServiceInterface
      */
     public function serviceSelect(array $requestParams): array
     {
-        return $this->examRankRepository->repositorySelect(self::searchWhere((array)$requestParams),
+        return $this->examRankRepository->repositorySelect(self::searchWhere($requestParams),
             (int)$requestParams['number'] ?? 100);
     }
 

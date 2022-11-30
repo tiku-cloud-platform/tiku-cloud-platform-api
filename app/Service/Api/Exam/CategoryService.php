@@ -47,7 +47,7 @@ class CategoryService implements ApiServiceInterface
      */
     public function serviceSelect(array $requestParams): array
     {
-        $items = $this->categoryRepository->repositorySelect(self::searchWhere((array)$requestParams),
+        $items = $this->categoryRepository->repositorySelect(self::searchWhere($requestParams),
             (int)$requestParams['size'] ?? 10000);
 
         $items['items'] = DataFormatter::recursionData((array)$items['items']);

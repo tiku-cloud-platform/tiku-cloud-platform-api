@@ -3,7 +3,6 @@ declare(strict_types = 1);
 
 namespace App\Controller\Api\User;
 
-
 use App\Controller\ApiBaseController;
 use App\Middleware\Auth\UserAuthMiddleware;
 use App\Request\Store\Common\UUIDValidate;
@@ -36,9 +35,9 @@ class MessageContentController extends ApiBaseController
      */
     public function index()
     {
-        $items = $this->service->serviceSelect((array)$this->request->all());
+        $items = $this->service->serviceSelect($this->request->all());
 
-        return $this->httpResponse->success((array)$items);
+        return $this->httpResponse->success($items);
     }
 
     /**
@@ -48,8 +47,8 @@ class MessageContentController extends ApiBaseController
      */
     public function show(UUIDValidate $validate)
     {
-        $items = $this->service->serviceFind((array)$this->request->all());
+        $items = $this->service->serviceFind($this->request->all());
 
-        return $this->httpResponse->success((array)$items);
+        return $this->httpResponse->success($items);
     }
 }

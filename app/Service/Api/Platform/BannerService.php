@@ -50,7 +50,7 @@ class BannerService implements ApiServiceInterface
      */
     public function serviceSelect(array $requestParams): array
     {
-        return $this->bannerRepository->repositorySelect(self::searchWhere((array)$requestParams),
+        return $this->bannerRepository->repositorySelect(self::searchWhere($requestParams),
             (int)$requestParams['size'] ?? 20);
     }
 

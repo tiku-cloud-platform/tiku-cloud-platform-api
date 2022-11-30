@@ -35,9 +35,8 @@ class ArticleController extends ApiBaseController
      */
     public function index()
     {
-        $items = $this->service->serviceSelect((array)$this->request->all());
-
-        return $this->httpResponse->success((array)$items);
+        $items = $this->service->serviceSelect($this->request->all());
+        return $this->httpResponse->success($items);
     }
 
     /**
@@ -47,9 +46,8 @@ class ArticleController extends ApiBaseController
      */
     public function show(UUIDValidate $validate)
     {
-        $bean = $this->service->serviceFind((array)$this->request->all());
-
-        return $this->httpResponse->success((array)$bean);
+        $bean = $this->service->serviceFind($this->request->all());
+        return $this->httpResponse->success($bean);
     }
 
     /**
@@ -60,8 +58,7 @@ class ArticleController extends ApiBaseController
      */
     public function click(UUIDValidate $validate)
     {
-        $updateResult = $this->service->serviceClick((array)$this->request->all());
-
+        $updateResult = $this->service->serviceClick($this->request->all());
         return $updateResult ? $this->httpResponse->success() : $this->httpResponse->error();
     }
 }

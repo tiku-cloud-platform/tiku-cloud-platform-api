@@ -3,7 +3,6 @@ declare(strict_types = 1);
 
 namespace App\Controller\Api\User;
 
-
 use App\Controller\ApiBaseController;
 use App\Service\Api\User\WeChatUserService;
 use Hyperf\HttpServer\Annotation\Controller;
@@ -33,12 +32,11 @@ class LoginController extends ApiBaseController
      */
     public function weChatLogin()
     {
-        $userInfo = $this->service->serviceWeChatLogin((array)$this->request->all());
-
+        $userInfo = $this->service->serviceWeChatLogin($this->request->all());
         if ($userInfo['code'] == 0) {
             return $this->httpResponse->success((array)$userInfo['data']);
         }
-        return $this->httpResponse->error((array)$userInfo);
+        return $this->httpResponse->error($userInfo);
     }
 
     /**
@@ -50,8 +48,7 @@ class LoginController extends ApiBaseController
      */
     public function quiteWeChatLogin()
     {
-        $userInfo = $this->service->serviceQuiteWeChatLogin((array)$this->request->all());
-
+        $userInfo = $this->service->serviceQuiteWeChatLogin($this->request->all());
         if ($userInfo['code'] == 0) {
             return $this->httpResponse->success((array)$userInfo['data']);
         }

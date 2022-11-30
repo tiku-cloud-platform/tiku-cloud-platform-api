@@ -63,8 +63,7 @@ class ReadClickService implements ApiServiceInterface
             $requestParams['uuid']       = UUID::getUUID();
             $requestParams['store_uuid'] = $userInfo['store_uuid'];
             $requestParams['user_uuid']  = $userInfo['user_uuid'];
-
-            return $this->readClickRepository->repositoryCreate((array)$requestParams);
+            return $this->readClickRepository->repositoryCreate($requestParams);
         }
 
         return false;

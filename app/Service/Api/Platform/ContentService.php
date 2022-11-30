@@ -94,6 +94,6 @@ class ContentService implements ApiServiceInterface
      */
     public function serviceFind(array $requestParams): array
     {
-        return $this->contentRepository->repositoryFind(self::searchWhere((array)$requestParams));
+        return $this->contentRepository->repositoryFind(self::searchWhere($requestParams));
     }
 }

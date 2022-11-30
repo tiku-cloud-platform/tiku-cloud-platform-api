@@ -3,7 +3,6 @@ declare(strict_types = 1);
 
 namespace App\Controller\Api\User;
 
-
 use App\Controller\ApiBaseController;
 use App\Middleware\Auth\UserAuthMiddleware;
 use App\Service\Api\User\ExamSubmitHistoryService;
@@ -39,9 +38,9 @@ class OptionExamSubmitController extends ApiBaseController
      */
     public function optionIndex(): ResponseInterface
     {
-        $items = $this->service->serviceSelect((array)$this->request->all());
+        $items = $this->service->serviceSelect($this->request->all());
 
-        return $this->httpResponse->success((array)$items);
+        return $this->httpResponse->success($items);
     }
 
     /**
@@ -52,7 +51,7 @@ class OptionExamSubmitController extends ApiBaseController
     {
         $requestParams         = $this->request->all();
         $requestParams['type'] = 1;// 单选试题
-        $createResult          = $this->service->serviceCreate((array)$requestParams);
+        $createResult          = $this->service->serviceCreate($requestParams);
 
         if ($createResult) {
             $score = Context::get('score');

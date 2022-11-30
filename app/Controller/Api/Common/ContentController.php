@@ -33,8 +33,7 @@ class ContentController extends ApiBaseController
      */
     public function show(PositionValidate $validate)
     {
-        $bean = $this->service->serviceFind((array)$this->request->all());
-
-        return $this->httpResponse->success((array)$bean);
+        $bean = $this->service->serviceFind($this->request->all());
+        return $this->httpResponse->success($bean);
     }
 }

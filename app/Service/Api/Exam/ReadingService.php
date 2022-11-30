@@ -48,7 +48,7 @@ class ReadingService implements ApiServiceInterface
      */
     public function serviceSelect(array $requestParams): array
     {
-        return $this->readingRepository->repositorySelect(self::searchWhere((array)$requestParams),
+        return $this->readingRepository->repositorySelect(self::searchWhere($requestParams),
             (int)$requestParams['size'] ?? 20);
     }
 
@@ -93,6 +93,6 @@ class ReadingService implements ApiServiceInterface
      */
     public function serviceFind(array $requestParams): array
     {
-        return $this->readingRepository->repositoryFind(self::searchWhere((array)$requestParams));
+        return $this->readingRepository->repositoryFind(self::searchWhere($requestParams));
     }
 }

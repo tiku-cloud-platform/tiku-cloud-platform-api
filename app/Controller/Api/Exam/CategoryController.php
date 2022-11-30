@@ -30,8 +30,7 @@ class CategoryController extends ApiBaseController
      */
     public function index()
     {
-        $items = $this->service->serviceSelect((array)$this->request->all());
-
-        return $this->httpResponse->success((array)$items);
+        $items = $this->service->serviceSelect($this->request->all());
+        return $this->httpResponse->success($items);
     }
 }

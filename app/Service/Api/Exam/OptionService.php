@@ -50,7 +50,7 @@ class OptionService implements ApiServiceInterface
      */
     public function serviceSelect(array $requestParams): array
     {
-        return $this->optionRepository->repositorySelect(self::searchWhere((array)$requestParams),
+        return $this->optionRepository->repositorySelect(self::searchWhere($requestParams),
             (int)$requestParams['size'] ?? 20);
     }
 
@@ -106,6 +106,6 @@ class OptionService implements ApiServiceInterface
      */
     public function serviceIdWhereIn(array $uuidArray): array
     {
-        return $this->optionRepository->repositoryWhereId((string)'uuid', $uuidArray);
+        return $this->optionRepository->repositoryWhereId('uuid', $uuidArray);
     }
 }

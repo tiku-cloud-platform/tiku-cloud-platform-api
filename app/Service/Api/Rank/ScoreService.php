@@ -43,7 +43,7 @@ class ScoreService implements ApiServiceInterface
      */
     public function serviceSelect(array $requestParams): array
     {
-        return $this->scoreRepository->repositorySelect(self::searchWhere((array)$requestParams),
+        return $this->scoreRepository->repositorySelect(self::searchWhere($requestParams),
             (int)$requestParams['number'] ?? 10);
     }
 
@@ -99,12 +99,12 @@ class ScoreService implements ApiServiceInterface
      */
     public function serviceGroup(array $requestParams): array
     {
-        $cacheInfo = RedisClient::get((string)CacheKey::WECHAT_RANK_SCORE, (string)'today');
+        $cacheInfo = RedisClient::get(CacheKey::WECHAT_RANK_SCORE, 'today');
         if (empty($cacheInfo)) {
-            $cacheInfo  = $this->scoreRepository->repositoryGroup(self::searchWhere((array)$requestParams),
+            $cacheInfo  = $this->scoreRepository->repositoryGroup(self::searchWhere($requestParams),
                 (int)$requestParams['size'] ?? 15);
             $expireTime = strtotime(date('Y-m-d 23:59:59')) - time();
-            RedisClient::create((string)CacheKey::WECHAT_RANK_SCORE, (string)'today', (array)$cacheInfo, (int)$expireTime);
+            RedisClient::create(CacheKey::WECHAT_RANK_SCORE, 'today', $cacheInfo, $expireTime);
         }
 
         return $cacheInfo;

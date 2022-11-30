@@ -94,6 +94,6 @@ class ScoreService implements ApiServiceInterface
      */
     public function serviceFind(array $requestParams): array
     {
-        return $this->scoreRepository->repositoryFind(self::searchWhere((array)$requestParams));
+        return $this->scoreRepository->repositoryFind(self::searchWhere($requestParams));
     }
 }
