@@ -1,6 +1,4 @@
 .idea
-/storage/logs/*
-/storage/uploaded/*
-/public/storage
 .vscode
 .DS_Store
+.env

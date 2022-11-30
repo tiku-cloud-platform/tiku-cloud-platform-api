@@ -1,0 +1,35 @@
+parameters:
+	checkGenericClassInNonGenericObjectType: false
+	treatPhpDocTypesAsCertain: false
+	bootstrapFiles:
+		- vendor/autoload.php
+	checkMissingIterableValueType: false
+	ignoreErrors:
+		-
+			# if openssl_random_pseudo_bytes we want to fail
+			message: '#Parameter \#1 \$data of function bin2hex expects string, string\|false given#'
+			path: src/Zipkin/Propagation/Id.php
+		-
+			# This is probably a mistake in the logic of PHPStan as $localEndpoint is always being overrided
+			message: '#Parameter \#1 \$localEndpoint of class Zipkin\\DefaultTracing constructor expects Zipkin\\Endpoint, Zipkin\\Endpoint\|null given#'
+			path: src/Zipkin/TracingBuilder.php
+		-
+			# This avoids false positive in quirky HTTP reporter constructor
+			message: '#Zipkin\\Reporters\\Http\:\:\_\_construct\(\)#'
+			path: src/Zipkin/Reporters/Http.php
+		-
+			# This avoids false positive in quirky HTTP reporter constructor
+			message: '#Strict comparison using \=\=\=#'
+			path: src/Zipkin/Reporters/Http.php
+		-
+			# If we specify a type for $fn the it is impossible to justify the casting to string or array
+			message: '#Function Zipkin\\SpanName\\generateSpanName\(\) has parameter \$fn with no typehint specified.#'
+			path: src/Zipkin/SpanName.php
+		-  
+			# In general types are desired but carrier is an special case
+			message: '#has parameter \$carrier with no typehint specified#'
+			path: src/Zipkin/*
+		-
+			# SpanCustomizer is definitively not null
+			message: '#Parameter \#3 \$ of callable callable\(.*, Zipkin\\Propagation\\TraceContext, Zipkin\\SpanCustomizer\): void expects Zipkin\\SpanCustomizer, Zipkin\\SpanCustomizerShield\|null given.#'
+			path: src/Zipkin/Tracer
