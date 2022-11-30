@@ -3,7 +3,6 @@ declare(strict_types = 1);
 
 namespace App\Controller\Api\Exam;
 
-
 use App\Controller\ApiBaseController;
 use App\Service\Api\Exam\CategoryService;
 use Hyperf\HttpServer\Annotation\Controller;
