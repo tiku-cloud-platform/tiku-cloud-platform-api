@@ -32,7 +32,6 @@ class ClientScope implements Scope
         } else {
             $secretString = AesEncrypt::getInstance()->aesDecrypt($appIdSecret);
             $configArray  = json_decode($secretString, true);
-            // {"uuid":"35c28259-9b55-e438-3830-dfc79f592709","appid":"cld_d1e7a97fdc","client":"wechat_miniprogram"}
             if (is_array($configArray)) {
                 $builder->where('store_uuid', '=', $configArray["uuid"]);
             } else {

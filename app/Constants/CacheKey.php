@@ -30,11 +30,6 @@ class CacheKey extends AbstractConstants
     const USER_SING_DAY = 'wechat:user:sign:';
 
     /**
-     * @Message("微信小程序配置")
-     */
-    const STORE_MINIPROGRAM_SETTING = "store:miniprogram:";
-
-    /**
      * @Message("商户微信小程序token")
      */
     const STORE_MINI_WECHAT_TOKEN = 'wechat_token:';
@@ -44,21 +39,21 @@ class CacheKey extends AbstractConstants
      */
     const WECHAT_RANK_SCORE = 'wechat_rank_score:';
 
-    /**
-     * @Message("云文件存储token前缀")
-     */
-    const  CLOUD_PLATFORM_FILE_TOKEN = "cloud_platform_file_token:";
-
-    /**
-     * @Message("试卷基础数据统计")
-     */
-    const EXAM_COLLECTION_TOTAL = "exam_collection_total:";
-
 
     // 新版配置key
 
     /**
      * @Message("商户开发配置")
      */
-    const STORE_DEVEL_CONFIG = "store:dev:";
+    const STORE_DEVEL_CONFIG = "dev:";
+
+    /**
+     * @Message("微信小程序配置")
+     */
+    const STORE_MINI_SETTING = "mini:";
+
+    /**
+     * @Message("公众号配置")
+     */
+    const STORE_OFFICE_SETTING = "office:";
 }
