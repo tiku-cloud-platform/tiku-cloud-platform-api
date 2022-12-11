@@ -17,4 +17,8 @@ class StoreMenu extends \App\Model\Common\StoreMenu
         'url',
         'type',
     ];
+
+    protected $hidden = [
+        "file_uuid",
+    ];
 }

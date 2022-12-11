@@ -33,9 +33,8 @@ class StoreMenu extends BaseModel
      * 菜单图标地址
      *
      * @return BelongsTo
-     * @author kert
      */
-    public function coverFileInfo()
+    public function image(): BelongsTo
     {
         return $this->belongsTo(StorePlatformFile::class, 'file_uuid', 'uuid');
     }

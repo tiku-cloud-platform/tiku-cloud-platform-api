@@ -5,6 +5,8 @@ namespace App\Service\Api\Exam;
 
 
 use App\Mapping\DataFormatter;
+use App\Mapping\RedisClient;
+use App\Mapping\Request\RequestApp;
 use App\Repository\Api\Exam\CategoryRepository;
 use App\Service\ApiServiceInterface;
 use Hyperf\Di\Annotation\Inject;
@@ -47,11 +49,15 @@ class CategoryService implements ApiServiceInterface
      */
     public function serviceSelect(array $requestParams): array
     {
-        $items = $this->categoryRepository->repositorySelect(self::searchWhere($requestParams),
-            (int)$requestParams['size'] ?? 10000);
-
-        $items['items'] = DataFormatter::recursionData((array)$items['items']);
-
+        $cacheKey      = "exam_category:" . (new RequestApp())->getStoreUuid();
+        $categoryCache = RedisClient::getInstance()->get($cacheKey);
+        if (!empty($categoryCache)) {
+            return json_decode($categoryCache, true);
+        }
+        $items          = $this->categoryRepository->repositorySelect(self::searchWhere($requestParams),
+            (int)$requestParams['size'] ?? 20);
+        $items["items"] = self::recursionData($items["items"], "");
+        RedisClient::getInstance()->set($cacheKey, json_encode($items, JSON_UNESCAPED_UNICODE));
         return $items;
     }
 
@@ -97,5 +103,36 @@ class CategoryService implements ApiServiceInterface
     public function serviceFind(array $requestParams): array
     {
         // TODO: Implement serviceFind() method.
+    }
+
+    /**
+     * 格式化数据
+     * @param array $info
+     * @param string $pid
+     * @return array
+     */
+    private static function recursionData(array $info, string $pid = ""): array
+    {
+        $tree = [];
+        foreach ($info as $value) {
+            if ($value['parent_uuid'] == $pid) {
+                $value['children'] = self::recursionData($info, (string)$value['uuid']);
+                if ($value['children'] == null) {
+                    unset($value['children']);
+                }
+                $value->big_img   = "";
+                $value->small_img = "";
+                if (!empty($value->bigImage)) {
+                    $value->big_img = $value->bigImage->url . $value->bigImage->name;
+                }
+                if (!empty($value->smallImage)) {
+                    $value->small_img = $value->smallImage->url . $value->smallImage->name;
+                }
+                unset($value->bigImage, $value->smallImage);
+                $tree[] = $value;
+            }
+        }
+
+        return $tree;
     }
 }

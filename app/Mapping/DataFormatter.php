@@ -30,7 +30,7 @@ class DataFormatter
         $tree = [];
         foreach ($info as $value) {
             if ($value['parent_uuid'] == $pid) {
-                $value['children'] = self::recursionData((array)$info, (string)$value['uuid']);
+                $value['children'] = self::recursionData($info, (string)$value['uuid']);
                 if ($value['children'] == null) {
                     unset($value['children']);
                 }

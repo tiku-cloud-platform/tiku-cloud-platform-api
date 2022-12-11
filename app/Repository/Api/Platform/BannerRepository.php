@@ -35,7 +35,7 @@ class BannerRepository implements ApiRepositoryInterface
     public function repositorySelect(\Closure $closure, int $perSize): array
     {
         $items = $this->bannerModel::query()
-            ->with(['coverFileInfo:uuid,file_url,file_name'])
+            ->with(['image:uuid,file_url as url,file_name as name,file_hash as hash'])
             ->where($closure)
             ->where([['is_show', '=', 1]])
             ->select($this->bannerModel->searchFields)

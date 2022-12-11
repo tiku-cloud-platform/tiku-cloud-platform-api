@@ -3,7 +3,6 @@ declare(strict_types = 1);
 
 namespace App\Controller\Api\Banner;
 
-
 use App\Controller\ApiBaseController;
 use App\Service\Api\Platform\BannerService;
 use Hyperf\HttpServer\Annotation\Controller;
@@ -13,7 +12,7 @@ use Psr\Http\Message\ResponseInterface;
 /**
  * 轮播图
  *
- * @Controller(prefix="api/v1/banner")
+ * @Controller(prefix="api/banner")
  * Class BannerController
  * @package App\Controller\Api\Banner
  */

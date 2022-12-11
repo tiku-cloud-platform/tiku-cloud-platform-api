@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 /**
  * This file is part of api.
  *
@@ -30,34 +30,34 @@ use Psr\Http\Server\RequestHandlerInterface;
  */
 class UserAuthMiddleware implements MiddlewareInterface
 {
-	/**
-	 * @var ContainerInterface
-	 */
-	protected $container;
+    /**
+     * @var ContainerInterface
+     */
+    protected $container;
 
-	/**
-	 * @Inject
-	 * @var HttpDataResponse
-	 */
-	protected $httpResponse;
+    /**
+     * @Inject
+     * @var HttpDataResponse
+     */
+    protected $httpResponse;
 
-	public function __construct(ContainerInterface $container)
-	{
-		$this->container = $container;
-	}
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
 
-	public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
-	{
-		$userInfo = UserInfo::getWeChatUserInfo();
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    {
+        $userInfo = UserInfo::getWeChatUserInfo();
 
-		if (!empty($userInfo)) {
-			return $handler->handle($request);
-		}
+        if (!empty($userInfo)) {
+            return $handler->handle($request);
+        }
 
-		return $this->httpResponse->response(
-			(string)ErrorCode::getMessage(ErrorCode::REQUEST_INVALID),
-			(int)ErrorCode::REQUEST_INVALID,
-			(array)[],
-			(int)HttpCode::NO_AUTH);
-	}
+        return $this->httpResponse->response(
+            (string)ErrorCode::getMessage(ErrorCode::REQUEST_INVALID),
+            ErrorCode::REQUEST_INVALID,
+            [],
+            HttpCode::NO_AUTH);
+    }
 }

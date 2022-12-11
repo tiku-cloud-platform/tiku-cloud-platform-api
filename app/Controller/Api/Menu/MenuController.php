@@ -12,7 +12,7 @@ use Psr\Http\Message\ResponseInterface;
 /**
  * 轮播图
  *
- * @Controller(prefix="api/v1/menu")
+ * @Controller(prefix="api/menu")
  * Class BannerController
  * @package App\Controller\Api\Menu
  */

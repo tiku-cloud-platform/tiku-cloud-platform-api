@@ -12,7 +12,7 @@ use Psr\Http\Message\ResponseInterface;
 /**
  * 试题分类
  *
- * @Controller(prefix="api/v1/exam/category")
+ * @Controller(prefix="api/exam/category")
  * Class CategoryController
  * @package App\Controller\Api\Exam
  */

@@ -35,11 +35,6 @@ class CacheKey extends AbstractConstants
     const STORE_MINIPROGRAM_SETTING = "store:miniprogram:";
 
     /**
-     * @Message("公众号配置")
-     */
-    const STORE_PUBLICPROGRAM_SETTING = "store:publicprogram:";
-
-    /**
      * @Message("商户微信小程序token")
      */
     const STORE_MINI_WECHAT_TOKEN = 'wechat_token:';
@@ -58,4 +53,12 @@ class CacheKey extends AbstractConstants
      * @Message("试卷基础数据统计")
      */
     const EXAM_COLLECTION_TOTAL = "exam_collection_total:";
+
+
+    // 新版配置key
+
+    /**
+     * @Message("商户开发配置")
+     */
+    const STORE_DEVEL_CONFIG = "store:dev:";
 }

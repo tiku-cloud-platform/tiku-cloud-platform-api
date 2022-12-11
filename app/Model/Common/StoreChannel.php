@@ -23,12 +23,16 @@ class StoreChannel extends BaseModel
         "remark"
     ];
 
+    protected $hidden = [
+        "file_uuid",
+    ];
+
     public function group(): BelongsTo
     {
         return $this->belongsTo(StoreChannelGroup::class, "channel_group_uuid", "uuid");
     }
 
-    public function fileInfo(): BelongsTo
+    public function image(): BelongsTo
     {
         return $this->belongsTo(StorePlatformFile::class, "file_uuid", "uuid");
     }

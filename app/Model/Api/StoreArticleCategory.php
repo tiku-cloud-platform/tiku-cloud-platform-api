@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Model\Api;
 
@@ -12,10 +12,13 @@ namespace App\Model\Api;
  */
 class StoreArticleCategory extends \App\Model\Common\StoreArticleCategory
 {
-	public $searchFields = [
-		'uuid',
-		'parent_uuid',
-		'title',
-		'file_uuid',
-	];
+    public $searchFields = [
+        'uuid',
+        'title',
+        'file_uuid',
+    ];
+
+    protected $hidden = [
+        "file_uuid",
+    ];
 }

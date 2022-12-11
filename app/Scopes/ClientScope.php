@@ -1,18 +1,9 @@
 <?php
-
 declare(strict_types = 1);
-/**
- * This file is part of api.
- *
- * @link     https://www.qqdeveloper.io
- * @document https://www.qqdeveloper.wiki
- * @contact  2665274677@qq.com
- * @license  Apache2.0
- */
 
 namespace App\Scopes;
 
-use App\Mapping\UserInfo;
+use App\Library\Encrypt\AesEncrypt;
 use Hyperf\Database\Model\Builder;
 use Hyperf\Database\Model\Model;
 use Hyperf\Database\Model\Scope;
@@ -34,17 +25,19 @@ class ClientScope implements Scope
 
     public function apply(Builder $builder, Model $model)
     {
-        $header = $this->request->header('Client-Type', '');
-        $router = $this->request->getRequestUri();
+        $appIdSecret = $this->request->header('App', '');
 
-        if (!empty($header) && in_array($header, ['web_store'])) {
-            if ($router !== '/store/user/login') {
-                $builder->where('store_uuid', '=', UserInfo::getStoreUserInfo()['store_uuid']);
-            } else {
-                $builder->where('id', '>', 0);
-            }
-        } else {
+        if (empty($appIdSecret)) {
             $builder->where('id', '=', 0);
+        } else {
+            $secretString = AesEncrypt::getInstance()->aesDecrypt($appIdSecret);
+            $configArray  = json_decode($secretString, true);
+            // {"uuid":"35c28259-9b55-e438-3830-dfc79f592709","appid":"cld_d1e7a97fdc","client":"wechat_miniprogram"}
+            if (is_array($configArray)) {
+                $builder->where('store_uuid', '=', $configArray["uuid"]);
+            } else {
+                $builder->where('id', '=', 0);
+            }
         }
     }
 }

@@ -35,15 +35,6 @@ class NotFundHttpExceptionHandler extends ExceptionHandler
                 'message' => '请求地址不存在',
                 'data' => [],
             ]);
-            (new LogServiceFactory())->recordLog((string)LogKey::HTTP_URL_ERROR_LOG, (array)[
-                'app_error_msg' => $throwable->getMessage(),
-                'app_error_file' => $throwable->getFile(),
-                'app_error_line' => $throwable->getLine(),
-                'request_url' => $this->request->fullUrl(),
-                'request_real_ip' => DataFormatter::getClientIp((array)$this->request->getServerParams()),
-                'request_method' => $this->request->getMethod(),
-                'request_data' => json_encode($this->request->all(), JSON_UNESCAPED_UNICODE),
-            ]);
             $this->stopPropagation();
             return $response->withStatus(404)->withBody(new SwooleStream($data));
         }

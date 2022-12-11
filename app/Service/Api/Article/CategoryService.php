@@ -49,16 +49,14 @@ class CategoryService implements ApiServiceInterface
     public function serviceSelect(array $requestParams): array
     {
         // TODO 二级分类的场景待考虑
-        $items = $this->categoryRepository->repositorySelect(self::searchWhere((array)$requestParams),
+        $items = $this->categoryRepository->repositorySelect(self::searchWhere($requestParams),
             (int)$requestParams['size'] ?? 20);
-        if (!empty($items["items"])) {
-            array_unshift($items['items'], [
-                'cover_file_info' => null,
-                'file_uuid' => null,
-                'parent_uuid' => null,
-                'title' => "全部",
-                'uuid' => ""
-            ]);
+        foreach ($items["items"] as $item) {
+            $item->img = "";
+            if (!empty($item->image)) {
+                $item->img = ($item->image["url"] . $item->image["name"]);
+            }
+            unset($item->image);
         }
         return $items;
     }

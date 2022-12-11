@@ -13,7 +13,7 @@ use Psr\Http\Message\ResponseInterface;
 /**
  * 文章分类
  *
- * @Controller(prefix="api/v1/article/category")
+ * @Controller(prefix="api/article/category")
  * Class CategoryController
  * @package App\Controller\Api\Article
  */
@@ -26,14 +26,15 @@ class CategoryController extends ApiBaseController
     }
 
     /**
+     * 分类列表
      * @GetMapping(path="list")
      * @return ResponseInterface
      * @author kert
      */
     public function index()
     {
-        $items = $this->service->serviceSelect((array)$this->request->all());
+        $items = $this->service->serviceSelect($this->request->all());
 
-        return $this->httpResponse->success((array)$items);
+        return $this->httpResponse->success($items);
     }
 }

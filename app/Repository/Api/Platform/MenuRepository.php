@@ -6,6 +6,7 @@ namespace App\Repository\Api\Platform;
 
 use App\Model\Api\StoreMenu;
 use App\Repository\ApiRepositoryInterface;
+use Closure;
 use Hyperf\Di\Annotation\Inject;
 
 /**
@@ -32,15 +33,15 @@ class MenuRepository implements ApiRepositoryInterface
      * @param int $perSize 分页大小
      * @return array
      */
-    public function repositorySelect(\Closure $closure, int $perSize): array
+    public function repositorySelect(Closure $closure, int $perSize): array
     {
         $items = $this->menuModel::query()
-            ->with(['coverFileInfo:uuid,file_url,file_name'])
+            ->with(['image:uuid,file_url as url,file_name as name,file_hash as hash'])
             ->where([['is_show', '=', 1]])
             ->where($closure)
             ->select($this->menuModel->searchFields)
             ->orderByDesc('orders')
-            ->paginate((int)$perSize);
+            ->paginate($perSize);
 
         return [
             'items' => $items->items(),
@@ -75,7 +76,7 @@ class MenuRepository implements ApiRepositoryInterface
     /**
      * 单条数据查询
      */
-    public function repositoryFind(\Closure $closure): array
+    public function repositoryFind(Closure $closure): array
     {
         // TODO: Implement repositoryFind() method.
     }

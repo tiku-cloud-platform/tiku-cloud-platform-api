@@ -50,8 +50,13 @@ class MenuService implements ApiServiceInterface
      */
     public function serviceSelect(array $requestParams): array
     {
-        return $this->menuRepository->repositorySelect(self::searchWhere($requestParams),
+        $items = $this->menuRepository->repositorySelect(self::searchWhere($requestParams),
             (int)$requestParams['size'] ?? 20);
+        foreach ($items["items"] as $item) {
+            $item->img = $item->image["url"] . $item->image["name"];
+            unset($item->image);
+        }
+        return $items;
     }
 
     /**

@@ -23,6 +23,14 @@ class RedisClient
     }
 
     /**
+     * @return Redis|mixed
+     */
+    public static function getInstance()
+    {
+        return (new self())->redisClient;
+    }
+
+    /**
      * 生成缓存
      *
      * @param string $prefix 缓存前缀

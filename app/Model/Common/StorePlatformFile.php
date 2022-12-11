@@ -28,4 +28,8 @@ class StorePlatformFile extends BaseModel
         'extension',
         'is_show'
     ];
+
+    protected $hidden = [
+        "uuid",
+    ];
 }

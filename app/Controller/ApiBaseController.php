@@ -15,11 +15,16 @@ namespace App\Controller;
 use App\Mapping\HttpDataResponse;
 use App\Service\ApiServiceInterface;
 use Hyperf\Di\Annotation\Inject;
+use Hyperf\HttpServer\Annotation\Middleware;
+use Hyperf\HttpServer\Annotation\Middlewares;
 use Hyperf\HttpServer\Contract\RequestInterface;
+use App\Middleware\ClientMiddleware;
 
 /**
  * 用户请求基类
- *
+ * @Middlewares({
+ *     @Middleware(ClientMiddleware::class)
+ *     })
  * Class BaseController
  */
 class ApiBaseController extends AbstractController
@@ -40,6 +45,7 @@ class ApiBaseController extends AbstractController
 
     public function __construct(ApiServiceInterface $userService)
     {
+        var_dump(__FILE__, __LINE__);
         $this->service = $userService;
     }
 }

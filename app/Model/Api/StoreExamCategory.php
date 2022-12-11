@@ -18,4 +18,10 @@ class StoreExamCategory extends \App\Model\Common\StoreExamCategory
         'big_file_uuid',
         'parent_uuid',
     ];
+
+    protected $hidden = [
+        "big_file_uuid",
+        "file_uuid",
+        "parent_uuid",
+    ];
 }
