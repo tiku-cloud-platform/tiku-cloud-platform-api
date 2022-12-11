@@ -45,7 +45,6 @@ class ApiBaseController extends AbstractController
 
     public function __construct(ApiServiceInterface $userService)
     {
-        var_dump(__FILE__, __LINE__);
         $this->service = $userService;
     }
 }

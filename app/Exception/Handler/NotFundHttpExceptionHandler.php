@@ -4,9 +4,6 @@ declare(strict_types = 1);
 namespace App\Exception\Handler;
 
 use App\Constants\ErrorCode;
-use App\Constants\LogKey;
-use App\Mapping\DataFormatter;
-use App\Services\Log\LogServiceFactory;
 use Hyperf\ExceptionHandler\ExceptionHandler;
 use Hyperf\HttpMessage\Exception\NotFoundHttpException;
 use Hyperf\HttpMessage\Stream\SwooleStream;
@@ -38,7 +35,6 @@ class NotFundHttpExceptionHandler extends ExceptionHandler
             $this->stopPropagation();
             return $response->withStatus(404)->withBody(new SwooleStream($data));
         }
-
         return $response;
     }
 

@@ -14,7 +14,7 @@ use Psr\Http\Message\ResponseInterface;
 /**
  * 平台内容
  *
- * @Controller(prefix="api/v1/content")
+ * @Controller(prefix="api/content")
  * Class ContentController
  * @package App\Controller\Api\Common
  */

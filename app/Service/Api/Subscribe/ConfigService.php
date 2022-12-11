@@ -9,7 +9,6 @@ use Hyperf\Di\Annotation\Inject;
 
 /**
  * 微信订阅消息
- *
  * Class ConfigService
  * @package App\Service\Api\Subscribe
  */
@@ -48,8 +47,13 @@ class ConfigService implements ApiServiceInterface
      */
     public function serviceSelect(array $requestParams): array
     {
-        return $this->configRepository->repositorySelect(self::searchWhere($requestParams),
-            (int)$requestParams['size'] ?? 1000);
+        $items = $this->configRepository->repositorySelect(self::searchWhere($requestParams),
+            (int)$requestParams['size'] ?? 100);
+        foreach ($items["items"] as $item) {
+            $item->img = $item->image["url"] . $item->image["name"];
+            unset($item->image);
+        }
+        return $items;
     }
 
     /**

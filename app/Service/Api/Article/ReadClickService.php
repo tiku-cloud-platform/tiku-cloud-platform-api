@@ -3,8 +3,6 @@ declare(strict_types = 1);
 
 namespace App\Service\Api\Article;
 
-
-use App\Mapping\UserInfo;
 use App\Mapping\UUID;
 use App\Repository\Api\Article\ReadClickRepository;
 use App\Service\ApiServiceInterface;
@@ -58,7 +56,7 @@ class ReadClickService implements ApiServiceInterface
      */
     public function serviceCreate(array $requestParams): bool
     {
-        $userInfo = UserInfo::getWeChatUserInfo();
+        $userInfo = [];
         if (!empty($userInfo)) {
             $requestParams['uuid']       = UUID::getUUID();
             $requestParams['store_uuid'] = $userInfo['store_uuid'];

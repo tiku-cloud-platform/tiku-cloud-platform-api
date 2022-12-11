@@ -5,6 +5,7 @@ namespace App\Repository\Api\Subscribe;
 
 use App\Model\Api\StoreWechatSubscribeConfig;
 use App\Repository\ApiRepositoryInterface;
+use Closure;
 use Hyperf\Di\Annotation\Inject;
 
 /**
@@ -28,18 +29,18 @@ class ConfigRepository implements ApiRepositoryInterface
     /**
      * 查询数据
      *
-     * @param \Closure $closure
+     * @param Closure $closure
      * @param int $perSize 分页大小
      * @return array
      */
-    public function repositorySelect(\Closure $closure, int $perSize): array
+    public function repositorySelect(Closure $closure, int $perSize): array
     {
         $items = $this->configModel::query()
-            ->with(['coverFileInfo:uuid,file_url,file_name'])
+            ->with(['image:uuid,file_url as url,file_name as name,file_hash as hash'])
             ->where($closure)
             ->select($this->configModel->searchFields)
             ->orderByDesc('id')
-            ->paginate((int)$perSize);
+            ->paginate($perSize);
 
         return [
             'items' => $items->items(),
@@ -73,10 +74,10 @@ class ConfigRepository implements ApiRepositoryInterface
 
     /**
      * 单条数据查询
-     * @param \Closure $closure
+     * @param Closure $closure
      * @return array
      */
-    public function repositoryFind(\Closure $closure): array
+    public function repositoryFind(Closure $closure): array
     {
         // TODO: Implement repositoryFind() method.
     }

@@ -15,26 +15,6 @@ use Hyperf\Constants\Annotation\Constants;
 class CacheKey extends AbstractConstants
 {
     /**
-     * @Message("商户端登录token前缀")
-     */
-    const STORE_LOGIN_PREFIX = 'store_login:';
-
-    /**
-     * @Message("用户端登录token前缀")
-     */
-    const USER_LOGIN_PREFIX = 'user_login:';
-
-    /**
-     * @Message(微信用户每日签到")
-     */
-    const USER_SING_DAY = 'wechat:user:sign:';
-
-    /**
-     * @Message("商户微信小程序token")
-     */
-    const STORE_MINI_WECHAT_TOKEN = 'wechat_token:';
-
-    /**
      * @Message("微信小程序用户积分排行")
      */
     const WECHAT_RANK_SCORE = 'wechat_rank_score:';
@@ -56,4 +36,9 @@ class CacheKey extends AbstractConstants
      * @Message("公众号配置")
      */
     const STORE_OFFICE_SETTING = "office:";
+
+    /**
+     * @Message("小程序登录token")
+     */
+    const MINI_LOGIN_TOKEN = "mini:login:";
 }

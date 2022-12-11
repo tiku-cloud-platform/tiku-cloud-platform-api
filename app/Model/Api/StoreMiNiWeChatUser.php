@@ -38,7 +38,6 @@ class StoreMiNiWeChatUser extends \App\Model\Common\StoreMiNiWeChatUser
 
     /**
      * 主账号
-     *
      * @return BelongsTo
      */
     public function user(): BelongsTo

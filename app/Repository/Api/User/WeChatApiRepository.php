@@ -6,6 +6,7 @@ namespace App\Repository\Api\User;
 
 use App\Model\Api\StoreMiNiWeChatUser;
 use App\Repository\ApiRepositoryInterface;
+use Closure;
 use Hyperf\Di\Annotation\Inject;
 
 /**
@@ -29,11 +30,11 @@ class WeChatApiRepository implements ApiRepositoryInterface
     /**
      * 查询数据
      *
-     * @param \Closure $closure
+     * @param Closure $closure
      * @param int $perSize 分页大小
      * @return array
      */
-    public function repositorySelect(\Closure $closure, int $perSize): array
+    public function repositorySelect(Closure $closure, int $perSize): array
     {
         return [];
     }
@@ -64,11 +65,10 @@ class WeChatApiRepository implements ApiRepositoryInterface
     /**
      * 单条数据查询
      */
-    public function repositoryFind(\Closure $closure): array
+    public function repositoryFind(Closure $closure): array
     {
         $bean = $this->userModel::query()
-            ->with(['user:uuid,login_token'])
-            ->where([['is_forbidden', '=', 1]])
+            ->with(['user:uuid,real_name,gender,email,mobile'])
             ->where($closure)
             ->first($this->userModel->searchFields);
 

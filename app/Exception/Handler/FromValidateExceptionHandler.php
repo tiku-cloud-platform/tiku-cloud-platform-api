@@ -4,8 +4,6 @@ declare(strict_types = 1);
 namespace App\Exception\Handler;
 
 use App\Constants\ErrorCode;
-use App\Constants\LogKey;
-use App\Services\Log\LogServiceFactory;
 use Hyperf\ExceptionHandler\ExceptionHandler;
 use Hyperf\HttpMessage\Stream\SwooleStream;
 use Hyperf\Validation\ValidationException;
@@ -25,11 +23,6 @@ class FromValidateExceptionHandler extends ExceptionHandler
                 'code' => empty($throwable->getCode()) ? ErrorCode::REQUEST_ERROR : $throwable->getCode(),
                 'message' => $throwable->validator->errors()->first(),
                 'data' => [],
-            ]);
-            (new LogServiceFactory())->recordLog((string)LogKey::FORM_VALIDATE_LOG, (array)[
-                'app_error_msg' => $throwable->getMessage(),
-                'app_error_file' => $throwable->getFile(),
-                'app_error_line' => $throwable->getLine(),
             ]);
             $this->stopPropagation();
             return $response->withStatus(422)->withBody(new SwooleStream($data));
