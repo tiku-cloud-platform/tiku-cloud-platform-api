@@ -62,6 +62,7 @@ class StoreMiniUserDevice extends Model
         "ua",
         "rom_name",
         "rom_version",
+        "sdk_version",
     ];
 
     protected $casts = [
