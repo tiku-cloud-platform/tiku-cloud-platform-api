@@ -1,13 +1,18 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Repository\Api\User;
 
 
+use App\Mapping\Request\RequestApp;
+use App\Mapping\UUID;
 use App\Model\Api\StoreMiNiWeChatUser;
+use App\Model\Api\StorePlatformUser;
 use App\Repository\ApiRepositoryInterface;
 use Closure;
+use Hyperf\DbConnection\Db;
 use Hyperf\Di\Annotation\Inject;
+use Throwable;
 
 /**
  * 微信用户
@@ -47,8 +52,53 @@ class WeChatApiRepository implements ApiRepositoryInterface
      */
     public function repositoryCreate(array $insertInfo): bool
     {
-        if ($this->userModel::query()->create($insertInfo)) return true;
-        return false;
+        try {
+            Db::transaction(function () use ($insertInfo) {
+                // TODO 当前只做微信小程序端，只要小程序表中不存在都判定为是新用户。后续通过手机号作为系统唯一用户。
+                $storeUuid = (new RequestApp())->getStoreUuid();
+                $userModel = new StorePlatformUser();
+                $miniUserModel = new StoreMiNiWeChatUser();
+                $insertUser = $userModel::query()->create([
+                    'uuid',
+                    'real_name',
+                    'mobile',
+                    'store_uuid' => $storeUuid,
+                    'user_uuid' => $insertInfo["user_uuid"],
+                    'store_platform_user_group_uuid',
+                    "channel_uuid",
+                ]);
+                $insertMiniUser = $miniUserModel::query()->create([
+                    "openid" => $insertInfo["openid"],
+                    'uuid' => UUID::getUUID(),
+                    'user_uuid' => $insertInfo["user_uuid"],
+                    'store_uuid' => $storeUuid,
+                    'nickname' => "小白",
+                    'avatar_url' => "",
+                    'gender',
+                    'country',
+                    'province',
+                    'city',
+                    'is_forbidden',
+                    'language',
+                    'real_name',
+                    'mobile',
+                    'address',
+                    'longitude',
+                    'latitude',
+                    'district',
+                    'birthday',
+                    'is_show',
+                    "channel_uuid",
+                ]);
+                if ($insertUser && $insertMiniUser) {
+                    return true;
+                }
+                return false;
+            }, 2);
+        } catch (Throwable $throwable) {
+            // record register error log
+            return false;
+        }
     }
 
     /**

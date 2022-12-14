@@ -10,6 +10,7 @@ use App\Mapping\UUID;
 use App\Repository\Api\User\WeChatApiRepository;
 use EasyWeChat\Kernel\Exceptions\InvalidConfigException;
 use Hyperf\Di\Annotation\Inject;
+use RedisException;
 
 /**
  * 用户登录
@@ -26,7 +27,7 @@ class LoginService
      * 微信code授权
      * @param string $code
      * @return array
-     * @throws InvalidConfigException
+     * @throws InvalidConfigException|RedisException
      */
     public function serviceMiNiCodeAuth(string $code): array
     {
@@ -34,8 +35,17 @@ class LoginService
         $userInfo = $this->miniUserRepository->repositoryFind(function ($query) use ($jsonCode) {
             $query->where("openid", "=", $jsonCode["openid"]);
         });
+        // 不存在则创建（提前生成用户uuid，当返回值为true时，表示用户创建成功，则把改uuid插入队列，方便队列对该用户增加额外的业务操作）。
         if (empty($userInfo)) {
-            return ["code" => -1];
+            $insertUser = $this->miniUserRepository->repositoryCreate([
+                "openid" => $jsonCode["openid"],
+                "user_uuid" => UUID::getUUID(),
+            ]);
+            if ($insertUser) {
+                $userInfo = $this->miniUserRepository->repositoryFind(function ($query) use ($jsonCode) {
+                    $query->where("openid", "=", $jsonCode["openid"]);
+                });
+            }
         }
         $loginToken  = UUID::getUUID();
         $cacheResult = $this->setLoginCache($loginToken, $userInfo);
@@ -54,7 +64,7 @@ class LoginService
      * @param string $loginToken
      * @param array $userInfo
      * @return bool
-     * @throws \RedisException
+     * @throws RedisException
      */
     private function setLoginCache(string $loginToken, array $userInfo): bool
     {
