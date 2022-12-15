@@ -36,8 +36,8 @@ class OptionService implements ApiServiceInterface
     {
         return function ($query) use ($requestParams) {
             extract($requestParams);
-            if (!empty($exam_collection_uuid)) {
-                $query->where('exam_collection_uuid', '=', $exam_collection_uuid);
+            if (!empty($exam_id)) {
+                $query->where('exam_collection_uuid', '=', $exam_id);
             }
         };
     }
@@ -50,8 +50,13 @@ class OptionService implements ApiServiceInterface
      */
     public function serviceSelect(array $requestParams): array
     {
-        return $this->optionRepository->repositorySelect(self::searchWhere($requestParams),
+        $items = $this->optionRepository->repositorySelect(self::searchWhere($requestParams),
             (int)$requestParams['size'] ?? 20);
+        foreach ($items["items"] as $item) {
+            $item->img = $item->image["url"] . $item->image["name"];
+            unset($item->image);
+        }
+        return $items;
     }
 
     /**

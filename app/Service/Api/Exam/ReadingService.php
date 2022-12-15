@@ -31,11 +31,11 @@ class ReadingService implements ApiServiceInterface
     {
         return function ($query) use ($requestParams) {
             extract($requestParams);
-            if (!empty($collection_uuid)) {
-                $query->where('collection_uuid', '=', $collection_uuid);
+            if (!empty($exam_id)) {
+                $query->where('collection_uuid', '=', $exam_id);
             }
-            if (!empty($uuid)) {
-                $query->where('uuid', '=', $uuid);
+            if (!empty($id)) {
+                $query->where('uuid', '=', $id);
             }
         };
     }

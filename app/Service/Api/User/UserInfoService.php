@@ -5,7 +5,10 @@ namespace App\Service\Api\User;
 
 use App\Service\ApiServiceInterface;
 
-class UserService implements ApiServiceInterface
+/**
+ * 用户信息
+ */
+class UserInfoService implements ApiServiceInterface
 {
 
     public static function searchWhere(array $requestParams)

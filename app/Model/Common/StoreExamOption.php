@@ -41,12 +41,12 @@ class StoreExamOption extends BaseModel
         return explode(',', $key);
     }
 
-    public function optionItem(): HasMany
+    public function items(): HasMany
     {
         return $this->hasMany(StoreExamOptionItem::class, 'option_uuid', 'uuid');
     }
 
-    public function coverFileInfo(): BelongsTo
+    public function image(): BelongsTo
     {
         return $this->belongsTo(StorePlatformFile::class, 'file_uuid', 'uuid');
     }

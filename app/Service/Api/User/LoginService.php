@@ -8,6 +8,7 @@ use App\Library\WeChat\WeChatMiNi;
 use App\Mapping\RedisClient;
 use App\Mapping\UUID;
 use App\Repository\Api\User\WeChatApiRepository;
+use App\Service\ApiServiceInterface;
 use EasyWeChat\Kernel\Exceptions\InvalidConfigException;
 use Hyperf\Di\Annotation\Inject;
 use RedisException;
@@ -15,7 +16,7 @@ use RedisException;
 /**
  * 用户登录
  */
-class LoginService
+class LoginService implements ApiServiceInterface
 {
     /**
      * @Inject()
@@ -74,5 +75,35 @@ class LoginService
             return true;
         }
         return false;
+    }
+
+    public static function searchWhere(array $requestParams)
+    {
+        // TODO: Implement searchWhere() method.
+    }
+
+    public function serviceSelect(array $requestParams): array
+    {
+        // TODO: Implement serviceSelect() method.
+    }
+
+    public function serviceCreate(array $requestParams): bool
+    {
+        // TODO: Implement serviceCreate() method.
+    }
+
+    public function serviceUpdate(array $requestParams): int
+    {
+        // TODO: Implement serviceUpdate() method.
+    }
+
+    public function serviceDelete(array $requestParams): int
+    {
+        // TODO: Implement serviceDelete() method.
+    }
+
+    public function serviceFind(array $requestParams): array
+    {
+        // TODO: Implement serviceFind() method.
     }
 }

@@ -35,13 +35,13 @@ class CollectionRepository implements ApiRepositoryInterface
     public function repositorySelect(\Closure $closure, int $perSize): array
     {
         $items = $this->collectionModel::query()
-            ->with(['coverFileInfo:uuid,file_url,file_name'])
-            ->with(['examCategoryInfo:uuid,title'])
+            ->with(['image:uuid,file_url as url,file_name as name,file_hash as hash'])
+            ->with(['category:uuid as id,title'])
             ->where([['is_show', '=', 1]])
             ->where($closure)
-            ->select(['uuid', 'title', 'file_uuid', 'submit_number', 'author', 'exam_category_uuid'])
+            ->select(['uuid as id', 'title', 'file_uuid', 'submit_number', 'author', 'exam_category_uuid', "level"])
             ->orderByDesc('orders')
-            ->paginate((int)$perSize);
+            ->paginate($perSize);
 
         return [
             'items' => $items->items(),

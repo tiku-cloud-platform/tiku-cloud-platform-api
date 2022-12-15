@@ -6,7 +6,7 @@ namespace App\Controller\Api\User;
 use App\Controller\ApiBaseController;
 use App\Request\Api\User\Login\CodeValidate;
 use App\Service\Api\User\LoginService;
-use App\Service\Api\User\UserService;
+use App\Service\Api\User\UserInfoService;
 use EasyWeChat\Kernel\Exceptions\InvalidConfigException;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
@@ -17,9 +17,9 @@ use Psr\Http\Message\ResponseInterface;
  */
 class LoginController extends ApiBaseController
 {
-    public function __construct(UserService $userService)
+    public function __construct(LoginService $loginService)
     {
-        parent::__construct($userService);
+        parent::__construct($loginService);
     }
 
     /**

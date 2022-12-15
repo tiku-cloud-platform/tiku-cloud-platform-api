@@ -3,6 +3,8 @@ declare(strict_types = 1);
 
 namespace App\Model\Api;
 
+use Hyperf\Database\Model\Relations\BelongsTo;
+
 /**
  * 问答试题
  *
@@ -12,12 +14,16 @@ namespace App\Model\Api;
 class StoreExamReading extends \App\Model\Common\StoreExamReading
 {
     public $listSearchFields = [
-        'uuid',
+        'uuid as id',
         'title',
         'content',
     ];
 
-    public function relationCollection()
+    /**
+     * 试卷信息
+     * @return BelongsTo
+     */
+    public function relationCollection(): BelongsTo
     {
         return $this->belongsTo(StoreExamReadingCollectionRelation::class, 'uuid', 'exam_uuid');
     }
