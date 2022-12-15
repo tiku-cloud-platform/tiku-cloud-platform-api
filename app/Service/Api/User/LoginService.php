@@ -27,12 +27,12 @@ class LoginService implements ApiServiceInterface
     /**
      * 微信code授权
      * @param string $code
-     * @return array
+     * @return array[1 => "登录成功", 2 => "登录失败", 3 => "用户被禁用"]
      * @throws InvalidConfigException|RedisException
      */
-    public function serviceMiNiCodeAuth(string $code): array
+    public function serviceMiNiCodeAuth(array $requestParams): array
     {
-        $jsonCode = WeChatMiNi::getInstance()->auth->session($code);
+        $jsonCode = WeChatMiNi::getInstance()->auth->session($requestParams["code"]);
         $userInfo = $this->miniUserRepository->repositoryFind(function ($query) use ($jsonCode) {
             $query->where("openid", "=", $jsonCode["openid"]);
         });
@@ -41,12 +41,19 @@ class LoginService implements ApiServiceInterface
             $insertUser = $this->miniUserRepository->repositoryCreate([
                 "openid" => $jsonCode["openid"],
                 "user_uuid" => UUID::getUUID(),
+                "device" => $requestParams["device"] ?? [],
             ]);
             if ($insertUser) {
                 $userInfo = $this->miniUserRepository->repositoryFind(function ($query) use ($jsonCode) {
                     $query->where("openid", "=", $jsonCode["openid"]);
                 });
+                if (empty($userInfo)) {
+                    return ["code" => 2];
+                }
             }
+        }
+        if ($userInfo["is_forbidden"] === 1) {
+            return ["code" => 3];
         }
         $loginToken  = UUID::getUUID();
         $cacheResult = $this->setLoginCache($loginToken, $userInfo);

@@ -1,11 +1,12 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Repository\Api\User;
 
 
 use App\Mapping\Request\RequestApp;
 use App\Mapping\UUID;
+use App\Model\Api\StoreMiniUserDevice;
 use App\Model\Api\StoreMiNiWeChatUser;
 use App\Model\Api\StorePlatformUser;
 use App\Repository\ApiRepositoryInterface;
@@ -53,52 +54,71 @@ class WeChatApiRepository implements ApiRepositoryInterface
     public function repositoryCreate(array $insertInfo): bool
     {
         try {
-            Db::transaction(function () use ($insertInfo) {
+            $insertUserResult = false;
+            Db::transaction(function () use ($insertInfo, &$insertUserResult) {
                 // TODO 当前只做微信小程序端，只要小程序表中不存在都判定为是新用户。后续通过手机号作为系统唯一用户。
-                $storeUuid = (new RequestApp())->getStoreUuid();
-                $userModel = new StorePlatformUser();
-                $miniUserModel = new StoreMiNiWeChatUser();
-                $insertUser = $userModel::query()->create([
-                    'uuid',
-                    'real_name',
-                    'mobile',
+                $storeUuid      = (new RequestApp())->getStoreUuid();
+                $userModel      = new StorePlatformUser();
+                $miniUserModel  = new StoreMiNiWeChatUser();
+                $deviceModel    = new StoreMiniUserDevice();
+                $insertUser     = $userModel::query()->create([
+                    'uuid' => $insertInfo["user_uuid"],
+                    'real_name' => "未知用户",
                     'store_uuid' => $storeUuid,
-                    'user_uuid' => $insertInfo["user_uuid"],
                     'store_platform_user_group_uuid',
+                    "avatar_url" => "https://qiniucloud.qqdeveloper.com/avatar_tiku_cloud.png",
+                    "remark" => "这家伙很懒，什么都没留下...",
                     "channel_uuid",
+                    "gender" => 0,
+                    "email",
+                    "mobile",
                 ]);
+                $miniUserId     = UUID::getUUID();
                 $insertMiniUser = $miniUserModel::query()->create([
                     "openid" => $insertInfo["openid"],
-                    'uuid' => UUID::getUUID(),
+                    'uuid' => $miniUserId,
                     'user_uuid' => $insertInfo["user_uuid"],
                     'store_uuid' => $storeUuid,
-                    'nickname' => "小白",
-                    'avatar_url' => "",
-                    'gender',
-                    'country',
-                    'province',
-                    'city',
-                    'is_forbidden',
-                    'language',
-                    'real_name',
-                    'mobile',
-                    'address',
-                    'longitude',
-                    'latitude',
-                    'district',
-                    'birthday',
-                    'is_show',
-                    "channel_uuid",
+                    'nickname' => "未知用户",
+                    'avatar_url' => "https://qiniucloud.qqdeveloper.com/avatar_tiku_cloud.png",
+                    'gender' => 0,
+                    'is_forbidden' => 2,
+                    'language' => "zh-Cn",
+                ]);
+                $deviceModel::query()->create([
+                    "uuid" => UUID::getUUID(),
+                    "store_uuid" => $storeUuid,
+                    "mini_user_uuid" => $miniUserId,
+                    "device_type" => $insertInfo["device"]["deviceType"] ?? "",
+                    "device_brand" => $insertInfo["device"]["deviceBrand"] ?? "",
+                    "device_model" => $insertInfo["device"]["deviceModel"] ?? "",
+                    "os_name" => $insertInfo["device"]["osName"] ?? "",
+                    "os_version" => $insertInfo["device"]["osVersion"] ?? "",
+                    "os_language" => $insertInfo["device"]["language"] ?? "",
+                    "os_theme" => $insertInfo["device"]["osTheme"] ?? "",
+                    "uni_platform" => $insertInfo["device"]["uniPlatform"] ?? "",
+                    "uni_compile_version" => $insertInfo["device"]["uniCompileVersion"] ?? "",
+                    "uni_runtime_version" => $insertInfo["device"]["uniRuntimeVersion"] ?? "",
+                    "app_id" => $insertInfo["device"]["appId"] ?? "",
+                    "app_name" => $insertInfo["device"]["appName"] ?? "",
+                    "app_version" => $insertInfo["device"]["appVersion"] ?? "",
+                    "app_version_code" => $insertInfo["device"]["appVersionCode"] ?? "",
+                    "app_wgt_version" => $insertInfo["device"]["appWgtVersion"] ?? "",
+                    "app_language" => $insertInfo["device"]["appLanguage"] ?? "",
+                    "ua" => $insertInfo["device"]["ua"] ?? "",
+                    "rom_name" => $insertInfo["device"]["romName"] ?? "",
+                    "rom_version" => $insertInfo["device"]["romVersion"] ?? "",
+                    "sdk_version" => $insertInfo["device"]["SDKVersion"] ?? "",
                 ]);
                 if ($insertUser && $insertMiniUser) {
-                    return true;
+                    $insertUserResult = true;
                 }
-                return false;
             }, 2);
         } catch (Throwable $throwable) {
             // record register error log
-            return false;
+            var_dump($throwable->getMessage());
         }
+        return $insertUserResult;
     }
 
     /**

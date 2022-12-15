@@ -6,10 +6,9 @@ namespace App\Controller\Api\User;
 use App\Controller\ApiBaseController;
 use App\Request\Api\User\Login\CodeValidate;
 use App\Service\Api\User\LoginService;
-use App\Service\Api\User\UserInfoService;
 use EasyWeChat\Kernel\Exceptions\InvalidConfigException;
 use Hyperf\HttpServer\Annotation\Controller;
-use Hyperf\HttpServer\Annotation\GetMapping;
+use Hyperf\HttpServer\Annotation\PostMapping;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -24,14 +23,14 @@ class LoginController extends ApiBaseController
 
     /**
      * 微信code换取信息
-     * @GetMapping(path="wechat_code")
+     * @PostMapping(path="wechat_code")
      * @param CodeValidate $codeValidate
      * @return ResponseInterface
      * @throws InvalidConfigException
      */
     public function code(CodeValidate $codeValidate): ResponseInterface
     {
-        $userInfo = (new LoginService())->serviceMiNiCodeAuth($this->request->all()["code"]);
+        $userInfo = (new LoginService())->serviceMiNiCodeAuth($this->request->all());
         return $this->httpResponse->success($userInfo);
     }
 }

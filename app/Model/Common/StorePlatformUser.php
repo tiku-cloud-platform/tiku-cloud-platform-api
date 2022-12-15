@@ -31,6 +31,12 @@ class StorePlatformUser extends BaseModel
         'user_uuid',
         'is_show',
         'store_platform_user_group_uuid',
+        "remark",
+        "channel_uuid",
+        "birthday",
+        "gender",
+        "email",
+        "password",
     ];
 
     // 真实姓名
