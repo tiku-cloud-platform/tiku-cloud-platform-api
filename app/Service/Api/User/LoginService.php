@@ -36,11 +36,12 @@ class LoginService implements ApiServiceInterface
         $userInfo = $this->miniUserRepository->repositoryFind(function ($query) use ($jsonCode) {
             $query->where("openid", "=", $jsonCode["openid"]);
         });
+        $userId   = UUID::getUUID();
         // 不存在则创建（提前生成用户uuid，当返回值为true时，表示用户创建成功，则把改uuid插入队列，方便队列对该用户增加额外的业务操作）。
         if (empty($userInfo)) {
             $insertUser = $this->miniUserRepository->repositoryCreate([
                 "openid" => $jsonCode["openid"],
-                "user_uuid" => UUID::getUUID(),
+                "user_uuid" => $userId,
                 "device" => $requestParams["device"] ?? [],
             ]);
             if ($insertUser) {
@@ -56,9 +57,10 @@ class LoginService implements ApiServiceInterface
             return ["code" => 3];
         }
         $loginToken  = UUID::getUUID();
-        $cacheResult = $this->setLoginCache($loginToken, $userInfo);
+        $cacheResult = $this->setLoginCache(CacheKey::MINI_LOGIN_TOKEN . $loginToken, $userInfo);
         if ($cacheResult) {
             return array_merge([
+                "user_uuid" => $userId,
                 "avatar_url" => $userInfo["avatar_url"],
                 "nickname" => $userInfo["nickname"],
                 "gender" => $userInfo["gender"],

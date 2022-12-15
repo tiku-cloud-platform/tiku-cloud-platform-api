@@ -25,7 +25,7 @@ class CodeValidate extends FormRequest
     public function messages(): array
     {
         return [
-            "code.required" => "code不能为空"
+            "code.required" => "登录code不能为空"
         ];
     }
 }

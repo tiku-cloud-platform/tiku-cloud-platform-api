@@ -11,9 +11,9 @@ use Hyperf\Di\Annotation\Inject;
  * 平台用户
  *
  * Class StorePlatformApiRepository
- * @package App\Repository\Api\Api
+ * @package App\Repository\Api\User
  */
-class StorePlatformApiRepository implements ApiRepositoryInterface
+class PlatformUserRepository implements ApiRepositoryInterface
 {
     /**
      * @Inject()
