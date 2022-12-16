@@ -64,6 +64,8 @@ class LoginService implements ApiServiceInterface
                 "avatar_url" => $userInfo["avatar_url"],
                 "nickname" => $userInfo["nickname"],
                 "gender" => $userInfo["gender"],
+                "level_title" => "普通会员",
+                "level_uuid" => "xxxxxx",
             ], ["code" => 1, "login_token" => $loginToken]);
         }
         return ["code" => 2];

@@ -41,7 +41,7 @@ class ReadingController extends ApiBaseController
     }
 
     /**
-     * @GetMapping(path="show")
+     * @GetMapping(path="detail")
      * @return ResponseInterface
      */
     public function show()
