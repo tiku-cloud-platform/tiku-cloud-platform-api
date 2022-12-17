@@ -108,8 +108,8 @@ class ArticleService implements ApiServiceInterface
     {
         $bean = $this->articleRepository->repositoryFind(self::searchWhere($requestParams));
         if (empty($bean['is_read'])) {
-            $this->articleRepository->repositoryUpdateReadNumber((string)$requestParams['uuid']);
-            (new ReadClickService())->serviceCreate(['article_uuid' => $requestParams['uuid'], 'type' => 2]);
+            $this->articleRepository->repositoryUpdateReadNumber((string)$requestParams['uid']);
+            (new ReadClickService())->serviceCreate(['article_uuid' => $requestParams['uid'], 'type' => 2]);
         }
 
         return $bean;
