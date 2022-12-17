@@ -135,9 +135,9 @@ class ArticleRepository implements ApiRepositoryInterface
      */
     public function repositoryUpdateReadNumber(string $uuid): int
     {
-        return $this->articleModel->fieldIncr((string)$this->articleModel->getTable(),
-            (array)[['uuid', '=', $uuid]],
-            (string)'read_number', (int)1);
+        return $this->articleModel->fieldIncr($this->articleModel->getTable(),
+            [['uuid', '=', $uuid]],
+            'read_number', 1);
     }
 
     /**
@@ -149,8 +149,8 @@ class ArticleRepository implements ApiRepositoryInterface
      */
     public function repositoryUpdateClickNumber(string $uuid): int
     {
-        return $this->articleModel->fieldIncr((string)$this->articleModel->getTable(),
-            (array)[['uuid', '=', $uuid]],
-            (string)'click_number', (int)1);
+        return $this->articleModel->fieldIncr($this->articleModel->getTable(),
+            [['uuid', '=', $uuid]],
+            'click_number', 1);
     }
 }
