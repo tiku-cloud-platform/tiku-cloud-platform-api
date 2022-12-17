@@ -20,7 +20,7 @@ class StoreArticle extends \App\Model\Common\StoreArticle
      * @var array
      */
     public $searchFields = [
-        'uuid',
+        'uuid as uid',
         'article_category_uuid as category_uid',
         'title',
         'file_uuid',
