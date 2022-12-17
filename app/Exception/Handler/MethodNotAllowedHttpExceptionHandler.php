@@ -4,9 +4,6 @@ declare(strict_types = 1);
 namespace App\Exception\Handler;
 
 use App\Constants\ErrorCode;
-use App\Constants\LogKey;
-use App\Mapping\DataFormatter;
-use App\Services\Log\LogServiceFactory;
 use Hyperf\ExceptionHandler\ExceptionHandler;
 use Hyperf\HttpMessage\Exception\MethodNotAllowedHttpException;
 use Hyperf\HttpMessage\Stream\SwooleStream;
@@ -34,15 +31,6 @@ class MethodNotAllowedHttpExceptionHandler extends ExceptionHandler
                 'code' => empty($throwable->getCode()) ? ErrorCode::REQUEST_ERROR : $throwable->getCode(),
                 'message' => '请求方法不被允许',
                 'data' => [],
-            ]);
-            (new LogServiceFactory())->recordLog((string)LogKey::HTTP_METHOD_ERROR_LOG, (array)[
-                'app_error_msg' => $throwable->getMessage(),
-                'app_error_file' => $throwable->getFile(),
-                'app_error_line' => $throwable->getLine(),
-                'request_url' => $this->request->fullUrl(),
-                'request_real_ip' => DataFormatter::getClientIp((array)$this->request->getServerParams()),
-                'request_method' => $this->request->getMethod(),
-                'request_data' => json_encode($this->request->all(), JSON_UNESCAPED_UNICODE),
             ]);
             $this->stopPropagation();
             return $response->withStatus(405)->withBody(new SwooleStream($data));

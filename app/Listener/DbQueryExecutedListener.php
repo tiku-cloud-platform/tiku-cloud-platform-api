@@ -1,19 +1,10 @@
 <?php
+declare(strict_types = 1);
 
-declare(strict_types=1);
-/**
- * This file is part of api.
- *
- * @link     https://www.qqdeveloper.io
- * @document https://www.qqdeveloper.wiki
- * @contact  2665274677@qq.com
- * @license  Apache2.0
- */
 
 namespace App\Listener;
 
 use App\Constants\LogKey;
-use App\Services\Log\LogServiceFactory;
 use Hyperf\Database\Events\QueryExecuted;
 use Hyperf\Event\Annotation\Listener;
 use Hyperf\Event\Contract\ListenerInterface;
@@ -57,11 +48,6 @@ class DbQueryExecutedListener implements ListenerInterface
                     $sql = Str::replaceFirst('?', "'{$value}'", $sql);
                 }
             }
-            (new LogServiceFactory())->recordLog((string)LogKey::DB_QUERY_LOG, (array)[
-                'sql_exec_time' => $event->time,
-                'sql_exec_time_unit' => 'ms',
-                'sql' => $sql,
-            ]);
             $this->logger->info(sprintf('[%s] %s', $event->time, $sql));
         }
     }

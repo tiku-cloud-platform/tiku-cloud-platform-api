@@ -45,27 +45,26 @@ class ClientMiddleware implements MiddlewareInterface
         // 参数是否存在与参数是否合法
         $appIdSecret = $this->request->header('App', '');
         if (empty($appIdSecret)) {
-            return (new HttpDataResponse)->response('参数缺少');
+            return (new HttpDataResponse)->response('参数缺少', 0, [], 403);
         }
         $secretString = AesEncrypt::getInstance()->aesDecrypt($appIdSecret);
         if ($secretString === "") {
-            return (new HttpDataResponse)->response("解密失败");
+            return (new HttpDataResponse)->response("解密失败", 0, [], 403);
         }
         $configArray = json_decode($secretString, true);
-        var_dump($configArray);
         if (empty($configArray)) {
             return (new HttpDataResponse)->response('参数不正确');
         }
         if (!in_array($configArray["client"], ["wechat_miniprogram", "wechat_office_count", "h5", "pc"])) {
-            return (new HttpDataResponse)->response('客户端不存在');
+            return (new HttpDataResponse)->response('客户端不存在', 0, [], 403);
         }
         // 参数是否正确
         $cacheConfig = RedisClient::getInstance()->hGetAll(CacheKey::STORE_DEVEL_CONFIG . (new RequestApp())->getStoreUuid());
         if (empty($cacheConfig)) {
-            return (new HttpDataResponse)->response('参数不存在');
+            return (new HttpDataResponse)->response('参数不存在', 0, [], 403);
         }
-        if ($cacheConfig["app_id"] !== $configArray["appid"]) {
-            return (new HttpDataResponse)->response('appid错误');
+        if ($cacheConfig["appid"] !== $configArray["appid"]) {
+            return (new HttpDataResponse)->response('appid错误', 0, [], 403);
         }
 
         return $handler->handle($request);

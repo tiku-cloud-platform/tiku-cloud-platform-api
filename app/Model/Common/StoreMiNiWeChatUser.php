@@ -31,13 +31,13 @@ class StoreMiNiWeChatUser extends BaseModel
         'language',
         'real_name',
         'mobile',
-        'address',
         'longitude',
         'latitude',
         'district',
         'birthday',
         'is_show',
         "channel_uuid",
+        "login_token",
     ];
 
     /**

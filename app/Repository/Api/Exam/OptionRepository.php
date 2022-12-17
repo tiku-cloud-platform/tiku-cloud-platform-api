@@ -35,8 +35,8 @@ class OptionRepository implements ApiRepositoryInterface
     public function repositorySelect(\Closure $closure, int $perSize): array
     {
         $items = $this->optionModel::query()
-            ->with(['coverFileInfo:uuid,file_url,file_name'])
-            ->with(['optionItem:uuid,title,option_uuid,check,is_check'])
+            ->with(['image:uuid,file_url as url,file_name as name'])
+            ->with(['items:uuid as id,title,option_uuid as option_id,check,is_check'])
             ->whereHas('relationCollection', $closure)
             ->where([['is_show', '=', 1]])
             ->select($this->optionModel->listSearchFields)

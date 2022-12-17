@@ -1,14 +1,5 @@
 <?php
-
 declare(strict_types = 1);
-/**
- * This file is part of api.
- *
- * @link     https://www.qqdeveloper.io
- * @document https://www.qqdeveloper.wiki
- * @contact  2665274677@qq.com
- * @license  Apache2.0
- */
 
 namespace App\Middleware\Auth;
 
@@ -25,7 +16,6 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 /**
  * 用户授权中间件.
- *
  * Class UserAuthMiddleware
  */
 class UserAuthMiddleware implements MiddlewareInterface
@@ -48,16 +38,6 @@ class UserAuthMiddleware implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $userInfo = UserInfo::getWeChatUserInfo();
-
-        if (!empty($userInfo)) {
-            return $handler->handle($request);
-        }
-
-        return $this->httpResponse->response(
-            (string)ErrorCode::getMessage(ErrorCode::REQUEST_INVALID),
-            ErrorCode::REQUEST_INVALID,
-            [],
-            HttpCode::NO_AUTH);
+        return $handler->handle($request);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 /**
  * This file is part of api.
  *
@@ -13,6 +13,7 @@ declare(strict_types = 1);
 namespace App\Model\Common;
 
 use App\Model\BaseModel;
+use Hyperf\Database\Model\Relations\HasOne;
 
 /**
  * 微信用户
@@ -31,6 +32,12 @@ class StorePlatformUser extends BaseModel
         'user_uuid',
         'is_show',
         'store_platform_user_group_uuid',
+        "remark",
+        "channel_uuid",
+        "birthday",
+        "gender",
+        "email",
+        "password",
     ];
 
     // 真实姓名
@@ -43,5 +50,25 @@ class StorePlatformUser extends BaseModel
     public function getMobileAttribute($key)
     {
         return !empty($key) ? $key : '';
+    }
+
+    /**
+     * 会员信息
+     * @return HasOne
+     */
+    public function level(): HasOne
+    {
+        return $this->hasOne(StorePlatformUserGroup::class, "uuid",
+            "store_platform_user_group_uuid");
+    }
+
+    /**
+     * 微信小程序信息
+     * @return HasOne
+     */
+    public function mini(): HasOne
+    {
+        return $this->hasOne(StoreMiNiWeChatUser::class, "user_uuid",
+            "uuid");
     }
 }

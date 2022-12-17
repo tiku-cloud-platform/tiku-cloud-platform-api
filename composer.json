@@ -13,6 +13,7 @@
   "license": "Apache-2.0",
   "require": {
     "php": ">=7.3",
+    "ext-cassandra": "*",
     "ext-json": "*",
     "godruoyi/php-snowflake": "^1.1",
     "hyperf/cache": "^2.1",
@@ -35,8 +36,10 @@
     "hyperf/tracer": "~2.1.0",
     "hyperf/validation": "^2.1",
     "mongodb/mongodb": "^1.9",
+    "overtrue/wechat": "~5.0",
+    "predis/predis": "^2.0",
     "qiniu/php-sdk": "^7.4",
-    "ext-cassandra": "*"
+    "ext-redis": "*"
   },
   "require-dev": {
     "swoole/ide-helper": "^4.5",
@@ -50,8 +53,7 @@
     "ext-openssl": "Required to use HTTPS.",
     "ext-json": "Required to use JSON.",
     "ext-pdo": "Required to use MySQL Client.",
-    "ext-pdo_mysql": "Required to use MySQL Client.",
-    "ext-redis": "Required to use Redis Client."
+    "ext-pdo_mysql": "Required to use MySQL Client."
   },
   "autoload": {
     "psr-4": {
@@ -68,7 +70,10 @@
   "prefer-stable": true,
   "config": {
     "optimize-autoloader": true,
-    "sort-packages": true
+    "sort-packages": true,
+    "allow-plugins": {
+      "easywechat-composer/easywechat-composer": true
+    }
   },
   "extra": [],
   "scripts": {

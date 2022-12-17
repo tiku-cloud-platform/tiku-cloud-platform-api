@@ -15,7 +15,7 @@ class StorePlatformScore extends \App\Model\Common\StorePlatformScore
     public $searchFields = [
         'score',
         'title',
-        'uuid',
+        'uuid as id',
         'key',
     ];
 }

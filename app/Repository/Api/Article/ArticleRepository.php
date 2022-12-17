@@ -6,6 +6,7 @@ namespace App\Repository\Api\Article;
 
 use App\Model\Api\StoreArticle;
 use App\Repository\ApiRepositoryInterface;
+use Closure;
 use Hyperf\Di\Annotation\Inject;
 
 /**
@@ -32,21 +33,22 @@ class ArticleRepository implements ApiRepositoryInterface
      * @param int $perSize 分页大小
      * @return array
      */
-    public function repositorySelect(\Closure $closure, int $perSize): array
+    public function repositorySelect(Closure $closure, int $perSize): array
     {
         $items = $this->articleModel::query()
-            ->with(['coverFileInfo:uuid,file_url,file_name'])
+            ->with(['image:uuid,file_url as url,file_name as name,file_hash as hash'])
+            ->with(['category:uuid,title'])
             ->where([['is_show', '=', 1]])
             ->where($closure)
             ->select($this->articleModel->listSearchFields)
             ->orderByDesc('orders')
-            ->paginate((int)$perSize);
+            ->paginate($perSize);
 
         return [
             'items' => $items->items(),
             'total' => $items->total(),
-            'size'  => $items->perPage(),
-            'page'  => $items->currentPage(),
+            'size' => $items->perPage(),
+            'page' => $items->currentPage(),
         ];
     }
 
@@ -75,10 +77,11 @@ class ArticleRepository implements ApiRepositoryInterface
     /**
      * 单条数据查询
      */
-    public function repositoryFind(\Closure $closure): array
+    public function repositoryFind(Closure $closure): array
     {
         $bean = $this->articleModel::query()
-            ->with(['coverFileInfo:uuid,file_url,file_name'])
+            ->with(['image:uuid,file_url as url,file_name as name,file_hash as hash'])
+            ->with(['category:uuid,title'])
             ->where($closure)
             ->where([['is_show', '=', 1]])
             ->select($this->articleModel->searchFields)

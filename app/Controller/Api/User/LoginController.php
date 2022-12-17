@@ -4,54 +4,33 @@ declare(strict_types = 1);
 namespace App\Controller\Api\User;
 
 use App\Controller\ApiBaseController;
-use App\Service\Api\User\WeChatUserService;
+use App\Request\Api\User\Login\CodeValidate;
+use App\Service\Api\User\LoginService;
+use EasyWeChat\Kernel\Exceptions\InvalidConfigException;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\PostMapping;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * 用户登录
- *
- * @Controller(prefix="api/v1/user")
- * Class LoginController
- * @package App\Controller\Api\Api
+ * @Controller(prefix="api/user/login")
  */
 class LoginController extends ApiBaseController
 {
-    public function __construct(WeChatUserService $userService)
+    public function __construct(LoginService $loginService)
     {
-        $this->service = $userService;
-        parent::__construct($userService);
+        parent::__construct($loginService);
     }
 
     /**
-     * code和userInfo一并登录
-     *
-     * @PostMapping(path="wechat/login")
+     * 微信code换取信息
+     * @PostMapping(path="wechat_code")
+     * @param CodeValidate $codeValidate
      * @return ResponseInterface
+     * @throws InvalidConfigException
      */
-    public function weChatLogin()
+    public function code(CodeValidate $codeValidate): ResponseInterface
     {
-        $userInfo = $this->service->serviceWeChatLogin($this->request->all());
-        if ($userInfo['code'] == 0) {
-            return $this->httpResponse->success((array)$userInfo['data']);
-        }
-        return $this->httpResponse->error($userInfo);
-    }
-
-    /**
-     * 静默授权登录
-     *
-     * @PostMapping(path="wechat/quite/login")
-     * @return ResponseInterface
-     * @deprecated
-     */
-    public function quiteWeChatLogin()
-    {
-        $userInfo = $this->service->serviceQuiteWeChatLogin($this->request->all());
-        if ($userInfo['code'] == 0) {
-            return $this->httpResponse->success((array)$userInfo['data']);
-        }
-        return $this->httpResponse->error((array)$userInfo);
+        $userInfo = (new LoginService())->serviceMiNiCodeAuth($this->request->all());
+        return $this->httpResponse->success($userInfo);
     }
 }

@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 /**
  * 文章
  *
- * @Controller(prefix="api/v1/article")
+ * @Controller(prefix="api/article")
  * Class ArticleController
  * @package App\Controller\Api\Article
  */

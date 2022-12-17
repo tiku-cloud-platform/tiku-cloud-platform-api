@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace App\Controller\Api\Banner;
 
 use App\Controller\ApiBaseController;
+use App\Library\WeChat\WeChatMiNi;
 use App\Service\Api\Platform\BannerService;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;

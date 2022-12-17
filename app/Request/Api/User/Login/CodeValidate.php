@@ -1,16 +1,14 @@
 <?php
 declare(strict_types = 1);
 
-namespace App\Request\Store\Common;
+namespace App\Request\Api\User\Login;
 
 use Hyperf\Validation\Request\FormRequest;
 
 /**
- * 详情传递uuid验证
- *
- * Class UUIDValidate
+ * 微信登录code验证
  */
-class UUIDValidate extends FormRequest
+class CodeValidate extends FormRequest
 {
     public function authorize(): bool
     {
@@ -20,14 +18,14 @@ class UUIDValidate extends FormRequest
     public function rules(): array
     {
         return [
-            'uuid' => 'required',
+            "code" => "required",
         ];
     }
 
     public function messages(): array
     {
         return [
-            'uuid.required' => '数据编号不能为空',
+            "code.required" => "登录code不能为空"
         ];
     }
 }

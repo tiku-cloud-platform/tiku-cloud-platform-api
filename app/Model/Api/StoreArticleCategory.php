@@ -13,7 +13,7 @@ namespace App\Model\Api;
 class StoreArticleCategory extends \App\Model\Common\StoreArticleCategory
 {
     public $searchFields = [
-        'uuid',
+        'uuid as uid',
         'title',
         'file_uuid',
     ];

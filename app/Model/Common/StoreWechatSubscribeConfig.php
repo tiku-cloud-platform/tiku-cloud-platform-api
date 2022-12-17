@@ -37,11 +37,10 @@ class StoreWechatSubscribeConfig extends BaseModel
 
     /**
      * 图标封面
-     *
      * @return BelongsTo
      * @author kert
      */
-    public function coverFileInfo()
+    public function image()
     {
         return $this->belongsTo(StorePlatformFile::class, 'file_uuid', 'uuid');
     }

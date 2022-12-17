@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Service\Api\Exam;
 
@@ -39,11 +39,11 @@ class CollectionService implements ApiServiceInterface
             if (!empty($is_recommend)) {
                 $query->where('is_recommend', '=', 1);
             }
-            if (!empty($uuid)) {
-                $query->where('uuid', '=', $uuid);
+            if (!empty($id)) {
+                $query->where('uuid', '=', $id);
             }
-            if (!empty($categoryId)) {
-                $query->where('exam_category_uuid', '=', $categoryId);
+            if (!empty($category_id)) {
+                $query->where('exam_category_uuid', '=', $category_id);
             }
         };
     }
@@ -56,8 +56,13 @@ class CollectionService implements ApiServiceInterface
      */
     public function serviceSelect(array $requestParams): array
     {
-        return $this->collectionRepository->repositorySelect(self::searchWhere((array)$requestParams),
+        $items = $this->collectionRepository->repositorySelect(self::searchWhere((array)$requestParams),
             (int)$requestParams['size'] ?? 20);
+        foreach ($items["items"] as $item) {
+            $item->img = $item->image["url"] . $item->image["name"];
+            unset($item->image);
+        }
+        return $items;
     }
 
     /**
@@ -101,6 +106,9 @@ class CollectionService implements ApiServiceInterface
      */
     public function serviceFind(array $requestParams): array
     {
-        return $this->collectionRepository->repositoryFind(self::searchWhere((array)$requestParams));
+        $bean = $this->collectionRepository->repositoryFind(self::searchWhere($requestParams));
+        $bean["img"] = $bean["image"]["url"] . $bean["image"]["name"];
+        unset($bean["image"]);
+        return $bean;
     }
 }

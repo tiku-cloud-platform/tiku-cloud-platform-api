@@ -6,6 +6,7 @@ namespace App\Repository\Api\Article;
 
 use App\Model\Api\StoreArticleCategory;
 use App\Repository\ApiRepositoryInterface;
+use Closure;
 use Hyperf\Di\Annotation\Inject;
 
 /**
@@ -32,7 +33,7 @@ class CategoryRepository implements ApiRepositoryInterface
      * @param int $perSize 分页大小
      * @return array
      */
-    public function repositorySelect(\Closure $closure, int $perSize): array
+    public function repositorySelect(Closure $closure, int $perSize): array
     {
         $items = $this->categoryModel::query()
             ->with(['image:uuid,file_url as url,file_name as name,file_hash as hash'])
@@ -40,7 +41,7 @@ class CategoryRepository implements ApiRepositoryInterface
             ->where([['is_show', '=', 1]])
             ->select($this->categoryModel->searchFields)
             ->orderByDesc('orders')
-            ->paginate((int)$perSize);
+            ->paginate($perSize);
 
         return [
             'items' => $items->items(),
@@ -75,7 +76,7 @@ class CategoryRepository implements ApiRepositoryInterface
     /**
      * 单条数据查询
      */
-    public function repositoryFind(\Closure $closure): array
+    public function repositoryFind(Closure $closure): array
     {
         // TODO: Implement repositoryFind() method.
     }

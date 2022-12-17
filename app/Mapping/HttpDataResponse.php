@@ -72,6 +72,6 @@ class HttpDataResponse
             'code' => empty($code) ? ErrorCode::REQUEST_ERROR : $code,
             'message' => $message,
             'data' => $data,
-        ])->withStatus((int)$httpCode);
+        ])->withStatus($httpCode);
     }
 }

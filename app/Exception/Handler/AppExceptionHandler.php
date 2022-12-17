@@ -5,8 +5,6 @@ namespace App\Exception\Handler;
 
 use App\Constants\ErrorCode;
 use App\Constants\HttpCode;
-use App\Constants\LogKey;
-use App\Services\Log\LogServiceFactory;
 use Cassandra\Exception\ValidationException;
 use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\ExceptionHandler\ExceptionHandler;
@@ -38,12 +36,6 @@ class AppExceptionHandler extends ExceptionHandler
             'code' => ErrorCode::REQUEST_ERROR,
             'message' => env('APP_ENV') == 'dev' ? $throwable->getMessage() . $throwable->getFile() . $throwable->getLine() : ErrorCode::getMessage(ErrorCode::REQUEST_ERROR),
             'data' => [],
-        ]);
-        // 添加数据异常记录
-        (new LogServiceFactory())->recordLog((string)LogKey::APP_ERROR_LOG, (array)[
-            'app_error_msg' => $throwable->getMessage(),
-            'app_error_file' => $throwable->getFile(),
-            'app_error_line' => $throwable->getLine(),
         ]);
         return $response->withStatus(HttpCode::SERVER_ERROR)->withBody(new SwooleStream($data));
     }

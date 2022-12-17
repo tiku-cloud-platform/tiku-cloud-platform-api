@@ -3,11 +3,8 @@ declare(strict_types = 1);
 
 namespace App\Model\Api;
 
-use App\Mapping\UserInfo;
-
 /**
  * 微信订阅消息
- *
  * Class StoreWechatSubscribeConfig
  * @package App\Model\Api
  */
@@ -20,20 +17,16 @@ class StoreWechatSubscribeConfig extends \App\Model\Common\StoreWechatSubscribeC
         'file_uuid',
     ];
 
-    protected $appends = [
-        'config_number'// 剩余提醒次数
+    protected $hidden = [
+        "file_uuid",
     ];
 
-    public function getConfigNumberAttribute($key)
-    {
-        $userInfo = UserInfo::getWeChatUserInfo();
-        if (!empty($userInfo)) {
-            return StoreWechatUserSubscribe::query()
-                ->where('user_uuid', '=', $userInfo['user_uuid'])
-                ->where('template_config_uuid', '=', $this->attributes['uuid'])
-                ->count();
-        }
+    protected $appends = [
+        'subscribe_number'// 剩余提醒次数
+    ];
 
+    public function getSubscribeNumberAttribute($key)
+    {
         return 0;
     }
 }

@@ -24,13 +24,9 @@ class StoreMiNiWeChatUser extends \App\Model\Common\StoreMiNiWeChatUser
         'city',
         'is_forbidden',
         'language',
-        'real_name',
-        'mobile',
-        'address',
         'longitude',
         'latitude',
         'district',
-        'birthday',
         'store_uuid',
         'user_uuid',
         'created_at',
@@ -38,7 +34,6 @@ class StoreMiNiWeChatUser extends \App\Model\Common\StoreMiNiWeChatUser
 
     /**
      * 主账号
-     *
      * @return BelongsTo
      */
     public function user(): BelongsTo

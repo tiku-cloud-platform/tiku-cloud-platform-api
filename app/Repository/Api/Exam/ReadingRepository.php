@@ -5,11 +5,11 @@ namespace App\Repository\Api\Exam;
 
 use App\Model\Api\StoreExamReading;
 use App\Repository\ApiRepositoryInterface;
+use Closure;
 use Hyperf\Di\Annotation\Inject;
 
 /**
  * 问答试题
- *
  * Class ReadingRepository
  * @package App\Repository\Api\Exam
  */
@@ -23,18 +23,17 @@ class ReadingRepository implements ApiRepositoryInterface
 
     /**
      * 查询数据
-     *
-     * @param \Closure $closure
+     * @param Closure $closure
      * @param int $perSize 分页大小
      * @return array
      */
-    public function repositorySelect(\Closure $closure, int $perSize): array
+    public function repositorySelect(Closure $closure, int $perSize): array
     {
         $items = $this->readingModel::query()
             ->whereHas('relationCollection', $closure)
             ->where([['is_show', '=', 1]])
             ->select($this->readingModel->listSearchFields)
-            ->paginate((int)$perSize);
+            ->paginate($perSize);
 
         return [
             'items' => $items->items(),
@@ -68,15 +67,15 @@ class ReadingRepository implements ApiRepositoryInterface
 
     /**
      * 单条数据查询
-     * @param \Closure $closure
+     * @param Closure $closure
      * @return array
      */
-    public function repositoryFind(\Closure $closure): array
+    public function repositoryFind(Closure $closure): array
     {
         $bean = $this->readingModel::query()
             ->where($closure)
             ->where([['is_show', '=', 1]])
-            ->first(['uuid', 'title', 'content']);
+            ->first(['uuid as id', 'title', 'content']);
         if (!empty($bean)) return $bean->toArray();
         return [];
     }

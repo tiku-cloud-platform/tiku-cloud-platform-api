@@ -1,30 +1,26 @@
 <?php
 declare(strict_types = 1);
 
-namespace App\Repository\Api\Subscribe;
+namespace App\Repository\Api\User;
 
-use App\Model\Api\StoreWechatSubscribeConfig;
+use App\Model\Api\StorePlatformUser;
 use App\Repository\ApiRepositoryInterface;
 use Closure;
 use Hyperf\Di\Annotation\Inject;
 
 /**
- * 微信订阅消息
+ * 平台用户
  *
- * Class ConfigRepository
- * @package App\Repository\Api\Subscribe
+ * Class StorePlatformApiRepository
+ * @package App\Repository\Api\User
  */
-class ConfigRepository implements ApiRepositoryInterface
+class PlatformUserRepository implements ApiRepositoryInterface
 {
     /**
      * @Inject()
-     * @var StoreWechatSubscribeConfig
+     * @var StorePlatformUser
      */
-    protected $configModel;
-
-    public function __construct()
-    {
-    }
+    protected $userModel;
 
     /**
      * 查询数据
@@ -35,19 +31,7 @@ class ConfigRepository implements ApiRepositoryInterface
      */
     public function repositorySelect(Closure $closure, int $perSize): array
     {
-        $items = $this->configModel::query()
-            ->with(['image:uuid,file_url as url,file_name as name,file_hash as hash'])
-            ->where($closure)
-            ->select($this->configModel->searchFields)
-            ->orderByDesc('id')
-            ->paginate($perSize);
-
-        return [
-            'items' => $items->items(),
-            'total' => $items->total(),
-            'size' => $items->perPage(),
-            'page' => $items->currentPage(),
-        ];
+        // TODO: Implement repositorySelect() method.
     }
 
     /**
@@ -58,7 +42,8 @@ class ConfigRepository implements ApiRepositoryInterface
      */
     public function repositoryCreate(array $insertInfo): bool
     {
-        // TODO: Implement repositoryCreate() method.
+        if ($this->userModel::query()->create($insertInfo)) return true;
+        return false;
     }
 
     /**
@@ -79,7 +64,10 @@ class ConfigRepository implements ApiRepositoryInterface
      */
     public function repositoryFind(Closure $closure): array
     {
-        // TODO: Implement repositoryFind() method.
+        $this->userModel::query()
+            ->with(["level:uuid,title"])
+            ->with(["mini:*"])
+            ->where($closure)->first();
     }
 
     /**
@@ -91,7 +79,7 @@ class ConfigRepository implements ApiRepositoryInterface
      */
     public function repositoryUpdate(array $updateWhere, array $updateInfo): int
     {
-        // TODO: Implement repositoryUpdate() method.
+        return $this->userModel::query()->where($updateWhere)->update($updateInfo);
     }
 
     /**
