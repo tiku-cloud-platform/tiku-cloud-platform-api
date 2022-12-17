@@ -5,6 +5,7 @@ namespace App\Repository\Api\User;
 
 use App\Model\Api\StorePlatformUser;
 use App\Repository\ApiRepositoryInterface;
+use Closure;
 use Hyperf\Di\Annotation\Inject;
 
 /**
@@ -24,11 +25,11 @@ class PlatformUserRepository implements ApiRepositoryInterface
     /**
      * 查询数据
      *
-     * @param \Closure $closure
+     * @param Closure $closure
      * @param int $perSize 分页大小
      * @return array
      */
-    public function repositorySelect(\Closure $closure, int $perSize): array
+    public function repositorySelect(Closure $closure, int $perSize): array
     {
         // TODO: Implement repositorySelect() method.
     }
@@ -58,12 +59,15 @@ class PlatformUserRepository implements ApiRepositoryInterface
 
     /**
      * 单条数据查询
-     * @param \Closure $closure
+     * @param Closure $closure
      * @return array
      */
-    public function repositoryFind(\Closure $closure): array
+    public function repositoryFind(Closure $closure): array
     {
-        // TODO: Implement repositoryFind() method.
+        $this->userModel::query()
+            ->with(["level:uuid,title"])
+            ->with(["mini:*"])
+            ->where($closure)->first();
     }
 
     /**
