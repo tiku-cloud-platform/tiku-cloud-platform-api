@@ -40,7 +40,7 @@ class ArticleController extends ApiBaseController
     }
 
     /**
-     * @GetMapping(path="show")
+     * @GetMapping(path="detail")
      * @param UUIDValidate $validate
      * @return ResponseInterface
      */
