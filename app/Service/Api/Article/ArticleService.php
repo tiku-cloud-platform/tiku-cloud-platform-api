@@ -35,11 +35,11 @@ class ArticleService implements ApiServiceInterface
     {
         return function ($query) use ($requestParams) {
             extract($requestParams);
-            if (!empty($uuid)) {
-                $query->where('uuid', '=', $uuid);
+            if (!empty($uid)) {
+                $query->where('uuid', '=', $uid);
             }
-            if (!empty($article_category_uuid)) {
-                $query->where('article_category_uuid', '=', $article_category_uuid);
+            if (!empty($category_uid)) {
+                $query->where('article_category_uuid', '=', $category_uid);
             }
             if (!empty($is_top)) {
                 $query->where('is_top', '=', 1);
@@ -55,8 +55,14 @@ class ArticleService implements ApiServiceInterface
      */
     public function serviceSelect(array $requestParams): array
     {
-        return $this->articleRepository->repositorySelect(self::searchWhere((array)$requestParams),
+        $items = $this->articleRepository->repositorySelect(self::searchWhere((array)$requestParams),
             (int)$requestParams['size'] ?? 20);
+
+        foreach ($items["items"] as $item) {
+            $item->img = $item->image["url"] . $item->image["name"];
+            unset($item->image);
+        }
+        return $items;
     }
 
     /**
