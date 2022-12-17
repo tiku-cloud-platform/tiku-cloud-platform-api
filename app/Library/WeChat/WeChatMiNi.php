@@ -31,7 +31,9 @@ class WeChatMiNi
         $redisConfig = config("redis")["default"];
         $url         = "tcp://{$redisConfig['host']}:{$redisConfig['port']}";
         $redis       = new Client($url);
-        $redis->auth($redisConfig["auth"]);
+        if (!empty($redisConfig["auth"])) {
+            $redis->auth($redisConfig["auth"]);
+        }
         $cache = new RedisAdapter($redis);
 
         $app = Factory::miniProgram($config);
