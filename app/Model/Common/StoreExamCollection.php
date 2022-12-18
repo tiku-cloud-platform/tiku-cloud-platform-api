@@ -84,14 +84,14 @@ class StoreExamCollection extends BaseModel
         return $this->belongsTo(StorePlatformFile::class, 'file_uuid', 'uuid');
     }
 
-    public function collectionType(): BelongsTo
-    {
-        return $this->belongsTo(StoreExamCategory::class, 'exam_category_uuid', 'uuid');
-    }
+//    public function collectionType(): BelongsTo
+//    {
+//        return $this->belongsTo(StoreExamCategory::class, 'exam_category_uuid', 'uuid');
+//    }
 
     public function category(): BelongsTo
     {
-        return $this->belongsTo(StoreExamCategory::class, 'exam_category_uuid', 'uuid');
+        return $this->belongsTo(StoreExamCategory::class, 'exam_category_uuid', 'uid');
     }
 
     public function getAuditAuthorAttribute($key): string
