@@ -36,8 +36,8 @@ class ContentService implements ApiServiceInterface
     {
         return function ($query) use ($requestParams) {
             extract($requestParams);
-            if (!empty($position)) {
-                $query->where('position', '=', $position);
+            if (!empty($uid)) {
+                $query->where('uuid', '=', $uid);
             }
         };
     }

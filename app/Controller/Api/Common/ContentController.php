@@ -27,11 +27,10 @@ class ContentController extends ApiBaseController
     }
 
     /**
-     * @GetMapping(path="show")
-     * @param PositionValidate $validate
+     * @GetMapping(path="detail")
      * @return ResponseInterface
      */
-    public function show(PositionValidate $validate)
+    public function show(): ResponseInterface
     {
         $bean = $this->service->serviceFind($this->request->all());
         return $this->httpResponse->success($bean);
