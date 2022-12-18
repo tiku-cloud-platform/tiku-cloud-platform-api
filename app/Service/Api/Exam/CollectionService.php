@@ -56,7 +56,7 @@ class CollectionService implements ApiServiceInterface
      */
     public function serviceSelect(array $requestParams): array
     {
-        $items = $this->collectionRepository->repositorySelect(self::searchWhere((array)$requestParams),
+        $items = $this->collectionRepository->repositorySelect(self::searchWhere($requestParams),
             (int)$requestParams['size'] ?? 20);
         foreach ($items["items"] as $item) {
             $item->img = $item->image["url"] . $item->image["name"];

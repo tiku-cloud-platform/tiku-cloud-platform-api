@@ -116,7 +116,7 @@ class CategoryService implements ApiServiceInterface
         $tree = [];
         foreach ($info as $value) {
             if ($value['parent_uuid'] == $pid) {
-                $value['children'] = self::recursionData($info, (string)$value['uuid']);
+                $value['children'] = self::recursionData($info, (string)$value['uid']);
                 if ($value['children'] == null) {
                     unset($value['children']);
                 }
