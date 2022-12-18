@@ -91,7 +91,7 @@ class StoreExamCollection extends BaseModel
 
     public function category(): BelongsTo
     {
-        return $this->belongsTo(StoreExamCategory::class, 'exam_category_uuid', 'uid');
+        return $this->belongsTo(StoreExamCategory::class, 'exam_category_uuid', 'uuid');
     }
 
     public function getAuditAuthorAttribute($key): string
@@ -159,7 +159,7 @@ class StoreExamCollection extends BaseModel
     {
         $score = Db::table('store_exam_collection_relation')
             ->join('store_exam_option', 'store_exam_collection_relation.exam_uuid', '=', 'store_exam_option.uuid')
-            ->where('store_exam_collection_relation.exam_collection_uuid', '=', $this->attributes['uuid'])
+            ->where('store_exam_collection_relation.exam_collection_uuid', '=', $this->attributes['uid'])
             ->whereNull('store_exam_collection_relation.deleted_at')
             ->whereNull('store_exam_option.deleted_at')
             ->sum('answer_income_score');
@@ -171,7 +171,7 @@ class StoreExamCollection extends BaseModel
     {
         $score = Db::table('store_exam_reading_collection_relation')
             ->join('store_exam_reading', 'store_exam_reading_collection_relation.exam_uuid', '=', 'store_exam_reading.uuid')
-            ->where('store_exam_reading_collection_relation.collection_uuid', '=', $this->attributes['uuid'])
+            ->where('store_exam_reading_collection_relation.collection_uuid', '=', $this->attributes['uid'])
             ->whereNull('store_exam_reading_collection_relation.deleted_at')
             ->whereNull('store_exam_reading.deleted_at')
             ->sum('answer_income_score');
@@ -183,7 +183,7 @@ class StoreExamCollection extends BaseModel
     {
         $score = Db::table('store_exam_jude_collection_relation')
             ->join('store_exam_judge_option', 'store_exam_jude_collection_relation.exam_uuid', '=', 'store_exam_judge_option.uuid')
-            ->where('store_exam_jude_collection_relation.collection_uuid', '=', $this->attributes['uuid'])
+            ->where('store_exam_jude_collection_relation.collection_uuid', '=', $this->attributes['uid'])
             ->whereNull('store_exam_jude_collection_relation.deleted_at')
             ->whereNull('store_exam_judge_option.deleted_at')
             ->sum('answer_income_score');

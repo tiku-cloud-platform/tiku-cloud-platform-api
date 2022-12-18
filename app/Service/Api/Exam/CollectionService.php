@@ -61,7 +61,12 @@ class CollectionService implements ApiServiceInterface
         foreach ($items["items"] as $item) {
             $item->img          = $item->image["url"] . $item->image["name"];
             $item->category_uid = $item->exam_category_uuid;
-            unset($item->image);
+            $item->uid          = $item->uuid;
+            $item->publish_time = date("Y-m-d", strtotime((string)$item->created_at));
+            $item->cate         = [
+                "title" => $item->category->title,
+            ];
+            unset($item->image, $item->uuid, $item->category);
         }
         return $items;
     }
@@ -109,8 +114,13 @@ class CollectionService implements ApiServiceInterface
     {
         $bean                 = $this->collectionRepository->repositoryFind(self::searchWhere($requestParams));
         $bean["img"]          = $bean["image"]["url"] . $bean["image"]["name"];
+        $bean["uid"]          = $bean["uuid"];
         $bean["category_uid"] = $bean["exam_category_uuid"];
-        unset($bean["image"]);
+        $bean["publish_time"] = date("Y-m-d", strtotime((string)$bean["created_at"]));
+        $bean["cate"]         = [
+            "title" => $bean["category"]["title"]
+        ];
+        unset($bean["image"], $bean["uuid"], $bean["category"]);
         return $bean;
     }
 }
