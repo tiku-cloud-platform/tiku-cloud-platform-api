@@ -6,6 +6,7 @@ namespace App\Repository\Api\Exam;
 
 use App\Model\Api\StoreExamCollection;
 use App\Repository\ApiRepositoryInterface;
+use Closure;
 use Hyperf\Di\Annotation\Inject;
 
 /**
@@ -32,7 +33,7 @@ class CollectionRepository implements ApiRepositoryInterface
      * @param int $perSize 分页大小
      * @return array
      */
-    public function repositorySelect(\Closure $closure, int $perSize): array
+    public function repositorySelect(Closure $closure, int $perSize): array
     {
         $items = $this->collectionModel::query()
             ->with(['image:uuid,file_url as url,file_name as name,file_hash as hash'])
@@ -75,10 +76,10 @@ class CollectionRepository implements ApiRepositoryInterface
 
     /**
      * 单条数据查询
-     * @param \Closure $closure
+     * @param Closure $closure
      * @return array
      */
-    public function repositoryFind(\Closure $closure): array
+    public function repositoryFind(Closure $closure): array
     {
         $bean = $this->collectionModel::query()
             ->with(['image:uuid,file_url as url,file_name as name,file_hash as hash'])

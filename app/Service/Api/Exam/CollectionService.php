@@ -59,7 +59,8 @@ class CollectionService implements ApiServiceInterface
         $items = $this->collectionRepository->repositorySelect(self::searchWhere($requestParams),
             (int)$requestParams['size'] ?? 20);
         foreach ($items["items"] as $item) {
-            $item->img = $item->image["url"] . $item->image["name"];
+            $item->img          = $item->image["url"] . $item->image["name"];
+            $item->category_uid = $item->exam_category_uuid;
             unset($item->image);
         }
         return $items;
@@ -106,8 +107,9 @@ class CollectionService implements ApiServiceInterface
      */
     public function serviceFind(array $requestParams): array
     {
-        $bean        = $this->collectionRepository->repositoryFind(self::searchWhere($requestParams));
-        $bean["img"] = $bean["image"]["url"] . $bean["image"]["name"];
+        $bean                 = $this->collectionRepository->repositoryFind(self::searchWhere($requestParams));
+        $bean["img"]          = $bean["image"]["url"] . $bean["image"]["name"];
+        $bean["category_uid"] = $bean["exam_category_uuid"];
         unset($bean["image"]);
         return $bean;
     }
