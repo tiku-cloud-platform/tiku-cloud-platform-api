@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Model\Common;
 
@@ -137,21 +137,21 @@ class StoreExamCollection extends BaseModel
     public function getOptionSumAttribute(): int
     {
         return (new StoreExamCollectionRelation())::query()
-            ->where('exam_collection_uuid', '=', $this->attributes['uuid'])
+            ->where('exam_collection_uuid', '=', $this->attributes['uid'])
             ->count(['id']);
     }
 
     public function getReadingSumAttribute(): int
     {
         return (new StoreExamReadingCollectionRelation())::query()
-            ->where('collection_uuid', '=', $this->attributes['uuid'])
+            ->where('collection_uuid', '=', $this->attributes['uid'])
             ->count(['id']);
     }
 
     public function getJudeSumAttribute(): int
     {
         return (new StoreExamJudeCollectionRelation())::query()
-            ->where('collection_uuid', '=', $this->attributes['uuid'])
+            ->where('collection_uuid', '=', $this->attributes['uid'])
             ->count(['id']);
     }
 
