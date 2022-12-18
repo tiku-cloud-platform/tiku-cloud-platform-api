@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Service\Api\Exam;
 
@@ -39,11 +39,11 @@ class CollectionService implements ApiServiceInterface
             if (!empty($is_recommend)) {
                 $query->where('is_recommend', '=', 1);
             }
-            if (!empty($id)) {
-                $query->where('uuid', '=', $id);
+            if (!empty($uid)) {
+                $query->where('uuid', '=', $uid);
             }
-            if (!empty($category_id)) {
-                $query->where('exam_category_uuid', '=', $category_id);
+            if (!empty($category_uid)) {
+                $query->where('exam_category_uuid', '=', $category_uid);
             }
         };
     }
@@ -106,7 +106,7 @@ class CollectionService implements ApiServiceInterface
      */
     public function serviceFind(array $requestParams): array
     {
-        $bean = $this->collectionRepository->repositoryFind(self::searchWhere($requestParams));
+        $bean        = $this->collectionRepository->repositoryFind(self::searchWhere($requestParams));
         $bean["img"] = $bean["image"]["url"] . $bean["image"]["name"];
         unset($bean["image"]);
         return $bean;
