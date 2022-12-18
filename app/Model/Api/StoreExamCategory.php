@@ -12,7 +12,7 @@ namespace App\Model\Api;
 class StoreExamCategory extends \App\Model\Common\StoreExamCategory
 {
     public $listSearchFields = [
-        'uuid',
+        'uuid as uid',
         'title',
         'file_uuid',
         'big_file_uuid',
