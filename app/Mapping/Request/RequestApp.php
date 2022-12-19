@@ -22,11 +22,23 @@ class RequestApp
      * 根据客户端请求，获取商户信息
      * @return string
      */
-    public function getStoreUuid(): string
+    public static function getStoreUuid(): string
     {
-        $appIdSecret  = $this->request->header('App', '');
+        $appIdSecret  =(new self())->request->header('App', '');
         $secretString = AesEncrypt::getInstance()->aesDecrypt($appIdSecret);
         $configArray  = json_decode($secretString, true);
         return $configArray["uuid"];
+    }
+
+    /**
+     * 获取客户端类型
+     * @return string ["wechat_miniprogram", "wechat_office_count", "h5", "pc"]
+     */
+    public static function getClientType():string
+    {
+        $appIdSecret  = (new self())->request->header('App', '');
+        $secretString = AesEncrypt::getInstance()->aesDecrypt($appIdSecret);
+        $configArray  = json_decode($secretString, true);
+        return $configArray["client"];
     }
 }

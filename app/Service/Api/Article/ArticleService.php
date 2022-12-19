@@ -117,16 +117,27 @@ class ArticleService implements ApiServiceInterface
 
     /**
      * 文章点赞
-     *
      * @param array $requestParams
      * @return int
      */
     public function serviceClick(array $requestParams)
     {
-        if ((new ReadClickService())->serviceCreate(['article_uuid' => $requestParams['uuid'], 'type' => 1])) {
+        if ((new ReadClickService())->serviceCreate(['article_uuid' => $requestParams['uid'], 'type' => 1])) {
             return $this->articleRepository->repositoryUpdateClickNumber((string)$requestParams['uuid']);
         }
+        return 0;
+    }
 
+    /**
+     * 文章收藏
+     * @param array $requestParams
+     * @return int
+     */
+    public function serviceCollection(array $requestParams): int
+    {
+        if ((new ReadClickService())->serviceCreate(['article_uuid' => $requestParams['uid'], 'type' => 2])) {
+            return $this->articleRepository->repositoryUpdateCollectionNumber((string)$requestParams['uuid']);
+        }
         return 0;
     }
 }

@@ -57,7 +57,7 @@ class WeChatApiRepository implements ApiRepositoryInterface
             $insertUserResult = false;
             Db::transaction(function () use ($insertInfo, &$insertUserResult) {
                 // TODO 当前只做微信小程序端，只要小程序表中不存在都判定为是新用户。后续通过手机号作为系统唯一用户。
-                $storeUuid      = (new RequestApp())->getStoreUuid();
+                $storeUuid      = RequestApp::getStoreUuid();
                 $userModel      = new StorePlatformUser();
                 $miniUserModel  = new StoreMiNiWeChatUser();
                 $deviceModel    = new StoreMiniUserDevice();

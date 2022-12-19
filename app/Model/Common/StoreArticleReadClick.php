@@ -8,7 +8,6 @@ use App\Model\BaseModel;
 
 /**
  * 文章阅读点赞记录
- *
  * Class StoreArticleReadClick
  * @package App\Model\Common
  */

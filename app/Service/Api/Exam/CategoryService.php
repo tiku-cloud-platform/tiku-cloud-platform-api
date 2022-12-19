@@ -49,7 +49,7 @@ class CategoryService implements ApiServiceInterface
      */
     public function serviceSelect(array $requestParams): array
     {
-        $cacheKey      = "exam_category:" . (new RequestApp())->getStoreUuid();
+        $cacheKey      = "exam_category:" . RequestApp::getStoreUuid();
         $categoryCache = RedisClient::getInstance()->get($cacheKey);
         if (!empty($categoryCache)) {
             return json_decode($categoryCache, true);

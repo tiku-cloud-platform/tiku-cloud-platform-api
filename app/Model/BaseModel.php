@@ -149,7 +149,6 @@ class BaseModel extends Model
 
     /**
      * 字段值增加
-     *
      * @param string $tableName 数据表
      * @param array $updateWhere 更新条件
      * @param string $incrField 更新字段
@@ -167,7 +166,6 @@ class BaseModel extends Model
 
     /**
      * 字段值减少
-     *
      * @param string $tableName 数据表
      * @param array $updateWhere 更新条件
      * @param string $decrField 更新字段
