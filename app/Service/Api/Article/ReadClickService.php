@@ -1,8 +1,10 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Service\Api\Article;
 
+use App\Mapping\Request\RequestApp;
+use App\Mapping\Request\UserLoginInfo;
 use App\Mapping\UUID;
 use App\Repository\Api\Article\ReadClickRepository;
 use App\Service\ApiServiceInterface;
@@ -39,7 +41,6 @@ class ReadClickService implements ApiServiceInterface
 
     /**
      * 查询数据
-     *
      * @param array $requestParams 请求参数
      * @return array 查询结果
      */
@@ -50,26 +51,19 @@ class ReadClickService implements ApiServiceInterface
 
     /**
      * 创建数据
-     *
      * @param array $requestParams 请求参数
      * @return bool true|false
      */
     public function serviceCreate(array $requestParams): bool
     {
-        $userInfo = [];
-        if (!empty($userInfo)) {
-            $requestParams['uuid']       = UUID::getUUID();
-            $requestParams['store_uuid'] = $userInfo['store_uuid'];
-            $requestParams['user_uuid']  = $userInfo['user_uuid'];
-            return $this->readClickRepository->repositoryCreate($requestParams);
-        }
-
-        return false;
+        $requestParams['uuid'] = UUID::getUUID();
+        $requestParams['store_uuid'] = RequestApp::getStoreUuid();
+        $requestParams['user_uuid'] = UserLoginInfo::getUserId();
+        return $this->readClickRepository->repositoryCreate($requestParams);
     }
 
     /**
      * 更新数据
-     *
      * @param array $requestParams 请求参数
      * @return int 更新行数
      */
@@ -80,7 +74,6 @@ class ReadClickService implements ApiServiceInterface
 
     /**
      * 删除数据
-     *
      * @param array $requestParams 请求参数
      * @return int 删除行数
      */
@@ -91,7 +84,6 @@ class ReadClickService implements ApiServiceInterface
 
     /**
      * 查询单条数据
-     *
      * @param array $requestParams 请求参数
      * @return array 删除行数
      */

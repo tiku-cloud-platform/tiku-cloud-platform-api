@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Controller\Api\Article;
 
@@ -30,6 +30,7 @@ class ArticleController extends ApiBaseController
     }
 
     /**
+     * 文章列表
      * @GetMapping(path="list")
      * @return ResponseInterface
      */
@@ -40,6 +41,7 @@ class ArticleController extends ApiBaseController
     }
 
     /**
+     * 文章详情
      * @GetMapping(path="detail")
      * @param UUIDValidate $validate
      * @return ResponseInterface
@@ -51,14 +53,31 @@ class ArticleController extends ApiBaseController
     }
 
     /**
+     * 文章点赞
      * @Middleware(UserAuthMiddleware::class)
      * @PostMapping(path="click")
      * @param UUIDValidate $validate
      * @return ResponseInterface
      */
-    public function click(UUIDValidate $validate)
+    public function click(UUIDValidate $validate): ResponseInterface
     {
         $updateResult = $this->service->serviceClick($this->request->all());
         return $updateResult ? $this->httpResponse->success() : $this->httpResponse->error();
+    }
+
+    /**
+     * 文章收藏
+     * @Middleware(UserAuthMiddleware::class)
+     * @PostMapping(path="collection")
+     * @param UUIDValidate $validate
+     * @return ResponseInterface
+     */
+    public function collection(UUIDValidate $validate): ResponseInterface
+    {
+        $collectionResult = $this->service->serviceClick($this->request->all());
+        if ($collectionResult) {
+            return $this->httpResponse->success();
+        }
+        return $this->httpResponse->error();
     }
 }

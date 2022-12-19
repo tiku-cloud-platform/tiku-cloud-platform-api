@@ -142,7 +142,6 @@ class ArticleRepository implements ApiRepositoryInterface
 
     /**
      * 更新点赞数量
-     *
      * @param string $uuid
      * @param string $storeUUID
      * @return int
@@ -152,5 +151,17 @@ class ArticleRepository implements ApiRepositoryInterface
         return $this->articleModel->fieldIncr($this->articleModel->getTable(),
             [['uuid', '=', $uuid]],
             'click_number', 1);
+    }
+
+    /**
+     * 文章收藏数量
+     * @param string $uuid
+     * @return int
+     */
+    public function repositoryUpdateCollectionNumber(string $uuid): int
+    {
+        return $this->articleModel->fieldIncr($this->articleModel->getTable(),
+            [['uuid', '=', $uuid]],
+            'collection_number', 1);
     }
 }

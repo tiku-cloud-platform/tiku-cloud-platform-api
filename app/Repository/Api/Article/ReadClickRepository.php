@@ -4,9 +4,11 @@ declare(strict_types = 1);
 namespace App\Repository\Api\Article;
 
 
+use App\Exception\DbDataMessageException;
 use App\Model\Api\StoreArticleReadClick;
 use App\Repository\ApiRepositoryInterface;
 use Hyperf\Di\Annotation\Inject;
+use Throwable;
 
 /**
  * 文章阅读点赞历史
@@ -49,12 +51,9 @@ class ReadClickRepository implements ApiRepositoryInterface
             if ($this->clickReadModel::query()->create($insertInfo)) {
                 return true;
             }
-        } catch (\Throwable $throwable) {
-            // TODO 记录错误日志信息
-            return false;
-//			throw  new DbDataMessageException($throwable->getMessage());
+        } catch (Throwable $throwable) {
+			throw  new DbDataMessageException($throwable->getMessage());
         }
-
         return false;
     }
 

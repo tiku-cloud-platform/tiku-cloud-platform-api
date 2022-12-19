@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace App\Service\Api\User;
 
 use App\Constants\CacheKey;
+use App\Constants\CacheTime;
 use App\Library\WeChat\WeChatMiNi;
 use App\Mapping\RedisClient;
 use App\Mapping\UUID;
@@ -81,7 +82,7 @@ class LoginService implements ApiServiceInterface
     private function setLoginCache(string $loginToken, array $userInfo): bool
     {
         $cacheResult = RedisClient::getInstance()->set(CacheKey::MINI_LOGIN_TOKEN . $loginToken,
-            json_encode($userInfo, JSON_UNESCAPED_UNICODE), 86400 * 10);
+            json_encode($userInfo, JSON_UNESCAPED_UNICODE), CacheTime::USER_LOGIN_EXPIRE_TIME);
         if (is_bool($cacheResult)) {
             return true;
         }
