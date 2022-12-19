@@ -41,4 +41,9 @@ class CacheKey extends AbstractConstants
      * @Message("小程序登录token")
      */
     const MINI_LOGIN_TOKEN = "mini:login:";
+
+    /**
+     * @Message("请先登录")
+     */
+    const MINI_NO_LOGIN = "min:not_login:msg";
 }

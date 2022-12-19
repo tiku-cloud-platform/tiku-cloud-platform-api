@@ -14,15 +14,9 @@ use Hyperf\Constants\Annotation\Constants;
 class CacheTime extends Constants
 {
     /**
-     * @Message("商户端登录token前缀")
-     */
-    const STORE_LOGIN_EXPIRE_TIME = 864000;
-
-    /**
      * @Message("用户端登录token前缀")
      */
     const USER_LOGIN_EXPIRE_TIME = 864000;
-
 
     /**
      * @Message("商户端系统配置")

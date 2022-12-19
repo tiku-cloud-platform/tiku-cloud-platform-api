@@ -59,7 +59,7 @@ class ClientMiddleware implements MiddlewareInterface
             return (new HttpDataResponse)->response('客户端不存在', 0, [], 403);
         }
         // 参数是否正确
-        $cacheConfig = RedisClient::getInstance()->hGetAll(CacheKey::STORE_DEVEL_CONFIG . (new RequestApp())->getStoreUuid());
+        $cacheConfig = RedisClient::getInstance()->hGetAll(CacheKey::STORE_DEVEL_CONFIG . RequestApp::getStoreUuid());
         if (empty($cacheConfig)) {
             return (new HttpDataResponse)->response('参数不存在', 0, [], 403);
         }

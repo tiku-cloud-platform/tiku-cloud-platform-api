@@ -17,7 +17,7 @@ class HttpCode extends AbstractConstants
     const SERVER_ERROR = 500;
 
     /**
-     * @Message("未授权")
+     * @Message("未登录")
      */
     const NO_AUTH = 403;
 }

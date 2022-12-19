@@ -6,7 +6,6 @@ namespace App\Model\Api;
 
 /**
  * 文章阅读点赞记录
- *
  * Class StoreArticleReadClick
  * @package App\Model\Api
  */
