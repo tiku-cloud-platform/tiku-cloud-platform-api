@@ -42,6 +42,7 @@ class UserAuthMiddleware implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        // 先判断是否存在授权字段；接着获取客户端类型；根据客户端类型获取用户登录信息。
         $authentication = $request->getHeader("Authentication");
         var_dump($authentication);
         if (!empty($authentication)) {
