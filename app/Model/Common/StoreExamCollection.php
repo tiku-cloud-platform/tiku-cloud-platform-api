@@ -65,18 +65,18 @@ class StoreExamCollection extends BaseModel
      */
     public function getLevelTextAttribute(): string
     {
+        $text = "未知";
         switch ($this->getAttribute("level")) {
             case 1:
             case 2:
-                return "简单";
+                $text = "简单";
             case 3:
             case 4:
-                return "中等";
+                $text = "中等";
             case 5:
-                return "难";
-            default:
-                return "未知";
+                $text = "难";
         }
+        return $text;
     }
 
     public function image(): BelongsTo
