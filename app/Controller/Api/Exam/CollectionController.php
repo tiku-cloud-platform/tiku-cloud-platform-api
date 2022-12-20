@@ -28,7 +28,7 @@ class CollectionController extends ApiBaseController
      * @GetMapping(path="list")
      * @return ResponseInterface
      */
-    public function index()
+    public function index(): ResponseInterface
     {
         $items = $this->service->serviceSelect($this->request->all());
         return $this->httpResponse->success($items);
@@ -38,7 +38,7 @@ class CollectionController extends ApiBaseController
      * @GetMapping(path="show")
      * @return ResponseInterface
      */
-    public function show()
+    public function show(): ResponseInterface
     {
         $bean = $this->service->serviceFind($this->request->all());
         return $this->httpResponse->success($bean);

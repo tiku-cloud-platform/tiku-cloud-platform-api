@@ -5,6 +5,7 @@ namespace App\Service\Api\Article;
 
 use App\Repository\Api\Article\ArticleRepository;
 use App\Service\ApiServiceInterface;
+use Closure;
 use Hyperf\Di\Annotation\Inject;
 
 /**
@@ -29,17 +30,17 @@ class ArticleService implements ApiServiceInterface
      * 格式化查询条件
      *
      * @param array $requestParams 请求参数
-     * @return mixed 组装的查询条件
+     * @return Closure 组装的查询条件
      */
-    public static function searchWhere(array $requestParams)
+    public static function searchWhere(array $requestParams): Closure
     {
         return function ($query) use ($requestParams) {
             extract($requestParams);
-            if (!empty($uid)) {
-                $query->where('uuid', '=', $uid);
+            if (!empty($uuid)) {
+                $query->where('uuid', '=', $uuid);
             }
-            if (!empty($category_uid)) {
-                $query->where('article_category_uuid', '=', $category_uid);
+            if (!empty($category_uuid)) {
+                $query->where('article_category_uuid', '=', $category_uuid);
             }
             if (!empty($is_top)) {
                 $query->where('is_top', '=', 1);
@@ -55,7 +56,7 @@ class ArticleService implements ApiServiceInterface
      */
     public function serviceSelect(array $requestParams): array
     {
-        $items = $this->articleRepository->repositorySelect(self::searchWhere((array)$requestParams),
+        $items = $this->articleRepository->repositorySelect(self::searchWhere($requestParams),
             (int)$requestParams['size'] ?? 20);
 
         foreach ($items["items"] as $item) {
@@ -108,10 +109,9 @@ class ArticleService implements ApiServiceInterface
     {
         $bean = $this->articleRepository->repositoryFind(self::searchWhere($requestParams));
         if (empty($bean['is_read'])) {
-            $this->articleRepository->repositoryUpdateReadNumber((string)$requestParams['uid']);
-            (new ReadClickService())->serviceCreate(['article_uuid' => $requestParams['uid'], 'type' => 2]);
+            $this->articleRepository->repositoryUpdateReadNumber((string)$requestParams['uuid']);
+            (new ReadClickService())->serviceCreate(['article_uuid' => $requestParams['uuid'], 'type' => 2]);
         }
-
         return $bean;
     }
 
@@ -120,9 +120,9 @@ class ArticleService implements ApiServiceInterface
      * @param array $requestParams
      * @return int
      */
-    public function serviceClick(array $requestParams)
+    public function serviceClick(array $requestParams): int
     {
-        if ((new ReadClickService())->serviceCreate(['article_uuid' => $requestParams['uid'], 'type' => 1])) {
+        if ((new ReadClickService())->serviceCreate(['article_uuid' => $requestParams['uuid'], 'type' => 1])) {
             return $this->articleRepository->repositoryUpdateClickNumber((string)$requestParams['uuid']);
         }
         return 0;
@@ -135,7 +135,7 @@ class ArticleService implements ApiServiceInterface
      */
     public function serviceCollection(array $requestParams): int
     {
-        if ((new ReadClickService())->serviceCreate(['article_uuid' => $requestParams['uid'], 'type' => 2])) {
+        if ((new ReadClickService())->serviceCreate(['article_uuid' => $requestParams['uuid'], 'type' => 2])) {
             return $this->articleRepository->repositoryUpdateCollectionNumber((string)$requestParams['uuid']);
         }
         return 0;

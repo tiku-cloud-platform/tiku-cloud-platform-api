@@ -9,7 +9,9 @@ use App\Mapping\RedisClient;
 use App\Mapping\Request\RequestApp;
 use App\Repository\Api\Exam\CategoryRepository;
 use App\Service\ApiServiceInterface;
+use Closure;
 use Hyperf\Di\Annotation\Inject;
+use RedisException;
 
 /**
  * 试题分类
@@ -31,11 +33,10 @@ class CategoryService implements ApiServiceInterface
 
     /**
      * 格式化查询条件
-     *
      * @param array $requestParams 请求参数
-     * @return mixed 组装的查询条件
+     * @return Closure 组装的查询条件
      */
-    public static function searchWhere(array $requestParams)
+    public static function searchWhere(array $requestParams): Closure
     {
         return function () {
         };
@@ -43,9 +44,9 @@ class CategoryService implements ApiServiceInterface
 
     /**
      * 查询数据
-     *
      * @param array $requestParams 请求参数
      * @return array 查询结果
+     * @throws RedisException
      */
     public function serviceSelect(array $requestParams): array
     {
@@ -128,8 +129,7 @@ class CategoryService implements ApiServiceInterface
                 if (!empty($value->smallImage)) {
                     $value->small_img = $value->smallImage->url . $value->smallImage->name;
                 }
-                $value->uid = $value->uuid;
-                unset($value->bigImage, $value->smallImage, $value->uuid);
+                unset($value->bigImage, $value->smallImage);
                 $tree[] = $value;
             }
         }

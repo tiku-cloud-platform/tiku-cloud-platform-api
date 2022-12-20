@@ -6,6 +6,7 @@ namespace App\Service\Api\User;
 use App\Mapping\Request\UserLoginInfo;
 use App\Repository\Api\User\PlatformUserRepository;
 use App\Service\ApiServiceInterface;
+use Closure;
 use Hyperf\Di\Annotation\Inject;
 use function PHPUnit\Framework\exactly;
 
@@ -20,7 +21,12 @@ class UserInfoService implements ApiServiceInterface
      */
     protected $platformUserModel;
 
-    public static function searchWhere(array $requestParams)
+    /**
+     * 查询条件处理
+     * @param array $requestParams
+     * @return Closure
+     */
+    public static function searchWhere(array $requestParams): Closure
     {
         return function ($query) use ($requestParams) {
             extract($requestParams);

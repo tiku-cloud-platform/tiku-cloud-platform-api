@@ -6,6 +6,10 @@ namespace App\Controller\Api\Subscribe;
 use App\Controller\ApiBaseController;
 use App\Library\WeChat\WeChatMiNi;
 use App\Service\Api\Subscribe\ConfigService;
+use EasyWeChat\Kernel\Exceptions\HttpException;
+use EasyWeChat\Kernel\Exceptions\InvalidArgumentException;
+use EasyWeChat\Kernel\Exceptions\InvalidConfigException;
+use EasyWeChat\Kernel\Exceptions\RuntimeException;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Psr\Http\Message\ResponseInterface;
@@ -14,7 +18,7 @@ use Psr\Http\Message\ResponseInterface;
  * 微信订阅消息
  *
  * Class ConfigController
- * @Controller(prefix="api/subscribe")
+ * @Controller(prefix="api/subscribe_wechat")
  * @package App\Controller\Api\Subscribe
  */
 class ConfigController extends ApiBaseController
@@ -26,12 +30,11 @@ class ConfigController extends ApiBaseController
     }
 
     /**
-     * @GetMapping(path="list")
+     * @GetMapping(path="templage_list")
      * @return ResponseInterface
      */
-    public function index()
+    public function index(): ResponseInterface
     {
-        var_dump(WeChatMiNi::getInstance()->access_token->getToken());
         $items = $this->service->serviceSelect($this->request->all());
         return $this->httpResponse->success($items);
     }

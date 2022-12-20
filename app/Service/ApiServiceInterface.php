@@ -3,6 +3,8 @@ declare(strict_types = 1);
 
 namespace App\Service;
 
+use Closure;
+
 /**
  * Interface UserServiceInterface.
  */
@@ -12,9 +14,9 @@ interface ApiServiceInterface
      * 格式化查询条件
      *
      * @param array $requestParams 请求参数
-     * @return mixed 组装的查询条件
+     * @return Closure 组装的查询条件
      */
-    public static function searchWhere(array $requestParams);
+    public static function searchWhere(array $requestParams): Closure;
 
     /**
      * 查询数据

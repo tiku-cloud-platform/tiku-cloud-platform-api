@@ -29,7 +29,7 @@ class ArticleRepository implements ApiRepositoryInterface
 
     /**
      * 查询数据
-     *
+     * @param Closure $closure
      * @param int $perSize 分页大小
      * @return array
      */
@@ -130,7 +130,6 @@ class ArticleRepository implements ApiRepositoryInterface
      * 更新阅读数量
      *
      * @param string $uuid
-     * @param string $storeUUID
      * @return int
      */
     public function repositoryUpdateReadNumber(string $uuid): int

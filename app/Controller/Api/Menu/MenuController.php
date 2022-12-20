@@ -28,7 +28,7 @@ class MenuController extends ApiBaseController
      * @GetMapping(path="list")
      * @return ResponseInterface
      */
-    public function index()
+    public function index(): ResponseInterface
     {
         $items = $this->service->serviceSelect($this->request->all());
         return $this->httpResponse->success($items);

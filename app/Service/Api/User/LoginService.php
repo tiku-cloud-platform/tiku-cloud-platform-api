@@ -10,6 +10,7 @@ use App\Mapping\RedisClient;
 use App\Mapping\UUID;
 use App\Repository\Api\User\WeChatApiRepository;
 use App\Service\ApiServiceInterface;
+use Closure;
 use EasyWeChat\Kernel\Exceptions\InvalidConfigException;
 use Hyperf\Di\Annotation\Inject;
 use RedisException;
@@ -27,13 +28,14 @@ class LoginService implements ApiServiceInterface
 
     /**
      * 微信code授权
-     * @param string $code
+     * @param array $requestParams
      * @return array[1 => "登录成功", 2 => "登录失败", 3 => "用户被禁用"]
-     * @throws InvalidConfigException|RedisException
+     * @throws InvalidConfigException
+     * @throws RedisException
      */
     public function serviceMiNiCodeAuth(array $requestParams): array
     {
-        $jsonCode = WeChatMiNi::getInstance()->auth->session($requestParams["code"]);
+        $jsonCode = WeChatMiNi::getInstance()->auth->session($requestParams["code"] ?? "");
         $userInfo = $this->miniUserRepository->repositoryFind(function ($query) use ($jsonCode) {
             $query->where("openid", "=", $jsonCode["openid"]);
         });
@@ -89,7 +91,11 @@ class LoginService implements ApiServiceInterface
         return false;
     }
 
-    public static function searchWhere(array $requestParams)
+    /**
+     * @param array $requestParams
+     * @return Closure
+     */
+    public static function searchWhere(array $requestParams): Closure
     {
         // TODO: Implement searchWhere() method.
     }
