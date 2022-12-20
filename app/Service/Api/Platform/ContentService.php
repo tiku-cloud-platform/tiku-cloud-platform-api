@@ -6,6 +6,7 @@ namespace App\Service\Api\Platform;
 
 use App\Repository\Api\Platform\ContentRepository;
 use App\Service\ApiServiceInterface;
+use Closure;
 use Hyperf\Di\Annotation\Inject;
 
 /**
@@ -30,14 +31,14 @@ class ContentService implements ApiServiceInterface
      * 格式化查询条件
      *
      * @param array $requestParams 请求参数
-     * @return mixed 组装的查询条件
+     * @return Closure 组装的查询条件
      */
-    public static function searchWhere(array $requestParams)
+    public static function searchWhere(array $requestParams): Closure
     {
         return function ($query) use ($requestParams) {
             extract($requestParams);
-            if (!empty($uid)) {
-                $query->where('uuid', '=', $uid);
+            if (!empty($uuid)) {
+                $query->where('uuid', '=', $uuid);
             }
         };
     }

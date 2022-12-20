@@ -30,11 +30,10 @@ class StoreArticleCategory extends BaseModel
 
     /**
      * 分类封面
-     *
      * @return BelongsTo
      * @author kert
      */
-    public function image()
+    public function image(): BelongsTo
     {
         return $this->belongsTo(StorePlatformFile::class, 'file_uuid', 'uuid');
     }

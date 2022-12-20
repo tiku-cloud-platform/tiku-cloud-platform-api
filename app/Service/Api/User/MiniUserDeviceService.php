@@ -5,6 +5,7 @@ namespace App\Service\Api\User;
 
 use App\Repository\Api\User\MiniUserDeviceRepository;
 use App\Service\ApiServiceInterface;
+use Closure;
 use Hyperf\Di\Annotation\Inject;
 
 /**
@@ -18,7 +19,11 @@ class MiniUserDeviceService implements ApiServiceInterface
      */
     protected $userDeviceRepository;
 
-    public static function searchWhere(array $requestParams)
+    /**
+     * @param array $requestParams
+     * @return Closure
+     */
+    public static function searchWhere(array $requestParams): Closure
     {
         // TODO: Implement searchWhere() method.
     }

@@ -4,13 +4,18 @@ declare(strict_types=1);
 namespace App\Service\Api\User;
 
 use App\Service\ApiServiceInterface;
+use Closure;
 
 /**
  * 用户注册
  */
 class RegisterService implements ApiServiceInterface
 {
-    public static function searchWhere(array $requestParams)
+    /**
+     * @param array $requestParams
+     * @return Closure
+     */
+    public static function searchWhere(array $requestParams): Closure
     {
         // TODO: Implement searchWhere() method.
     }

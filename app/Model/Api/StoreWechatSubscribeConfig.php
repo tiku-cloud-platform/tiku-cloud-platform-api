@@ -25,7 +25,7 @@ class StoreWechatSubscribeConfig extends \App\Model\Common\StoreWechatSubscribeC
         'subscribe_number'// 剩余提醒次数
     ];
 
-    public function getSubscribeNumberAttribute($key)
+    public function getSubscribeNumberAttribute($key): int
     {
         return 0;
     }

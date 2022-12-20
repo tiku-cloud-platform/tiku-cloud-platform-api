@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Repository\Api\Exam;
 
@@ -83,9 +83,10 @@ class CollectionRepository implements ApiRepositoryInterface
     {
         $bean = $this->collectionModel::query()
             ->with(['image:uuid,file_url as url,file_name as name,file_hash as hash'])
+            ->with(['category:uuid,title'])
             ->where([['is_show', '=', 1]])
             ->where($closure)
-            ->first(['uuid', 'title', 'file_uuid', 'submit_number', 'author', 'audit_author', 'level', 'content', 'exam_time', "created_at"]);
+            ->first(['uuid', 'title', 'file_uuid', 'submit_number', 'exam_category_uuid', 'author', 'audit_author', 'level', 'content', 'exam_time', "created_at"]);
         if (!empty($bean)) return $bean->toArray();
         return [];
     }

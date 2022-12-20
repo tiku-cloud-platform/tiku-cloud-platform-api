@@ -7,9 +7,11 @@ namespace App\Service\Api\Platform;
 use App\Constants\CacheKey;
 use App\Constants\CacheTime;
 use App\Mapping\RedisClient;
+use App\Mapping\Request\RequestApp;
 use App\Mapping\WeChatClient;
 use App\Repository\Api\Platform\SettingRepository;
 use App\Service\ApiServiceInterface;
+use Closure;
 use Hyperf\Di\Annotation\Inject;
 
 /**
@@ -34,9 +36,9 @@ class SettingService implements ApiServiceInterface
      * 格式化查询条件
      *
      * @param array $requestParams 请求参数
-     * @return mixed 组装的查询条件
+     * @return Closure 组装的查询条件
      */
-    public static function searchWhere(array $requestParams)
+    public static function searchWhere(array $requestParams): Closure
     {
         return function ($query) use ($requestParams) {
             extract($requestParams);
@@ -51,10 +53,11 @@ class SettingService implements ApiServiceInterface
      *
      * @param array $requestParams 请求参数
      * @return array 查询结果
+     * @throws \RedisException
      */
     public function serviceSelect(array $requestParams): array
     {
-        $storeUUId     = (new WeChatClient)->getUUIDHeader();
+        $storeUUId     = RequestApp::getStoreUuid();
         $cacheSettInfo = RedisClient::get(CacheKey::STORE_MINIPROGRAM_SETTING, $storeUUId);
 
         if (empty($cacheSettInfo)) {
