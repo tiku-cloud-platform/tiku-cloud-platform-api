@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Mapping\Request;
 
@@ -30,6 +30,7 @@ class UserLoginInfo
     public function checkoutUserLoginInfo(): array
     {
         $cacheInfo = Context::get("login:info");
+        var_dump("登录信息", $cacheInfo);
         if (!empty($cacheInfo)) {
             return json_decode($cacheInfo, true);
         }
