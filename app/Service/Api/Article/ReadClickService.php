@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Service\Api\Article;
 
@@ -13,7 +13,6 @@ use Hyperf\Di\Annotation\Inject;
 
 /**
  * 文章阅读点赞记录
- *
  * Class ReadClickService
  * @package App\Service\Api\Article
  */
@@ -57,10 +56,13 @@ class ReadClickService implements ApiServiceInterface
      */
     public function serviceCreate(array $requestParams): bool
     {
-        $requestParams['uuid'] = UUID::getUUID();
-        $requestParams['store_uuid'] = RequestApp::getStoreUuid();
-        $requestParams['user_uuid'] = UserLoginInfo::getUserId();
-        return $this->readClickRepository->repositoryCreate($requestParams);
+        if (!empty(UserLoginInfo::getUserId())) {
+            $requestParams['uuid']       = UUID::getUUID();
+            $requestParams['store_uuid'] = RequestApp::getStoreUuid();
+            $requestParams['user_uuid']  = UserLoginInfo::getUserId();
+            return $this->readClickRepository->repositoryCreate($requestParams);
+        }
+        return true;
     }
 
     /**

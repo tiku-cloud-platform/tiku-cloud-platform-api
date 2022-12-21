@@ -43,6 +43,9 @@ class UserLoginInfo
      */
     public static function getUserId(): string
     {
-        return (string)json_decode(Context::get("login:info"), true)["user_uuid"];
+        if (!empty(Context::get("login:info"))) {
+            return (string)json_decode(Context::get("login:info"), true)["user_uuid"];
+        }
+        return "";
     }
 }
