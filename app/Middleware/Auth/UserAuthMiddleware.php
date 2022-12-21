@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Middleware\Auth;
 
@@ -44,7 +44,6 @@ class UserAuthMiddleware implements MiddlewareInterface
     {
         // 先判断是否存在授权字段；接着获取客户端类型；根据客户端类型获取用户登录信息。
         $authentication = $request->getHeader("Authentication");
-        var_dump($authentication);
         if (!empty($authentication)) {
             $userInfo = "";
             switch ((new RequestApp())->getClientType()) {
