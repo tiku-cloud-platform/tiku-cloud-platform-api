@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Controller\Api\Message;
 
@@ -9,8 +9,10 @@ use App\Service\Api\Message\MiNiSubscribeService;
 use App\Service\Api\Message\UserMiNiSubscribeService;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
+use Hyperf\HttpServer\Annotation\Middleware;
 use Hyperf\HttpServer\Annotation\PostMapping;
 use Psr\Http\Message\ResponseInterface;
+use App\Middleware\Auth\UserAuthMiddleware;
 
 /**
  * 微信小程序订阅消息
@@ -40,6 +42,7 @@ class MiNiSubscribeController extends ApiBaseController
     /**
      * 微信订阅消息记录
      * @PostMapping(path="templage_subscribe")
+     * @Middleware(UserAuthMiddleware::class)
      * @param MiNiSubscribeValidate $subscribeValidate
      * @return ResponseInterface
      */
