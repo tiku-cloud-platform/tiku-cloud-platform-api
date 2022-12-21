@@ -10,7 +10,7 @@ use App\Model\BaseModel;
  * Class StoreWechatUserSubscribe
  * @package App\Model\Common
  */
-class StoreUserMiNiSubscribe extends BaseModel
+class StoreWechatUserSubscribe extends BaseModel
 {
     protected $table = 'store_user_mini_subscribe';
 

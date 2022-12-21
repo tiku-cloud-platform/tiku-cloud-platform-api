@@ -12,7 +12,7 @@ use Hyperf\Validation\Request\FormRequest;
  * Class SubscribeValidate
  * @package App\Request\Api\Subscribe
  */
-class SubscribeValidate extends FormRequest
+class MiNiSubscribeValidate extends FormRequest
 {
     public function authorize(): bool
     {
@@ -22,7 +22,7 @@ class SubscribeValidate extends FormRequest
     public function rules(): array
     {
         return [
-            'template_uuid' => 'required|uuid',
+            'template_uuid' => 'required|uuid|exists:store_mini_subscribe,uuid',
         ];
     }
 
