@@ -6,14 +6,13 @@ namespace App\Model\Common;
 use App\Model\BaseModel;
 
 /**
- * 微信模板消息订阅记录
- *
+ * 微信小程序模板消息订阅记录
  * Class StoreWechatUserSubscribe
  * @package App\Model\Common
  */
-class StoreWechatUserSubscribe extends BaseModel
+class StoreUserMiNiSubscribe extends BaseModel
 {
-    protected $table = 'store_wechat_user_subscribe';
+    protected $table = 'store_user_mini_subscribe';
 
     protected $fillable = [
         'uuid',
