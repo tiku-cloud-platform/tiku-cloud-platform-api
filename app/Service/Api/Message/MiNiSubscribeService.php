@@ -1,9 +1,9 @@
 <?php
 declare(strict_types = 1);
 
-namespace App\Service\Api\Subscribe;
+namespace App\Service\Api\Message;
 
-use App\Repository\Api\Subscribe\ConfigRepository;
+use App\Repository\Api\Message\MiNiSubscribeRepository;
 use App\Service\ApiServiceInterface;
 use Closure;
 use Hyperf\Di\Annotation\Inject;
@@ -13,12 +13,12 @@ use Hyperf\Di\Annotation\Inject;
  * Class ConfigService
  * @package App\Service\Api\Subscribe
  */
-class ConfigService implements ApiServiceInterface
+class MiNiSubscribeService implements ApiServiceInterface
 {
 
     /**
      * @Inject()
-     * @var ConfigRepository
+     * @var MiNiSubscribeRepository
      */
     protected $configRepository;
 

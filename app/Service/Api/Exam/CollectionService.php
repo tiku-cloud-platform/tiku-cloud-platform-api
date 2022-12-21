@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Service\Api\Exam;
 
@@ -60,10 +60,13 @@ class CollectionService implements ApiServiceInterface
         $items = $this->collectionRepository->repositorySelect(self::searchWhere($requestParams),
             (int)$requestParams['size'] ?? 20);
         foreach ($items["items"] as $item) {
-            $item->img = $item->image["url"] . $item->image["name"];
+            $item->img           = $item->image["url"] . $item->image["name"];
             $item->category_uuid = $item->exam_category_uuid;
-            $item->publish_time = date("Y-m-d", strtotime((string)$item->created_at));
-            unset($item->image);
+            $item->publish_time  = date("Y-m-d", strtotime((string)$item->created_at));
+            $item->jude_score    = floatval($item->jude_score);
+            $item->reading_score = floatval($item->reading_score);
+            $item->option_score  = floatval($item->option_score);
+            unset($item->image, $item->created_at);
         }
         return $items;
     }
@@ -109,10 +112,10 @@ class CollectionService implements ApiServiceInterface
      */
     public function serviceFind(array $requestParams): array
     {
-        $bean = $this->collectionRepository->repositoryFind(self::searchWhere($requestParams));
-        $bean["img"] = $bean["image"]["url"] . $bean["image"]["name"];
+        $bean                  = $this->collectionRepository->repositoryFind(self::searchWhere($requestParams));
+        $bean["img"]           = $bean["image"]["url"] . $bean["image"]["name"];
         $bean["category_uuid"] = $bean["exam_category_uuid"];
-        $bean["publish_time"] = date("Y-m-d", strtotime((string)$bean["created_at"]));
+        $bean["publish_time"]  = date("Y-m-d", strtotime((string)$bean["created_at"]));
         unset($bean["image"]);
         return $bean;
     }

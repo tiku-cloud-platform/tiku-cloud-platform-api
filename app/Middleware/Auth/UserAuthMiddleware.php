@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Middleware\Auth;
 
@@ -44,14 +44,13 @@ class UserAuthMiddleware implements MiddlewareInterface
     {
         // 先判断是否存在授权字段；接着获取客户端类型；根据客户端类型获取用户登录信息。
         $authentication = $request->getHeader("Authentication");
-        var_dump($authentication);
         if (!empty($authentication)) {
             $userInfo = "";
-            switch ((new RequestApp())->getClientType()) {
-                case "wechat_miniprogram":
-                    $userInfo = RedisClient::getInstance()->get(CacheKey::MINI_LOGIN_TOKEN . $authentication[0]);
-                    break;
+            if ((new RequestApp())->getClientType() === "wechat_miniprogram") {
+                $userInfo = RedisClient::getInstance()->get(CacheKey::MINI_LOGIN_TOKEN . $authentication[0]);
+                var_dump(__LINE__, $userInfo, __METHOD__, CacheKey::MINI_LOGIN_TOKEN . $authentication[0]);
             }
+            var_dump("1", $userInfo, (new RequestApp())->getClientType());
             if (!empty($userInfo)) {
                 Context::set("login:info", $userInfo);
             } else {

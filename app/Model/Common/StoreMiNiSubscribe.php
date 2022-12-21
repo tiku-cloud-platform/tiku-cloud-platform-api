@@ -8,13 +8,12 @@ use Hyperf\Database\Model\Relations\BelongsTo;
 
 /**
  * 微信订阅消息配置
- *
  * Class StoreWechatSubscribeConfig
  * @package App\Model\Common
  */
-class StoreWechatSubscribeConfig extends BaseModel
+class StoreMiNiSubscribe extends BaseModel
 {
-    protected $table = 'store_wechat_subscribe_config';
+    protected $table = 'store_mini_subscribe';
 
     protected $fillable = [
         'uuid',
@@ -40,7 +39,7 @@ class StoreWechatSubscribeConfig extends BaseModel
      * @return BelongsTo
      * @author kert
      */
-    public function image()
+    public function image(): BelongsTo
     {
         return $this->belongsTo(StorePlatformFile::class, 'file_uuid', 'uuid');
     }

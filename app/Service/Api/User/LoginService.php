@@ -83,7 +83,7 @@ class LoginService implements ApiServiceInterface
      */
     private function setLoginCache(string $loginToken, array $userInfo): bool
     {
-        $cacheResult = RedisClient::getInstance()->set(CacheKey::MINI_LOGIN_TOKEN . $loginToken,
+        $cacheResult = RedisClient::getInstance()->set($loginToken,
             json_encode($userInfo, JSON_UNESCAPED_UNICODE), CacheTime::USER_LOGIN_EXPIRE_TIME);
         if (is_bool($cacheResult)) {
             return true;

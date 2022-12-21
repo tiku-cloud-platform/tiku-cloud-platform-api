@@ -22,6 +22,22 @@ class UserLoginInfo
     }
 
     /**
+     * 判断当前用户的登录信息
+     * 如果未空，则表示未登录状态
+     * 如果存在值，则表示处于登录状态
+     * @return array
+     */
+    public function checkoutUserLoginInfo(): array
+    {
+        $cacheInfo = Context::get("login:info");
+        var_dump("登录信息", $cacheInfo);
+        if (!empty($cacheInfo)) {
+            return json_decode($cacheInfo, true);
+        }
+        return [];
+    }
+
+    /**
      * 获取用户id
      * @return string
      */

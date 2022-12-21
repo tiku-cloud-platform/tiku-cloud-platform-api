@@ -1,24 +1,23 @@
 <?php
 declare(strict_types = 1);
 
-namespace App\Repository\Api\Subscribe;
+namespace App\Repository\Api\Message;
 
-use App\Model\Api\StoreWechatSubscribeConfig;
+use App\Model\Api\StoreMiNiSubscribe;
 use App\Repository\ApiRepositoryInterface;
 use Closure;
 use Hyperf\Di\Annotation\Inject;
 
 /**
- * 微信订阅消息
- *
+ * 微信小程序模板订阅
  * Class ConfigRepository
  * @package App\Repository\Api\Subscribe
  */
-class ConfigRepository implements ApiRepositoryInterface
+class MiNiSubscribeRepository implements ApiRepositoryInterface
 {
     /**
      * @Inject()
-     * @var StoreWechatSubscribeConfig
+     * @var StoreMiNiSubscribe
      */
     protected $configModel;
 
@@ -28,7 +27,6 @@ class ConfigRepository implements ApiRepositoryInterface
 
     /**
      * 查询数据
-     *
      * @param Closure $closure
      * @param int $perSize 分页大小
      * @return array
@@ -52,7 +50,6 @@ class ConfigRepository implements ApiRepositoryInterface
 
     /**
      * 创建数据
-     *
      * @param array $insertInfo 创建信息
      * @return bool true|false
      */
@@ -63,7 +60,6 @@ class ConfigRepository implements ApiRepositoryInterface
 
     /**
      * 添加数据
-     *
      * @param array $addInfo 添加信息
      * @return int 添加之后的ID或者行数
      */
@@ -107,7 +103,6 @@ class ConfigRepository implements ApiRepositoryInterface
 
     /**
      * 范围删除
-     *
      * @param array $deleteWhere 删除条件
      * @param string $field 删除字段
      * @return int

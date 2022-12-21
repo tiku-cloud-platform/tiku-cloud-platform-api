@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace App\Repository\Api\User;
 
-use App\Model\Api\StoreWechatUserSubscribe;
+use App\Model\Api\StoreUserMiNiSubscribe;
 use App\Repository\ApiRepositoryInterface;
 use Hyperf\Di\Annotation\Inject;
 
@@ -18,7 +18,7 @@ class TemplateSubscribeRepository implements ApiRepositoryInterface
 
     /**
      * @Inject()
-     * @var StoreWechatUserSubscribe
+     * @var StoreUserMiNiSubscribe
      */
     protected $subscribeModel;
 
