@@ -20,14 +20,14 @@ class UUIDValidate extends FormRequest
     public function rules(): array
     {
         return [
-            'uid' => 'required',
+            'uuid' => 'required',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'uid.required' => '数据编号不能为空',
+            'uuid.required' => '数据编号不能为空',
         ];
     }
 }
