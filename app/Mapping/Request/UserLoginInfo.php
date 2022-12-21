@@ -1,5 +1,5 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Mapping\Request;
 
@@ -19,6 +19,21 @@ class UserLoginInfo
     public static function getUserLoginInfo(): array
     {
         return json_decode(Context::get("login:info"), true);
+    }
+
+    /**
+     * 判断当前用户的登录信息
+     * 如果未空，则表示未登录状态
+     * 如果存在值，则表示处于登录状态
+     * @return array
+     */
+    public function checkoutUserLoginInfo(): array
+    {
+        $cacheInfo = Context::get("login:info");
+        if (!empty($cacheInfo)) {
+            return json_decode($cacheInfo, true);
+        }
+        return [];
     }
 
     /**

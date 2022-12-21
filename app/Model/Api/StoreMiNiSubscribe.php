@@ -3,12 +3,14 @@ declare(strict_types = 1);
 
 namespace App\Model\Api;
 
+use App\Model\Common\StoreMiNiSubscribe as SubscribeModel;
+
 /**
  * 微信订阅消息
  * Class StoreWechatSubscribeConfig
  * @package App\Model\Api
  */
-class StoreWechatSubscribeConfig extends \App\Model\Common\StoreWechatSubscribeConfig
+class StoreMiNiSubscribe extends SubscribeModel
 {
     public $searchFields = [
         'uuid',
