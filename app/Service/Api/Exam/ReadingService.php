@@ -32,25 +32,28 @@ class ReadingService implements ApiServiceInterface
     {
         return function ($query) use ($requestParams) {
             extract($requestParams);
-            if (!empty($exam_id)) {
-                $query->where('collection_uuid', '=', $exam_id);
+            if (!empty($collection_uuid)) {
+                $query->where('collection_uuid', '=', $collection_uuid);
             }
-            if (!empty($id)) {
-                $query->where('uuid', '=', $id);
+            if (!empty($uuid)) {
+                $query->where('uuid', '=', $uuid);
             }
         };
     }
 
     /**
-     * 查询数据
-     *
+     * 问答试题列表
      * @param array $requestParams 请求参数
      * @return array 查询结果
      */
     public function serviceSelect(array $requestParams): array
     {
-        return $this->readingRepository->repositorySelect(self::searchWhere($requestParams),
+        $items =  $this->readingRepository->repositorySelect(self::searchWhere($requestParams),
             (int)$requestParams['size'] ?? 20);
+        foreach ($items["items"] as $item) {
+            unset($item->relationCollection);
+        }
+        return $items;
     }
 
     /**
@@ -87,8 +90,7 @@ class ReadingService implements ApiServiceInterface
     }
 
     /**
-     * 查询单条数据
-     *
+     * 问答试题详情
      * @param array $requestParams 请求参数
      * @return array
      */

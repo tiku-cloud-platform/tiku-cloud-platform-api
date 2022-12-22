@@ -15,8 +15,7 @@ use Hyperf\HttpServer\Annotation\PostMapping;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * 文章
- *
+ * 文章管理
  * @Controller(prefix="api/article")
  * Class ArticleController
  * @package App\Controller\Api\Article

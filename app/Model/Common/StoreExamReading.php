@@ -7,7 +7,6 @@ use App\Model\BaseModel;
 
 /**
  * 问答试题
- *
  * Class StoreExamReading
  * @package App\Model\Common
  */

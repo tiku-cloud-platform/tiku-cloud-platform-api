@@ -7,16 +7,14 @@ use Hyperf\Database\Model\Relations\BelongsTo;
 
 /**
  * 问答试题
- *
  * Class StoreExamReading
  * @package App\Model\Api
  */
 class StoreExamReading extends \App\Model\Common\StoreExamReading
 {
     public $listSearchFields = [
-        'uuid as id',
+        'uuid',
         'title',
-        'content',
     ];
 
     /**

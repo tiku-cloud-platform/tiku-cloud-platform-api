@@ -24,6 +24,7 @@ class ConstController extends ApiBaseController
     }
 
     /**
+     * 常量列表
      * @GetMapping(path="list")
      * @return ResponseInterface
      */
