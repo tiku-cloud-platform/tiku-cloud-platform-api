@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Service\Api\User;
 
+use App\Mapping\Request\RequestApp;
 use App\Mapping\Request\UserLoginInfo;
 use App\Repository\Api\User\PlatformUserRepository;
 use App\Service\ApiServiceInterface;
@@ -11,15 +12,15 @@ use Hyperf\Di\Annotation\Inject;
 use function PHPUnit\Framework\exactly;
 
 /**
- * 用户信息
+ * 平台用户
  */
-class UserInfoService implements ApiServiceInterface
+class PlatformUserService implements ApiServiceInterface
 {
     /**
      * @Inject()
      * @var PlatformUserRepository
      */
-    protected $platformUserModel;
+    protected $platformUserRepository;
 
     /**
      * 查询条件处理
@@ -46,9 +47,17 @@ class UserInfoService implements ApiServiceInterface
         // TODO: Implement serviceCreate() method.
     }
 
+    /**
+     * 更新用户主信息
+     * @param array $requestParams
+     * @return int
+     */
     public function serviceUpdate(array $requestParams): int
     {
-        // TODO: Implement serviceUpdate() method.
+       return $this->platformUserRepository->repositoryUpdate([
+            ["store_uuid", "=", RequestApp::getStoreUuid()],
+            ["user_uuid", "=", UserLoginInfo::getUserId()],
+        ],$requestParams);
     }
 
     public function serviceDelete(array $requestParams): int
@@ -66,7 +75,7 @@ class UserInfoService implements ApiServiceInterface
         if ($requestParams["type"] === "basic") {
             return UserLoginInfo::getUserLoginInfo();// 获取用户基础信息
         } else if ($requestParams["type"] === "all") {// 获取用户全量信息
-            return $this->platformUserModel->repositoryFind(self::searchWhere(["uuid" => UserLoginInfo::getUserId()]));
+            return $this->platformUserRepository->repositoryFind(self::searchWhere(["uuid" => UserLoginInfo::getUserId()]));
         }
         return [];
     }
