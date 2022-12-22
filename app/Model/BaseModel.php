@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Model;
 
+use App\Mapping\Request\RequestApp;
+use App\Mapping\Request\UserLoginInfo;
 use App\Mapping\UserInfo;
 use App\Mapping\UUID;
 use App\Scopes\ClientScope;
@@ -39,7 +41,6 @@ class BaseModel extends Model
      */
     public function batchInsert(string $tableName, array $insertInfo, string $relationKeyName = '', string $relationUUID = '', string $type = 'store'): bool
     {
-        $userInfo = UserInfo::getStoreUserInfo();
         $datetime = date('Y-m-d H:i:s');
         foreach ($insertInfo as $key => $value) {
             $insertInfo[$key]['created_at'] = $datetime;
@@ -47,7 +48,7 @@ class BaseModel extends Model
             $insertInfo[$key]['is_show']    = 1;
             $insertInfo[$key]['uuid']       = UUID::getUUID();
             if ($type == 'store') {
-                $insertInfo[$key]['store_uuid'] = $userInfo['store_uuid'];
+                $insertInfo[$key]['store_uuid'] = RequestApp::getStoreUuid();
             }
             if (!empty($relationUUID)) {
                 $insertInfo[$key][$relationKeyName] = $relationUUID;
