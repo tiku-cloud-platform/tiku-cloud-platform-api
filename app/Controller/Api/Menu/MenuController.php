@@ -10,8 +10,7 @@ use Hyperf\HttpServer\Annotation\GetMapping;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * 轮播图
- *
+ * 菜单配置
  * @Controller(prefix="api/menu")
  * Class BannerController
  * @package App\Controller\Api\Menu
@@ -25,6 +24,7 @@ class MenuController extends ApiBaseController
     }
 
     /**
+     * 菜单列表
      * @GetMapping(path="list")
      * @return ResponseInterface
      */

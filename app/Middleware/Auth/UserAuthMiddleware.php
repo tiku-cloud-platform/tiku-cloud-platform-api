@@ -48,9 +48,7 @@ class UserAuthMiddleware implements MiddlewareInterface
             $userInfo = "";
             if ((new RequestApp())->getClientType() === "wechat_miniprogram") {
                 $userInfo = RedisClient::getInstance()->get(CacheKey::MINI_LOGIN_TOKEN . $authentication[0]);
-                var_dump(__LINE__, $userInfo, __METHOD__, CacheKey::MINI_LOGIN_TOKEN . $authentication[0]);
             }
-            var_dump("1", $userInfo, (new RequestApp())->getClientType());
             if (!empty($userInfo)) {
                 Context::set("login:info", $userInfo);
             } else {

@@ -22,7 +22,9 @@ class FromValidateExceptionHandler extends ExceptionHandler
             $data = json_encode([
                 'code' => empty($throwable->getCode()) ? ErrorCode::REQUEST_ERROR : $throwable->getCode(),
                 'message' => $throwable->validator->errors()->first(),
-                'data' => [],
+                'data' => [
+
+                ],
             ]);
             $this->stopPropagation();
             return $response->withStatus(422)->withBody(new SwooleStream($data));

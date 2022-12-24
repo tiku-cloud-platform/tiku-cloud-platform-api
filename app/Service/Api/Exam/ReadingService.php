@@ -6,7 +6,6 @@ namespace App\Service\Api\Exam;
 use App\Repository\Api\Exam\ReadingRepository;
 use App\Service\ApiServiceInterface;
 use Closure;
-use Hyperf\Di\Annotation\Inject;
 
 /**
  * 问答试题
@@ -17,12 +16,6 @@ use Hyperf\Di\Annotation\Inject;
 class ReadingService implements ApiServiceInterface
 {
     /**
-     * @Inject()
-     * @var ReadingRepository
-     */
-    protected $readingRepository;
-
-    /**
      * 格式化查询条件
      *
      * @param array $requestParams 请求参数
@@ -32,25 +25,28 @@ class ReadingService implements ApiServiceInterface
     {
         return function ($query) use ($requestParams) {
             extract($requestParams);
-            if (!empty($exam_id)) {
-                $query->where('collection_uuid', '=', $exam_id);
+            if (!empty($collection_uuid)) {
+                $query->where('collection_uuid', '=', $collection_uuid);
             }
-            if (!empty($id)) {
-                $query->where('uuid', '=', $id);
+            if (!empty($uuid)) {
+                $query->where('uuid', '=', $uuid);
             }
         };
     }
 
     /**
-     * 查询数据
-     *
+     * 问答试题列表
      * @param array $requestParams 请求参数
      * @return array 查询结果
      */
     public function serviceSelect(array $requestParams): array
     {
-        return $this->readingRepository->repositorySelect(self::searchWhere($requestParams),
+        $items = (new ReadingRepository())->repositorySelect(self::searchWhere($requestParams),
             (int)$requestParams['size'] ?? 20);
+        foreach ($items["items"] as $item) {
+            unset($item->relationCollection);
+        }
+        return $items;
     }
 
     /**
@@ -87,13 +83,12 @@ class ReadingService implements ApiServiceInterface
     }
 
     /**
-     * 查询单条数据
-     *
+     * 问答试题详情
      * @param array $requestParams 请求参数
      * @return array
      */
     public function serviceFind(array $requestParams): array
     {
-        return $this->readingRepository->repositoryFind(self::searchWhere($requestParams));
+        return (new ReadingRepository())->repositoryFind(self::searchWhere($requestParams));
     }
 }

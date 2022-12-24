@@ -1,10 +1,11 @@
 <?php
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Controller\Api\Exam;
 
 use App\Controller\ApiBaseController;
 use App\Middleware\Auth\UserAuthMiddleware;
+use App\Request\Store\Common\UUIDValidate;
 use App\Service\api\Exam\ReadingService;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
@@ -13,12 +14,11 @@ use Hyperf\HttpServer\Annotation\Middlewares;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * 单选试题
- *
+ * 问答试题
  * @Middlewares({
  *     @Middleware(UserAuthMiddleware::class)
  *     })
- * @Controller(prefix="api/v1/exam/reading")
+ * @Controller(prefix="api/exam/reading")
  * Class ReadingController
  * @package App\Controller\Api\Exam
  */
@@ -31,20 +31,26 @@ class ReadingController extends ApiBaseController
     }
 
     /**
+     * 问答试题列表
      * @GetMapping(path="list")
+     * @param UUIDValidate $validate
      * @return ResponseInterface
      */
-    public function index()
+    public function index(UUIDValidate $validate): ResponseInterface
     {
-        $items = $this->service->serviceSelect($this->request->all());
+        $items = $this->service->serviceSelect([
+            "collection_uuid" => $this->request->all()["uuid"],
+        ]);
         return $this->httpResponse->success($items);
     }
 
     /**
+     * 问答试题详情
      * @GetMapping(path="detail")
+     * @param UUIDValidate $validate
      * @return ResponseInterface
      */
-    public function show()
+    public function show(UUIDValidate $validate): ResponseInterface
     {
         $items = $this->service->serviceFind($this->request->all());
         return $this->httpResponse->success($items);

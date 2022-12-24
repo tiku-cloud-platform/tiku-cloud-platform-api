@@ -5,7 +5,7 @@ namespace App\Controller\Api\User;
 
 use App\Controller\ApiBaseController;
 use App\Mapping\Request\UserLoginInfo;
-use App\Service\Api\User\UserInfoService;
+use App\Service\Api\User\PlatformUserService;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\Middleware;
@@ -18,7 +18,7 @@ use Psr\Http\Message\ResponseInterface;
  */
 class UserInfoController extends ApiBaseController
 {
-    public function __construct(UserInfoService $infoService)
+    public function __construct(PlatformUserService $infoService)
     {
         $this->service = $infoService;
         parent::__construct($infoService);

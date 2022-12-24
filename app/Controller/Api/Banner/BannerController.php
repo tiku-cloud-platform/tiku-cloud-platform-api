@@ -12,7 +12,6 @@ use Psr\Http\Message\ResponseInterface;
 
 /**
  * 轮播图
- *
  * @Controller(prefix="api/banner")
  * Class BannerController
  * @package App\Controller\Api\Banner
@@ -26,6 +25,7 @@ class BannerController extends ApiBaseController
     }
 
     /**
+     * 轮播图列表
      * @GetMapping(path="list")
      * @return ResponseInterface
      */

@@ -1,15 +1,5 @@
 <?php
-
 declare(strict_types = 1);
-
-/**
- * This file is part of api.
- *
- * @link     https://www.qqdeveloper.io
- * @document https://www.qqdeveloper.wiki
- * @contact  2665274677@qq.com
- * @license  Apache2.0
- */
 
 use Hyperf\Server\Event;
 use Hyperf\Server\Server;
@@ -28,7 +18,7 @@ return [
                 Event::ON_REQUEST => [Hyperf\HttpServer\Server::class, 'onRequest'],
             ],
             'daemonize' => 0,
-            'task_worker_num' => swoole_cpu_num() * 2,
+            'task_worker_num' => swoole_cpu_num(),
             'task_enable_coroutine' => true,
         ],
     ],
@@ -42,7 +32,7 @@ return [
         Constant::OPTION_MAX_REQUEST => 100000,
         Constant::OPTION_SOCKET_BUFFER_SIZE => 2 * 1024 * 1024,
         Constant::OPTION_BUFFER_OUTPUT_SIZE => 2 * 1024 * 1024,
-        Constant::OPTION_TASK_WORKER_NUM => swoole_cpu_num() * 2,
+        Constant::OPTION_TASK_WORKER_NUM => swoole_cpu_num(),
     ],
     'callbacks' => [
         Event::ON_WORKER_START => [Hyperf\Framework\Bootstrap\WorkerStartCallback::class, 'onWorkerStart'],

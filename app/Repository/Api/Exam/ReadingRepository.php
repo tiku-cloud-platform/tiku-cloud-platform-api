@@ -75,7 +75,10 @@ class ReadingRepository implements ApiRepositoryInterface
         $bean = $this->readingModel::query()
             ->where($closure)
             ->where([['is_show', '=', 1]])
-            ->first(['uuid as id', 'title', 'content']);
+            ->first(['uuid', 'title', 'content', "tips_expend_score as expend_score",
+                "answer_income_score as income_score", "analysis", "level", "source_url",
+                "source_author", "video_url", "created_at as publish_date",
+            ]);
         if (!empty($bean)) return $bean->toArray();
         return [];
     }

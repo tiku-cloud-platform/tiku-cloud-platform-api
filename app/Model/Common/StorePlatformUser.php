@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 /**
  * This file is part of api.
  *
@@ -38,16 +38,37 @@ class StorePlatformUser extends BaseModel
         "gender",
         "email",
         "password",
+        "age",
     ];
 
+    protected $hidden = [
+        "created_at",
+        "deleted_at",
+        "updated_at",
+        "id",
+    ];
+
+    // 生日
+    public function getBirthdayAttribute($key): string
+    {
+        if (!empty($key)) {
+            $birthday = explode("-", $key);
+            var_dump($birthday, empty($birthday[0]));
+            if (!empty((int)$birthday[0])) {
+                return $key;
+            }
+        }
+        return "";
+    }
+
     // 真实姓名
-    public function getRealNameAttribute($key)
+    public function getRealNameAttribute($key): string
     {
         return !empty($key) ? $key : '';
     }
 
     // 手机号
-    public function getMobileAttribute($key)
+    public function getMobileAttribute($key): string
     {
         return !empty($key) ? $key : '';
     }

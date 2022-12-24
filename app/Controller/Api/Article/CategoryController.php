@@ -12,7 +12,6 @@ use Psr\Http\Message\ResponseInterface;
 
 /**
  * 文章分类
- *
  * @Controller(prefix="api/article/category")
  * Class CategoryController
  * @package App\Controller\Api\Article
@@ -31,7 +30,7 @@ class CategoryController extends ApiBaseController
      * @return ResponseInterface
      * @author kert
      */
-    public function index()
+    public function index(): ResponseInterface
     {
         $items = $this->service->serviceSelect($this->request->all());
 

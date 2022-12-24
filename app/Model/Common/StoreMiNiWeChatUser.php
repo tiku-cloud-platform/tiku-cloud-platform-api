@@ -40,6 +40,13 @@ class StoreMiNiWeChatUser extends BaseModel
         "login_token",
     ];
 
+    protected $hidden = [
+        "created_at",
+        "deleted_at",
+        "updated_at",
+        "id",
+    ];
+
     /**
      * 注册渠道
      * @return HasOne
