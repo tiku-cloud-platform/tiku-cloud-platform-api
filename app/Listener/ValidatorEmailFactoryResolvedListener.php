@@ -24,7 +24,6 @@ class ValidatorEmailFactoryResolvedListener implements ListenerInterface
         /** @var ValidatorFactoryInterface $validatorFactory */
         $validatorFactory = $event->validatorFactory;
         $validatorFactory->extend('email', function ($attribute, $value, $parameters, $validator) {
-            var_dump("请求之", $attribute, $value);
             if (filter_var($value, FILTER_VALIDATE_EMAIL)) {
                 return true;
             }
