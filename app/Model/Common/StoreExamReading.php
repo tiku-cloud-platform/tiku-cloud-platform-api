@@ -29,4 +29,14 @@ class StoreExamReading extends BaseModel
         "video_url",
         "is_search",
     ];
+
+    public function getPublishDateAttribute($key)
+    {
+        return date("Y-m-d", strtotime($key));
+    }
+
+    public function getVideoUrlAttribute($key): string
+    {
+        return empty($key) ? "" : $key;
+    }
 }

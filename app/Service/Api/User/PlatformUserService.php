@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Service\Api\User;
 
@@ -54,10 +54,11 @@ class PlatformUserService implements ApiServiceInterface
      */
     public function serviceUpdate(array $requestParams): int
     {
-       return $this->platformUserRepository->repositoryUpdate([
+        unset($requestParams["city"], $requestParams["hobby"], $requestParams["skills"]);
+        return $this->platformUserRepository->repositoryUpdate([
             ["store_uuid", "=", RequestApp::getStoreUuid()],
-            ["user_uuid", "=", UserLoginInfo::getUserId()],
-        ],$requestParams);
+            ["uuid", "=", UserLoginInfo::getUserId()],
+        ], $requestParams);
     }
 
     public function serviceDelete(array $requestParams): int
@@ -75,7 +76,26 @@ class PlatformUserService implements ApiServiceInterface
         if ($requestParams["type"] === "basic") {
             return UserLoginInfo::getUserLoginInfo();// 获取用户基础信息
         } else if ($requestParams["type"] === "all") {// 获取用户全量信息
-            return $this->platformUserRepository->repositoryFind(self::searchWhere(["uuid" => UserLoginInfo::getUserId()]));
+            // 格式化数据，避免一些隐私数据返回给客户端
+            $bean = $this->platformUserRepository->repositoryFind(self::searchWhere(["uuid" => UserLoginInfo::getUserId()]));
+            if (!empty($bean)) {
+                return [
+                    "birthday" => $bean["birthday"],
+                    "age" => $bean["age"],
+                    "email" => $bean["email"],
+                    "gender" => $bean["gender"],
+                    "mobile" => $bean["mobile"],
+                    "real_name" => $bean["real_name"],
+                    "remark" => $bean["remark"],
+                    "level_title" => $bean["level"]["title"],
+                    "mini_nickname" => $bean["mini"]["nickname"],
+                    "mini_district" => $bean["mini"]["district"],
+                    "mini_province" => $bean["mini"]["province"],
+                    "mini_country" => $bean["mini"]["country"],
+                    "mini_city" => $bean["mini"]["city"],
+                    "mini_avatar_url" => $bean["mini"]["avatar_url"],
+                ];
+            }
         }
         return [];
     }

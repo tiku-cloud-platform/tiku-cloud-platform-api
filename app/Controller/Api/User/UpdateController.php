@@ -1,8 +1,9 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Controller\Api\User;
 
+use App\Constants\ErrorCode;
 use App\Controller\AbstractController;
 use App\Controller\ApiBaseController;
 use App\Request\Api\User\Update\MainValidate;
@@ -41,9 +42,9 @@ class UpdateController extends ApiBaseController
     {
         $updateResult = $this->service->serviceUpdate($this->request->all());
         if ($updateResult > 0) {
-            return $this->httpResponse->success();
+            return $this->httpResponse->success(["success" => ErrorCode::REQUEST_SUCCESS, "message" => "更新成功"]);
         }
-        return $this->httpResponse->error();
+        return $this->httpResponse->error(["error" => ErrorCode::REQUEST_ERROR, "message" => "更新失败"]);
     }
 
     /**

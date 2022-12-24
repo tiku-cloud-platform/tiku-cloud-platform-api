@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Repository\Api\Exam;
 
@@ -77,7 +77,7 @@ class ReadingRepository implements ApiRepositoryInterface
             ->where([['is_show', '=', 1]])
             ->first(['uuid', 'title', 'content', "tips_expend_score as expend_score",
                 "answer_income_score as income_score", "analysis", "level", "source_url",
-                "source_author", "video_url",
+                "source_author", "video_url", "created_at as publish_date",
             ]);
         if (!empty($bean)) return $bean->toArray();
         return [];

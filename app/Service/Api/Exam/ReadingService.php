@@ -6,7 +6,6 @@ namespace App\Service\Api\Exam;
 use App\Repository\Api\Exam\ReadingRepository;
 use App\Service\ApiServiceInterface;
 use Closure;
-use Hyperf\Di\Annotation\Inject;
 
 /**
  * 问答试题
@@ -16,12 +15,6 @@ use Hyperf\Di\Annotation\Inject;
  */
 class ReadingService implements ApiServiceInterface
 {
-    /**
-     * @Inject()
-     * @var ReadingRepository
-     */
-    protected $readingRepository;
-
     /**
      * 格式化查询条件
      *
@@ -48,7 +41,7 @@ class ReadingService implements ApiServiceInterface
      */
     public function serviceSelect(array $requestParams): array
     {
-        $items =  $this->readingRepository->repositorySelect(self::searchWhere($requestParams),
+        $items = (new ReadingRepository())->repositorySelect(self::searchWhere($requestParams),
             (int)$requestParams['size'] ?? 20);
         foreach ($items["items"] as $item) {
             unset($item->relationCollection);
@@ -96,6 +89,6 @@ class ReadingService implements ApiServiceInterface
      */
     public function serviceFind(array $requestParams): array
     {
-        return $this->readingRepository->repositoryFind(self::searchWhere($requestParams));
+        return (new ReadingRepository())->repositoryFind(self::searchWhere($requestParams));
     }
 }

@@ -3,9 +3,12 @@ declare(strict_types = 1);
 
 namespace App\Repository\Api\User;
 
+use App\Mapping\Request\UserLoginInfo;
+use App\Model\Api\StoreMiNiWeChatUser;
 use App\Model\Api\StorePlatformUser;
 use App\Repository\ApiRepositoryInterface;
 use Closure;
+use Hyperf\DbConnection\Db;
 use Hyperf\Di\Annotation\Inject;
 
 /**
@@ -48,7 +51,6 @@ class PlatformUserRepository implements ApiRepositoryInterface
 
     /**
      * 添加数据
-     *
      * @param array $addInfo 添加信息
      * @return int 添加之后的ID或者行数
      */
@@ -64,27 +66,39 @@ class PlatformUserRepository implements ApiRepositoryInterface
      */
     public function repositoryFind(Closure $closure): array
     {
-        $this->userModel::query()
+        $items = $this->userModel::query()
             ->with(["level:uuid,title"])
             ->with(["mini:*"])
             ->where($closure)->first();
+        if (!empty($items)) {
+            return $items->toArray();
+        }
+        return [];
     }
 
     /**
      * 更新数据
-     *
      * @param array $updateWhere 修改条件
      * @param array $updateInfo 修改信息
      * @return int 更新行数
      */
     public function repositoryUpdate(array $updateWhere, array $updateInfo): int
     {
-        return $this->userModel::query()->where($updateWhere)->update($updateInfo);
+        $nickname = $updateInfo["nickname"];
+        unset($updateInfo["nickname"]);
+        $row = 0;
+        Db::transaction(function () use ($updateInfo, $updateWhere, &$row, $nickname) {
+            $this->userModel::query()->where($updateWhere)->update($updateInfo);
+            (new StoreMiNiWeChatUser())::query()->where([
+                ["user_uuid", "=", UserLoginInfo::getUserId()]
+            ])->update(["nickname" => $nickname]);
+            $row = 1;
+        });
+        return $row;
     }
 
     /**
      * 删除数据
-     *
      * @param array $deleteWhere 删除条件
      * @return int 删除行数
      */

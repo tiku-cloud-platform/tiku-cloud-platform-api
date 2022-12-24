@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Listener;
 
@@ -12,25 +12,26 @@ use Hyperf\Validation\Event\ValidatorFactoryResolved;
  */
 class ValidatorEmailFactoryResolvedListener implements ListenerInterface
 {
-	public function listen(): array
-	{
-		return [
-			ValidatorFactoryResolved::class
-		];
-	}
+    public function listen(): array
+    {
+        return [
+            ValidatorFactoryResolved::class
+        ];
+    }
 
-	public function process(object $event)
-	{
-		/** @var ValidatorFactoryInterface $validatorFactory */
-		$validatorFactory = $event->validatorFactory;
-		$validatorFactory->extend('email', function ($attribute, $value, $parameters, $validator) {
-			if (filter_var($value, FILTER_VALIDATE_EMAIL)) {
+    public function process(object $event)
+    {
+        /** @var ValidatorFactoryInterface $validatorFactory */
+        $validatorFactory = $event->validatorFactory;
+        $validatorFactory->extend('email', function ($attribute, $value, $parameters, $validator) {
+            var_dump("请求之", $attribute, $value);
+            if (filter_var($value, FILTER_VALIDATE_EMAIL)) {
                 return true;
             }
             return false;
-		});
-		$validatorFactory->replacer('email', function ($message, $attribute, $rule, $parameters) {
-			return str_replace(':email', $attribute, $message);
-		});
-	}
+        });
+        $validatorFactory->replacer('email', function ($message, $attribute, $rule, $parameters) {
+            return str_replace(':email', $attribute, $message);
+        });
+    }
 }

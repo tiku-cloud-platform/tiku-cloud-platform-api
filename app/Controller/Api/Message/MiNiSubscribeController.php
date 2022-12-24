@@ -3,6 +3,8 @@ declare(strict_types = 1);
 
 namespace App\Controller\Api\Message;
 
+use App\Constants\ErrorCode;
+use App\Constants\HttpCode;
 use App\Controller\ApiBaseController;
 use App\Request\Api\Subscribe\MiNiSubscribeValidate;
 use App\Service\Api\Message\MiNiSubscribeService;
@@ -49,8 +51,8 @@ class MiNiSubscribeController extends ApiBaseController
     public function subscribe(MiNiSubscribeValidate $subscribeValidate): ResponseInterface
     {
         if ((new UserMiNiSubscribeService())->serviceCreate($this->request->all())) {
-            return $this->httpResponse->success();
+            return $this->httpResponse->success(["success" => ErrorCode::REQUEST_SUCCESS, "message" => "订阅成功"]);
         }
-        return $this->httpResponse->error();
+        return $this->httpResponse->error(["error" => ErrorCode::REQUEST_ERROR, "message" => "订阅失败"]);
     }
 }

@@ -23,7 +23,7 @@ class FromValidateExceptionHandler extends ExceptionHandler
                 'code' => empty($throwable->getCode()) ? ErrorCode::REQUEST_ERROR : $throwable->getCode(),
                 'message' => $throwable->validator->errors()->first(),
                 'data' => [
-                    "validate_key" => $throwable->validator->validated(),
+
                 ],
             ]);
             $this->stopPropagation();
