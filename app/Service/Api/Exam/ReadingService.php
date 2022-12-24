@@ -17,7 +17,6 @@ class ReadingService implements ApiServiceInterface
 {
     /**
      * 格式化查询条件
-     *
      * @param array $requestParams 请求参数
      * @return Closure 组装的查询条件
      */
