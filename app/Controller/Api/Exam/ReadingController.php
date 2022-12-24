@@ -1,12 +1,12 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Controller\Api\Exam;
 
 use App\Controller\ApiBaseController;
 use App\Middleware\Auth\UserAuthMiddleware;
 use App\Request\Store\Common\UUIDValidate;
-use App\Service\api\Exam\ReadingService;
+use App\Service\Api\Exam\ReadingService;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\Middleware;
