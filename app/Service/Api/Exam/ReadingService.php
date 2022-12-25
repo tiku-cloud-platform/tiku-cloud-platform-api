@@ -40,6 +40,8 @@ class ReadingService implements ApiServiceInterface
      */
     public function serviceSelect(array $requestParams): array
     {
+        $requestParams["collection_uuid"] = $requestParams["uuid"];
+        unset($requestParams["uuid"]);
         $items = (new ReadingRepository())->repositorySelect(self::searchWhere($requestParams),
             (int)$requestParams['size'] ?? 20);
         foreach ($items["items"] as $item) {

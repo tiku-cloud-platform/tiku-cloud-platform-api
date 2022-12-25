@@ -38,9 +38,7 @@ class ReadingController extends ApiBaseController
      */
     public function index(UUIDValidate $validate): ResponseInterface
     {
-        $items = $this->service->serviceSelect([
-            "collection_uuid" => $this->request->all()["uuid"],
-        ]);
+        $items = $this->service->serviceSelect($this->request->all());
         return $this->httpResponse->success($items);
     }
 
