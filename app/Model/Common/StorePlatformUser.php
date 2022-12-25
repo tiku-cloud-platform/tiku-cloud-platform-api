@@ -53,7 +53,6 @@ class StorePlatformUser extends BaseModel
     {
         if (!empty($key)) {
             $birthday = explode("-", $key);
-            var_dump($birthday, empty($birthday[0]));
             if (!empty((int)$birthday[0])) {
                 return $key;
             }
