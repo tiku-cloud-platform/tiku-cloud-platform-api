@@ -3,6 +3,8 @@ declare(strict_types = 1);
 
 namespace App\Library\WeChat;
 
+use App\Constants\CacheKey;
+use App\Mapping\RedisClient;
 use App\Mapping\Request\RequestApp;
 use EasyWeChat\Factory;
 use EasyWeChat\MiniProgram\Application;
@@ -20,9 +22,14 @@ class WeChatMiNi
      */
     public static function getInstance(): Application
     {
+        // 从Redis中获取appid和app_secret
+        $miniConfig = RedisClient::getInstance()->hMGet(CacheKey::STORE_MINI_SETTING . RequestApp::getStoreUuid(), [
+            "name", "app_key", "app_secret"
+        ]);
+
         $config      = [
-            'app_id' => 'wx24062428b4883952',
-            'secret' => '7852162b42b3e570bb451779bc97d1ca',
+            'app_id' => $miniConfig["app_key"],
+            'secret' => $miniConfig["app_secret"],
             'response_type' => 'array',
             'log' => [
                 'level' => 'debug',
