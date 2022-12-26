@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace App\Library\WeChat;
 
+use App\Mapping\Request\RequestApp;
 use EasyWeChat\Factory;
 use EasyWeChat\MiniProgram\Application;
 use Predis\Client;
@@ -34,7 +35,8 @@ class WeChatMiNi
         if (!empty($redisConfig["auth"])) {
             $redis->auth($redisConfig["auth"]);
         }
-        $cache = new RedisAdapter($redis);
+        // 添加一个缓存前缀，避免缓存的key是同一个，被强制刷走
+        $cache = new RedisAdapter($redis, mb_substr(md5(RequestApp::getStoreUuid()), 0, 10));
 
         $app = Factory::miniProgram($config);
         $app->rebind("cache", $cache);
