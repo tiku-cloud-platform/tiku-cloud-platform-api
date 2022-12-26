@@ -20,8 +20,8 @@ class WeChatMiNi
     public static function getInstance(): Application
     {
         $config      = [
-            'app_id' => 'wxd9f531131711833d',
-            'secret' => 'f2c57403ce2e3806795ba906d1a9e531',
+            'app_id' => 'wx24062428b4883952',
+            'secret' => '7852162b42b3e570bb451779bc97d1ca',
             'response_type' => 'array',
             'log' => [
                 'level' => 'debug',
