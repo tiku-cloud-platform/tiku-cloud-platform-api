@@ -3,6 +3,9 @@ declare(strict_types = 1);
 
 namespace App\Service\Api\User;
 
+use App\Constants\CacheKey;
+use App\Constants\CacheTime;
+use App\Mapping\RedisClient;
 use App\Mapping\Request\RequestApp;
 use App\Mapping\Request\UserLoginInfo;
 use App\Repository\Api\User\PlatformUserRepository;
@@ -55,10 +58,35 @@ class PlatformUserService implements ApiServiceInterface
     public function serviceUpdate(array $requestParams): int
     {
         unset($requestParams["city"], $requestParams["hobby"], $requestParams["skills"]);
-        return $this->platformUserRepository->repositoryUpdate([
-            ["store_uuid", "=", RequestApp::getStoreUuid()],
-            ["uuid", "=", UserLoginInfo::getUserId()],
-        ], $requestParams);
+        // 查询邮箱是否存在
+        if (isset($requestParams["email"])) {
+            $bean = (new PlatformUserRepository())->repositoryFind(function ($query) use ($requestParams) {
+                $query->whereNotIn("uuid", [UserLoginInfo::getUserId()])->where([
+                    ["email", "=", $requestParams["email"]]],
+                );
+            });
+        }
+        if (empty($bean)) {
+            if ($this->platformUserRepository->repositoryUpdate([
+                ["store_uuid", "=", RequestApp::getStoreUuid()],
+                ["uuid", "=", UserLoginInfo::getUserId()],
+            ], $requestParams)) {// 更新成功之后，更新缓存信息[当前只判断是微信小程序，后续增加客户端，需要根据客户端判断来更新]
+                $userInfo = RedisClient::getInstance()->get(CacheKey::MINI_LOGIN_TOKEN . UserLoginInfo::getLoginToken());
+                if (!empty($userInfo)) {
+                    $userInfo              = json_decode($userInfo, true);
+                    $userInfo["nickname"]  = $requestParams["nickname"];
+                    $userInfo["real_name"] = $requestParams["real_name"];
+                    $userInfo["email"]     = $requestParams["email"];
+                    RedisClient::getInstance()->set(
+                        CacheKey::MINI_LOGIN_TOKEN . UserLoginInfo::getLoginToken(),
+                        json_encode($userInfo, JSON_UNESCAPED_UNICODE),
+                        CacheTime::USER_LOGIN_EXPIRE_TIME,
+                    );
+                }
+                return 1;
+            }
+        }
+        return 100;
     }
 
     public function serviceDelete(array $requestParams): int

@@ -17,12 +17,6 @@ use Psr\Http\Message\ResponseInterface;
  */
 class ConstController extends ApiBaseController
 {
-    public function __construct(ConstService $constService)
-    {
-        $this->service = $constService;
-        parent::__construct($constService);
-    }
-
     /**
      * 常量列表
      * @GetMapping(path="list")
@@ -30,7 +24,7 @@ class ConstController extends ApiBaseController
      */
     public function index(): ResponseInterface
     {
-        $items = $this->service->serviceSelect($this->request->all());
+        $items = (new ConstService)->serviceSelect($this->request->all());
         return $this->httpResponse->success($items);
     }
 }

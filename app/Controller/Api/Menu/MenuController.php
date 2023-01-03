@@ -17,12 +17,6 @@ use Psr\Http\Message\ResponseInterface;
  */
 class MenuController extends ApiBaseController
 {
-    public function __construct(MenuService $menuService)
-    {
-        $this->service = $menuService;
-        parent::__construct($menuService);
-    }
-
     /**
      * 菜单列表
      * @GetMapping(path="list")
@@ -30,7 +24,7 @@ class MenuController extends ApiBaseController
      */
     public function index(): ResponseInterface
     {
-        $items = $this->service->serviceSelect($this->request->all());
+        $items = (new MenuService)->serviceSelect($this->request->all());
         return $this->httpResponse->success($items);
     }
 }

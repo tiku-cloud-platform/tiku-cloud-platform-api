@@ -24,12 +24,6 @@ use App\Middleware\Auth\UserAuthMiddleware;
  */
 class MiNiSubscribeController extends ApiBaseController
 {
-    public function __construct(MiNiSubscribeService $configService)
-    {
-        $this->service = $configService;
-        parent::__construct($configService);
-    }
-
     /**
      * 微信订阅消息记录列表
      * @GetMapping(path="templage_list")
@@ -37,7 +31,7 @@ class MiNiSubscribeController extends ApiBaseController
      */
     public function index(): ResponseInterface
     {
-        $items = $this->service->serviceSelect($this->request->all());
+        $items = (new MiNiSubscribeService)->serviceSelect($this->request->all());
         return $this->httpResponse->success($items);
     }
 

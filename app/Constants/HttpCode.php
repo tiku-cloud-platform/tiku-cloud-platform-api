@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Constants;
 
@@ -20,4 +20,9 @@ class HttpCode extends AbstractConstants
      * @Message("未登录")
      */
     const NO_AUTH = 403;
+
+    /**
+     * @Message("请求错误")
+     */
+    const BAD_REQUEST = 401;
 }

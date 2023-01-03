@@ -40,7 +40,7 @@ class BannerRepository implements ApiRepositoryInterface
             ->where([['is_show', '=', 1]])
             ->select($this->bannerModel->searchFields)
             ->orderByDesc('orders')
-            ->paginate((int)$perSize);
+            ->paginate($perSize);
 
         return [
             'items' => $items->items(),

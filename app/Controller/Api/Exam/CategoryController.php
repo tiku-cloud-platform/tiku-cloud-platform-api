@@ -18,19 +18,13 @@ use Psr\Http\Message\ResponseInterface;
  */
 class CategoryController extends ApiBaseController
 {
-    public function __construct(CategoryService $categoryService)
-    {
-        $this->service = $categoryService;
-        parent::__construct($categoryService);
-    }
-
     /**
      * @GetMapping(path="list")
      * @return ResponseInterface
      */
     public function index(): ResponseInterface
     {
-        $items = $this->service->serviceSelect($this->request->all());
+        $items = (new CategoryService)->serviceSelect($this->request->all());
         return $this->httpResponse->success($items);
     }
 }

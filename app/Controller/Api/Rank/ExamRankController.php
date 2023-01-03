@@ -19,12 +19,6 @@ use Psr\Http\Message\ResponseInterface;
  */
 class ExamRankController extends ApiBaseController
 {
-    public function __construct(ExamService $examService)
-    {
-        $this->service = $examService;
-        parent::__construct($examService);
-    }
-
     /**
      * @GetMapping(path="list")
      * @param ExamNumberValidate $numberValidate
@@ -32,7 +26,7 @@ class ExamRankController extends ApiBaseController
      */
     public function index(ExamNumberValidate $numberValidate)
     {
-        $items = $this->service->serviceSelect($this->request->all());
+        $items = (new ExamService)->serviceSelect($this->request->all());
 
         return $this->httpResponse->success($items);
     }

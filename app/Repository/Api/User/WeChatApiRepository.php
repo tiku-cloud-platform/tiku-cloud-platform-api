@@ -63,9 +63,9 @@ class WeChatApiRepository implements ApiRepositoryInterface
                 $deviceModel    = new StoreMiniUserDevice();
                 $insertUser     = $userModel::query()->create([
                     'uuid' => $insertInfo["user_uuid"],
-                    'real_name' => "未知用户",
+                    'real_name' => "小白号",
                     'store_uuid' => $storeUuid,
-                    'store_platform_user_group_uuid',
+                    'store_platform_user_group_uuid' => "0309fe67-7d01-bcba-ba6a-0cf425800848",
                     "avatar_url" => "https://qiniucloud.qqdeveloper.com/avatar_tiku_cloud.png",
                     "remark" => "这家伙很懒，什么都没留下...",
                     "channel_uuid",
@@ -79,7 +79,7 @@ class WeChatApiRepository implements ApiRepositoryInterface
                     'uuid' => $miniUserId,
                     'user_uuid' => $insertInfo["user_uuid"],
                     'store_uuid' => $storeUuid,
-                    'nickname' => "未知用户",
+                    'nickname' => "小白号",
                     'avatar_url' => "https://qiniucloud.qqdeveloper.com/avatar_tiku_cloud.png",
                     'gender' => 0,
                     'is_forbidden' => 2,
