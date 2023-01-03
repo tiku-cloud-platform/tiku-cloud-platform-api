@@ -88,6 +88,7 @@
     "start": [
       "Composer\\Config::disableProcessTimeout",
       "php ./bin/hyperf.php start"
-    ]
+    ],
+    "sonar_win": "sonar-scanner.bat -D\"sonar.projectKey=tiku-cloud-platform-api\" -D\"sonar.sources=.\" -D\"sonar.host.url=http://124.223.170.203:9003\" -D\"sonar.login=sqp_e73a1cd38520bf88e8857b01f5b2d77b21709f3a\"\n"
   }
 }

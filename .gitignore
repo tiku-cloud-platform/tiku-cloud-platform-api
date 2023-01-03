@@ -4,3 +4,5 @@
 .env
 vendor
 runtime
+.scannerwork
+sonar-scanner-cli
