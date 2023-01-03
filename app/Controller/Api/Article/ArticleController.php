@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Controller\Api\Article;
 
@@ -22,12 +22,6 @@ use Psr\Http\Message\ResponseInterface;
  */
 class ArticleController extends ApiBaseController
 {
-    public function __construct(ArticleService $articleService)
-    {
-        $this->service = $articleService;
-        parent::__construct($articleService);
-    }
-
     /**
      * 文章列表
      * @GetMapping(path="list")
@@ -35,7 +29,7 @@ class ArticleController extends ApiBaseController
      */
     public function index()
     {
-        $items = $this->service->serviceSelect($this->request->all());
+        $items = (new ArticleService)->serviceSelect($this->request->all());
         return $this->httpResponse->success($items);
     }
 
@@ -47,7 +41,7 @@ class ArticleController extends ApiBaseController
      */
     public function show(UUIDValidate $validate)
     {
-        $bean = $this->service->serviceFind($this->request->all());
+        $bean = (new ArticleService)->serviceFind($this->request->all());
         return $this->httpResponse->success($bean);
     }
 
@@ -60,7 +54,7 @@ class ArticleController extends ApiBaseController
      */
     public function click(UUIDValidate $validate): ResponseInterface
     {
-        $updateResult = $this->service->serviceClick($this->request->all());
+        $updateResult = (new ArticleService)->serviceClick($this->request->all());
         return $updateResult ? $this->httpResponse->success() : $this->httpResponse->error();
     }
 
@@ -73,7 +67,7 @@ class ArticleController extends ApiBaseController
      */
     public function collection(UUIDValidate $validate): ResponseInterface
     {
-        $collectionResult = $this->service->serviceClick($this->request->all());
+        $collectionResult = (new ArticleService)->serviceClick($this->request->all());
         if ($collectionResult) {
             return $this->httpResponse->success();
         }

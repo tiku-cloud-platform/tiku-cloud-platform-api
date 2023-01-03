@@ -18,19 +18,13 @@ use Psr\Http\Message\ResponseInterface;
  */
 class CollectionController extends ApiBaseController
 {
-    public function __construct(CollectionService $collectionService)
-    {
-        $this->service = $collectionService;
-        parent::__construct($collectionService);
-    }
-
     /**
      * @GetMapping(path="list")
      * @return ResponseInterface
      */
     public function index(): ResponseInterface
     {
-        $items = $this->service->serviceSelect($this->request->all());
+        $items = (new CollectionService())->serviceSelect($this->request->all());
         return $this->httpResponse->success($items);
     }
 
@@ -40,7 +34,7 @@ class CollectionController extends ApiBaseController
      */
     public function show(): ResponseInterface
     {
-        $bean = $this->service->serviceFind($this->request->all());
+        $bean = (new CollectionService())->serviceFind($this->request->all());
         return $this->httpResponse->success($bean);
     }
 }

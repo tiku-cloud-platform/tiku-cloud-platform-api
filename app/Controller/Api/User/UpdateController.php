@@ -4,12 +4,10 @@ declare(strict_types = 1);
 namespace App\Controller\Api\User;
 
 use App\Constants\ErrorCode;
-use App\Controller\AbstractController;
 use App\Controller\ApiBaseController;
 use App\Request\Api\User\Update\MainValidate;
 use App\Request\Api\User\Update\MiniValidate;
 use App\Service\Api\User\PlatformUserService;
-use App\Service\ApiServiceInterface;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\Middlewares;
 use Hyperf\HttpServer\Annotation\Middleware;
@@ -26,12 +24,6 @@ use Psr\Http\Message\ResponseInterface;
  */
 class UpdateController extends ApiBaseController
 {
-    public function __construct(PlatformUserService $userService)
-    {
-        $this->service = $userService;
-        parent::__construct($userService);
-    }
-
     /**
      * 更新主表信息
      * @PutMapping(path="main_info")
@@ -40,8 +32,10 @@ class UpdateController extends ApiBaseController
      */
     public function updateInfo(MainValidate $mainValidate): ResponseInterface
     {
-        $updateResult = $this->service->serviceUpdate($this->request->all());
-        if ($updateResult > 0) {
+        $updateResult = (new PlatformUserService())->serviceUpdate($this->request->all());
+        if ($updateResult === 100) {
+            return $this->httpResponse->error(["error" => ErrorCode::REQUEST_ERROR, "message" => "邮箱已存在"]);
+        } elseif ($updateResult > 0 && $updateResult !== 100) {
             return $this->httpResponse->success(["success" => ErrorCode::REQUEST_SUCCESS, "message" => "更新成功"]);
         }
         return $this->httpResponse->error(["error" => ErrorCode::REQUEST_ERROR, "message" => "更新失败"]);

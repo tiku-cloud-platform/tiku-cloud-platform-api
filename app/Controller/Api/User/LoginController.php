@@ -16,11 +16,6 @@ use Psr\Http\Message\ResponseInterface;
  */
 class LoginController extends ApiBaseController
 {
-    public function __construct(LoginService $loginService)
-    {
-        parent::__construct($loginService);
-    }
-
     /**
      * 微信code换取信息
      * @PostMapping(path="wechat_code")

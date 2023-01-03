@@ -18,12 +18,6 @@ use Psr\Http\Message\ResponseInterface;
  */
 class UserInfoController extends ApiBaseController
 {
-    public function __construct(PlatformUserService $infoService)
-    {
-        $this->service = $infoService;
-        parent::__construct($infoService);
-    }
-
     /**
      * 获取用户基础信息
      * @Middleware(UserAuthMiddleware::class)
@@ -32,7 +26,7 @@ class UserInfoController extends ApiBaseController
      */
     public function show(): ResponseInterface
     {
-        $cacheInfo = $this->service->serviceFind(["type" => "basic"]);
+        $cacheInfo = (new PlatformUserService)->serviceFind(["type" => "basic"]);
         return $this->httpResponse->success($cacheInfo);
     }
 
@@ -44,7 +38,7 @@ class UserInfoController extends ApiBaseController
      */
     public function all(): ResponseInterface
     {
-        $userAllInfo = $this->service->serviceFind(["type" => "all"]);
+        $userAllInfo = (new PlatformUserService)->serviceFind(["type" => "all"]);
         return $this->httpResponse->success($userAllInfo);
     }
 
@@ -58,6 +52,6 @@ class UserInfoController extends ApiBaseController
     public function loginState(): ResponseInterface
     {
         $loginInfo = (new UserLoginInfo())->checkoutUserLoginInfo();
-       return $this->httpResponse->success($loginInfo);
+        return $this->httpResponse->success($loginInfo);
     }
 }

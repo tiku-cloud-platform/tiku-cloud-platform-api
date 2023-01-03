@@ -24,19 +24,13 @@ use Psr\Http\Message\ResponseInterface;
  */
 class OptionController extends ApiBaseController
 {
-    public function __construct(OptionService $optionService)
-    {
-        $this->service = $optionService;
-        parent::__construct($optionService);
-    }
-
     /**
      * @GetMapping(path="list")
      * @return ResponseInterface
      */
     public function index()
     {
-        $items = $this->service->serviceSelect($this->request->all());
+        $items = (new OptionService)->serviceSelect($this->request->all());
         return $this->httpResponse->success($items);
     }
 }

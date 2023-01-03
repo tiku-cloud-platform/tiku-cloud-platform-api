@@ -18,19 +18,13 @@ use Psr\Http\Message\ResponseInterface;
  */
 class ScoreRankController extends ApiBaseController
 {
-    public function __construct(ScoreService $scoreService)
-    {
-        $this->service = $scoreService;
-        parent::__construct($scoreService);
-    }
-
     /**
      * @GetMapping(path="list")
      * @return ResponseInterface
      */
     public function index()
     {
-        $items = $this->service->serviceGroup($this->request->all());
+        $items = (new ScoreService)->serviceGroup($this->request->all());
         return $this->httpResponse->success($items);
     }
 }

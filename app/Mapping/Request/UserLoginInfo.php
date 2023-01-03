@@ -30,9 +30,8 @@ class UserLoginInfo
     public function checkoutUserLoginInfo(): array
     {
         $cacheInfo = Context::get("login:info");
-        var_dump("登录信息", $cacheInfo);
         if (!empty($cacheInfo)) {
-            return json_decode($cacheInfo, true);
+            return Context::get("login:info");
         }
         return [];
     }
@@ -44,7 +43,19 @@ class UserLoginInfo
     public static function getUserId(): string
     {
         if (!empty(Context::get("login:info"))) {
-            return (string)json_decode(Context::get("login:info"), true)["user_uuid"];
+            return Context::get("login:info")["user_uuid"];
+        }
+        return "";
+    }
+
+    /**
+     * 获取登录缓存token
+     * @return string
+     */
+    public static function getLoginToken(): string
+    {
+        if (!empty(Context::get("login:info"))) {
+            return Context::get("login:info")["login_token"];
         }
         return "";
     }

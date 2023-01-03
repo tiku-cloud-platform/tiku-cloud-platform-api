@@ -24,12 +24,6 @@ use Psr\Http\Message\ResponseInterface;
  */
 class ReadingController extends ApiBaseController
 {
-    public function __construct(ReadingService $readingService)
-    {
-        $this->service = $readingService;
-        parent::__construct($readingService);
-    }
-
     /**
      * 问答试题列表
      * @GetMapping(path="list")
@@ -38,7 +32,7 @@ class ReadingController extends ApiBaseController
      */
     public function index(UUIDValidate $validate): ResponseInterface
     {
-        $items = $this->service->serviceSelect($this->request->all());
+        $items = (new ReadingService)->serviceSelect($this->request->all());
         return $this->httpResponse->success($items);
     }
 
@@ -50,7 +44,7 @@ class ReadingController extends ApiBaseController
      */
     public function show(UUIDValidate $validate): ResponseInterface
     {
-        $items = $this->service->serviceFind($this->request->all());
+        $items = (new ReadingService)->serviceFind($this->request->all());
         return $this->httpResponse->success($items);
     }
 }
