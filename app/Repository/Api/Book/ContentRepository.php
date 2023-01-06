@@ -23,7 +23,6 @@ class ContentRepository implements ApiRepositoryInterface
         $items = StoreBookContent::query()->where($closure)
             ->select(["title", "uuid"])
             ->where([["is_show", "=", 1]])
-            ->orderByDesc("orders")
             ->paginate($perSize);
 
         return [
