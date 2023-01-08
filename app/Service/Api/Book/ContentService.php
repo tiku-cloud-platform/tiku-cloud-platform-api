@@ -65,6 +65,13 @@ class ContentService implements ApiServiceInterface
      */
     public function serviceFind(array $requestParams): array
     {
-        return (new ContentRepository())->repositoryFind(self::searchWhere($requestParams));
+        $contentRepository = new ContentRepository();
+        $bean              = $contentRepository->repositoryFind(self::searchWhere($requestParams));
+        if (!empty($bean)) {
+            $contentRepository->repositoryIncrement([
+                ["uuid", "=", $bean["uuid"]]
+            ], "read_number");
+        }
+        return $bean;
     }
 }

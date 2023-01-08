@@ -6,7 +6,7 @@ namespace App\Controller\Api\Article;
 
 use App\Controller\ApiBaseController;
 use App\Middleware\Auth\UserAuthMiddleware;
-use App\Request\Store\Common\UUIDValidate;
+use App\Request\Api\Article\UuidValidate;
 use App\Service\Api\Article\ArticleService;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
@@ -27,7 +27,7 @@ class ArticleController extends ApiBaseController
      * @GetMapping(path="list")
      * @return ResponseInterface
      */
-    public function index()
+    public function index(): ResponseInterface
     {
         $items = (new ArticleService)->serviceSelect($this->request->all());
         return $this->httpResponse->success($items);
@@ -36,10 +36,10 @@ class ArticleController extends ApiBaseController
     /**
      * 文章详情
      * @GetMapping(path="detail")
-     * @param UUIDValidate $validate
+     * @param UuidValidate $validate
      * @return ResponseInterface
      */
-    public function show(UUIDValidate $validate)
+    public function show(UuidValidate $validate): ResponseInterface
     {
         $bean = (new ArticleService)->serviceFind($this->request->all());
         return $this->httpResponse->success($bean);
@@ -49,10 +49,10 @@ class ArticleController extends ApiBaseController
      * 文章点赞
      * @Middleware(UserAuthMiddleware::class)
      * @PostMapping(path="click")
-     * @param UUIDValidate $validate
+     * @param UuidValidate $validate
      * @return ResponseInterface
      */
-    public function click(UUIDValidate $validate): ResponseInterface
+    public function click(UuidValidate $validate): ResponseInterface
     {
         $updateResult = (new ArticleService)->serviceClick($this->request->all());
         return $updateResult ? $this->httpResponse->success() : $this->httpResponse->error();
@@ -62,10 +62,10 @@ class ArticleController extends ApiBaseController
      * 文章收藏
      * @Middleware(UserAuthMiddleware::class)
      * @PostMapping(path="collection")
-     * @param UUIDValidate $validate
+     * @param UuidValidate $validate
      * @return ResponseInterface
      */
-    public function collection(UUIDValidate $validate): ResponseInterface
+    public function collection(UuidValidate $validate): ResponseInterface
     {
         $collectionResult = (new ArticleService)->serviceClick($this->request->all());
         if ($collectionResult) {

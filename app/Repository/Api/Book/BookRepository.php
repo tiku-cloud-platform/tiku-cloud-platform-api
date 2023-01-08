@@ -24,7 +24,8 @@ class BookRepository implements ApiRepositoryInterface
             ->with(["image:uuid,file_url as url,file_name as path"])
             ->where($closure)
             ->where([["is_show", "=", 1]])
-            ->select(["uuid", "file_uuid", "title", "author", "tags", "source", "numbers", "collection_number", "level", "score"])
+            ->select(["uuid", "file_uuid", "title", "author", "tags", "source", "numbers", "collection_number", "level",
+                "score", "click_number"])
             ->orderByDesc("orders")
             ->paginate($perSize);
         return [
@@ -56,7 +57,7 @@ class BookRepository implements ApiRepositoryInterface
             ->with(["image:uuid,file_url as url,file_name as path"])
             ->where([["is_show", "=", 1]])
             ->select(["uuid", "file_uuid", "title", "author", "tags", "source", "numbers", "collection_number",
-                "level", "score", "intro"])
+                "level", "score", "intro", "click_number"])
             ->first();
         if (!empty($bean)) {
             return $bean->toArray();
