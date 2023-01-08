@@ -6,6 +6,7 @@ namespace App\Repository\Api\Book;
 use App\Model\Api\StoreBookContent;
 use App\Repository\ApiRepositoryInterface;
 use Closure;
+use Throwable;
 
 /**
  * 书籍内容管理
@@ -77,5 +78,14 @@ class ContentRepository implements ApiRepositoryInterface
     public function repositoryWhereInDelete(array $deleteWhere, string $field): int
     {
         // TODO: Implement repositoryWhereInDelete() method.
+    }
+
+    public function repositoryIncrement(array $updateWhere, string $incrementField, int $incrementValue = 1): int
+    {
+        try {
+            return StoreBookContent::query()->where($updateWhere)->increment($incrementField, $incrementValue);
+        } catch (Throwable $throwable) {
+            return 0;
+        }
     }
 }
