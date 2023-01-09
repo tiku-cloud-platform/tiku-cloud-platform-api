@@ -19,6 +19,9 @@ class BookService implements ApiServiceInterface
             if (!empty($uuid)) {
                 $query->where("uuid", "=", $uuid);
             }
+            if (!empty($title)) {
+                $query->where("title", "like", "%" . $title . "%");
+            }
         };
     }
 
