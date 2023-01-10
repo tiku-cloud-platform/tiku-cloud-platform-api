@@ -21,12 +21,10 @@ class CategoryController extends ApiBaseController
      * 分类列表
      * @GetMapping(path="list")
      * @return ResponseInterface
-     * @author kert
      */
     public function index(): ResponseInterface
     {
         $items = (new CategoryService)->serviceSelect($this->request->all());
-
         return $this->httpResponse->success($items);
     }
 }

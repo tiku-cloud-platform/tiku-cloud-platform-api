@@ -43,14 +43,15 @@ class UserAuthMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         // 先判断是否存在授权字段；接着获取客户端类型；根据客户端类型获取用户登录信息。
-        $authentication = $request->getHeader("Authentication");
+        $authentication = $request->getHeader("Authorization");
         if (!empty($authentication)) {
-            $userInfo = "";
+            $loginToken = trim(str_replace("Bearer", "", $authentication[0]));
+            $userInfo   = "";
             if ((new RequestApp())->getClientType() === "wechat_miniprogram") {
-                $userInfo = RedisClient::getInstance()->get(CacheKey::MINI_LOGIN_TOKEN . $authentication[0]);
+                $userInfo = RedisClient::getInstance()->get(CacheKey::MINI_LOGIN_TOKEN . $loginToken);
             }
             if (!empty($userInfo)) {
-                Context::set("login:info", array_merge(json_decode($userInfo, true), ["login_token" => $authentication[0]]));
+                Context::set("login:info", array_merge(json_decode($userInfo, true), ["login_token" => $loginToken]));
             } else {
                 return $this->httpResponse->error([],
                     ErrorCode::REQUEST_ERROR,

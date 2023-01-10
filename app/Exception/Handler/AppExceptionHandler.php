@@ -5,6 +5,7 @@ namespace App\Exception\Handler;
 
 use App\Constants\ErrorCode;
 use App\Constants\HttpCode;
+use App\Mapping\UUID;
 use Cassandra\Exception\ValidationException;
 use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\ExceptionHandler\ExceptionHandler;
@@ -36,6 +37,7 @@ class AppExceptionHandler extends ExceptionHandler
             'code' => ErrorCode::REQUEST_ERROR,
             'message' => env('APP_ENV') == 'dev' ? $throwable->getMessage() . $throwable->getFile() . $throwable->getLine() : ErrorCode::getMessage(ErrorCode::REQUEST_ERROR),
             'data' => [],
+            "request_id" => UUID::snowFlakeId(),
         ]);
         return $response->withStatus(HttpCode::SERVER_ERROR)->withBody(new SwooleStream($data));
     }

@@ -85,31 +85,33 @@ class WeChatApiRepository implements ApiRepositoryInterface
                     'is_forbidden' => 2,
                     'language' => "zh-Cn",
                 ]);
-                $deviceModel::query()->create([
-                    "uuid" => UUID::getUUID(),
-                    "store_uuid" => $storeUuid,
-                    "mini_user_uuid" => $miniUserId,
-                    "device_type" => $insertInfo["device"]["deviceType"] ?? "",
-                    "device_brand" => $insertInfo["device"]["deviceBrand"] ?? "",
-                    "device_model" => $insertInfo["device"]["deviceModel"] ?? "",
-                    "os_name" => $insertInfo["device"]["osName"] ?? "",
-                    "os_version" => $insertInfo["device"]["osVersion"] ?? "",
-                    "os_language" => $insertInfo["device"]["language"] ?? "",
-                    "os_theme" => $insertInfo["device"]["osTheme"] ?? "",
-                    "uni_platform" => $insertInfo["device"]["uniPlatform"] ?? "",
-                    "uni_compile_version" => $insertInfo["device"]["uniCompileVersion"] ?? "",
-                    "uni_runtime_version" => $insertInfo["device"]["uniRuntimeVersion"] ?? "",
-                    "app_id" => $insertInfo["device"]["appId"] ?? "",
-                    "app_name" => $insertInfo["device"]["appName"] ?? "",
-                    "app_version" => $insertInfo["device"]["appVersion"] ?? "",
-                    "app_version_code" => $insertInfo["device"]["appVersionCode"] ?? "",
-                    "app_wgt_version" => $insertInfo["device"]["appWgtVersion"] ?? "",
-                    "app_language" => $insertInfo["device"]["appLanguage"] ?? "",
-                    "ua" => $insertInfo["device"]["ua"] ?? "",
-                    "rom_name" => $insertInfo["device"]["romName"] ?? "",
-                    "rom_version" => $insertInfo["device"]["romVersion"] ?? "",
-                    "sdk_version" => $insertInfo["device"]["SDKVersion"] ?? "",
-                ]);
+                if (!empty($insertInfo["device"])) {
+                    $deviceModel::query()->create([
+                        "uuid" => UUID::getUUID(),
+                        "store_uuid" => $storeUuid,
+                        "mini_user_uuid" => $miniUserId,
+                        "device_type" => $insertInfo["device"]["deviceType"] ?? "",
+                        "device_brand" => $insertInfo["device"]["deviceBrand"] ?? "",
+                        "device_model" => $insertInfo["device"]["deviceModel"] ?? "",
+                        "os_name" => $insertInfo["device"]["osName"] ?? "",
+                        "os_version" => $insertInfo["device"]["osVersion"] ?? "",
+                        "os_language" => $insertInfo["device"]["language"] ?? "",
+                        "os_theme" => $insertInfo["device"]["osTheme"] ?? "",
+                        "uni_platform" => $insertInfo["device"]["uniPlatform"] ?? "",
+                        "uni_compile_version" => $insertInfo["device"]["uniCompileVersion"] ?? "",
+                        "uni_runtime_version" => $insertInfo["device"]["uniRuntimeVersion"] ?? "",
+                        "app_id" => $insertInfo["device"]["appId"] ?? "",
+                        "app_name" => $insertInfo["device"]["appName"] ?? "",
+                        "app_version" => $insertInfo["device"]["appVersion"] ?? "",
+                        "app_version_code" => $insertInfo["device"]["appVersionCode"] ?? "",
+                        "app_wgt_version" => $insertInfo["device"]["appWgtVersion"] ?? "",
+                        "app_language" => $insertInfo["device"]["appLanguage"] ?? "",
+                        "ua" => $insertInfo["device"]["ua"] ?? "",
+                        "rom_name" => $insertInfo["device"]["romName"] ?? "",
+                        "rom_version" => $insertInfo["device"]["romVersion"] ?? "",
+                        "sdk_version" => $insertInfo["device"]["SDKVersion"] ?? "",
+                    ]);
+                }
                 if ($insertUser && $insertMiniUser) {
                     $insertUserResult = true;
                 }

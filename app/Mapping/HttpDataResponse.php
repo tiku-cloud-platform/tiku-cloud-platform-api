@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace App\Mapping;
 
 use App\Constants\ErrorCode;
+use Godruoyi\Snowflake\Snowflake;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Contract\ResponseInterface;
 use Psr\Http\Message\ResponseInterface as Psr7ResponseInterface;
@@ -36,7 +37,8 @@ class HttpDataResponse
             'code' => empty($code) ? ErrorCode::REQUEST_SUCCESS : $code,
             'message' => empty($message) ? ErrorCode::getMessage(ErrorCode::REQUEST_SUCCESS) : $message,
             'data' => $data,
-        ])->withStatus((int)$httpCode);
+            "request_id" => UUID::snowFlakeId(),
+        ])->withStatus($httpCode);
     }
 
     /**
@@ -54,7 +56,8 @@ class HttpDataResponse
             'code' => empty($code) ? ErrorCode::REQUEST_ERROR : $code,
             'message' => empty($message) ? ErrorCode::getMessage(ErrorCode::REQUEST_ERROR) : $message,
             'data' => $data,
-        ])->withStatus((int)$httpCode);
+            "request_id" => UUID::snowFlakeId(),
+        ])->withStatus($httpCode);
     }
 
     /**
@@ -72,6 +75,7 @@ class HttpDataResponse
             'code' => empty($code) ? ErrorCode::REQUEST_ERROR : $code,
             'message' => $message,
             'data' => $data,
+            "request_id" => UUID::snowFlakeId(),
         ])->withStatus($httpCode);
     }
 }

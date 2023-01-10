@@ -26,4 +26,9 @@ class UUID
             substr($md5Value, 14, 4) . '-' .
             substr($md5Value, 20, 12);
     }
+
+    public static function snowFlakeId(): string
+    {
+        return (new Snowflake())->id();
+    }
 }

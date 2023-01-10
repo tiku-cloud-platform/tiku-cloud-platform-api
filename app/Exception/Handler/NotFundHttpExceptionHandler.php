@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace App\Exception\Handler;
 
 use App\Constants\ErrorCode;
+use App\Mapping\UUID;
 use Hyperf\ExceptionHandler\ExceptionHandler;
 use Hyperf\HttpMessage\Exception\NotFoundHttpException;
 use Hyperf\HttpMessage\Stream\SwooleStream;
@@ -31,6 +32,7 @@ class NotFundHttpExceptionHandler extends ExceptionHandler
                 'code' => empty($throwable->getCode()) ? ErrorCode::REQUEST_ERROR : $throwable->getCode(),
                 'message' => '请求地址不存在',
                 'data' => [],
+                "request_id" => UUID::snowFlakeId(),
             ]);
             $this->stopPropagation();
             return $response->withStatus(404)->withBody(new SwooleStream($data));
