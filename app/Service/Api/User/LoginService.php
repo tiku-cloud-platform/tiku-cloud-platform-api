@@ -35,7 +35,10 @@ class LoginService implements ApiServiceInterface
      */
     public function serviceMiNiCodeAuth(array $requestParams): array
     {
-        $jsonCode = WeChatMiNi::getInstance()->auth->session($requestParams["code"] ?? "");
+        $jsonCode = WeChatMiNi::getInstance()->auth->session($requestParams["code"]);
+        if (!empty($jsonCode["errcode"])) {
+            return ["code" => 100];
+        }
         $userInfo = $this->miniUserRepository->repositoryFind(function ($query) use ($jsonCode) {
             $query->where("openid", "=", $jsonCode["openid"]);
         });
@@ -59,7 +62,7 @@ class LoginService implements ApiServiceInterface
         if ($userInfo["is_forbidden"] === 1) {
             return ["code" => 3];
         }
-        $loginToken  = UUID::getUUID();
+        $loginToken  = md5(UUID::getUUID());
         $cacheResult = $this->setLoginCache(CacheKey::MINI_LOGIN_TOKEN . $loginToken, $userInfo);
         if ($cacheResult) {
             return array_merge([

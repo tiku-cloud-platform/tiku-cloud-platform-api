@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace App\Exception\Handler;
 
 use App\Constants\ErrorCode;
+use App\Mapping\UUID;
 use Hyperf\ExceptionHandler\ExceptionHandler;
 use Hyperf\HttpMessage\Stream\SwooleStream;
 use Hyperf\Validation\ValidationException;
@@ -22,9 +23,8 @@ class FromValidateExceptionHandler extends ExceptionHandler
             $data = json_encode([
                 'code' => empty($throwable->getCode()) ? ErrorCode::REQUEST_ERROR : $throwable->getCode(),
                 'message' => $throwable->validator->errors()->first(),
-                'data' => [
-
-                ],
+                'data' => [],
+                "request_id" => UUID::snowFlakeId(),
             ]);
             $this->stopPropagation();
             return $response->withStatus(422)->withBody(new SwooleStream($data));

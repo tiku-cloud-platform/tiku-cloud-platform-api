@@ -3,9 +3,6 @@ declare(strict_types = 1);
 
 namespace App\Model\Api;
 
-
-use App\Mapping\UserInfo;
-
 /**
  * 文章
  *
@@ -48,42 +45,7 @@ class StoreArticle extends \App\Model\Common\StoreArticle
         "click_number",
     ];
 
-    protected $appends = [
-        'is_click',
-        'is_read'
+    protected $hidden = [
+        "file_uuid"
     ];
-
-    public function getIsClickAttribute($key)
-    {
-//        $userInfo = UserInfo::getWeChatUserInfo();
-//        if (!empty($userInfo)) {
-//            if (!empty(StoreArticleReadClick::query()->where([
-//                ['article_uuid', '=', $this->attributes['uuid']],
-//                ['user_uuid', '=', $userInfo['user_uuid']],
-//                ['type', '=', 1]
-//            ])->first(['uuid']))) {
-//                return 1;
-//            }
-//            return 0;
-//        }
-
-        return 0;
-    }
-
-    public function getIsReadAttribute($key)
-    {
-//        $userInfo = UserInfo::getWeChatUserInfo();
-//        if (!empty($userInfo)) {
-//            if (!empty(StoreArticleReadClick::query()->where([
-//                ['article_uuid', '=', $this->attributes['uuid']],
-//                ['user_uuid', '=', $userInfo['user_uuid']],
-//                ['type', '=', 2]
-//            ])->first(['uuid']))) {
-//                return 1;
-//            }
-//            return 0;
-//        }
-
-        return 0;
-    }
 }

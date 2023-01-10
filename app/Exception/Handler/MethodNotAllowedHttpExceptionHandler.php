@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace App\Exception\Handler;
 
 use App\Constants\ErrorCode;
+use App\Mapping\UUID;
 use Hyperf\ExceptionHandler\ExceptionHandler;
 use Hyperf\HttpMessage\Exception\MethodNotAllowedHttpException;
 use Hyperf\HttpMessage\Stream\SwooleStream;
@@ -31,6 +32,7 @@ class MethodNotAllowedHttpExceptionHandler extends ExceptionHandler
                 'code' => empty($throwable->getCode()) ? ErrorCode::REQUEST_ERROR : $throwable->getCode(),
                 'message' => '请求方法不被允许',
                 'data' => [],
+                "request_id" => UUID::snowFlakeId(),
             ]);
             $this->stopPropagation();
             return $response->withStatus(405)->withBody(new SwooleStream($data));
