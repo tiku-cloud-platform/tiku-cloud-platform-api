@@ -7,6 +7,7 @@ namespace App\Controller\Api\Article;
 use App\Controller\ApiBaseController;
 use App\Middleware\Auth\UserAuthMiddleware;
 use App\Request\Api\Article\UuidValidate;
+use App\Request\Api\Common\PageValidate;
 use App\Service\Api\Article\ArticleService;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
@@ -25,9 +26,10 @@ class ArticleController extends ApiBaseController
     /**
      * 文章列表
      * @GetMapping(path="list")
+     * @param PageValidate $validate
      * @return ResponseInterface
      */
-    public function index(): ResponseInterface
+    public function index(PageValidate $validate): ResponseInterface
     {
         $items = (new ArticleService)->serviceSelect($this->request->all());
         return $this->httpResponse->success($items);
