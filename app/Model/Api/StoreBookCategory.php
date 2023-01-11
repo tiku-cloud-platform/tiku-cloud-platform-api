@@ -17,7 +17,6 @@ class StoreBookCategory extends \App\Model\Common\StoreBookCategory
         $items = self::query()->where([
             ["parent_uuid", "=", $this->getAttribute("uuid")]
         ])->get(["title", "uuid"]);
-        var_dump($items);
         if (!empty($items)) {
             $items     = $items->toArray();
             $bookModel = new StoreBookContent();

@@ -6,6 +6,7 @@ namespace App\Controller\Api\Message;
 use App\Constants\ErrorCode;
 use App\Constants\HttpCode;
 use App\Controller\ApiBaseController;
+use App\Request\Api\Common\PageValidate;
 use App\Request\Api\Subscribe\MiNiSubscribeValidate;
 use App\Service\Api\Message\MiNiSubscribeService;
 use App\Service\Api\Message\UserMiNiSubscribeService;
@@ -27,9 +28,10 @@ class MiNiSubscribeController extends ApiBaseController
     /**
      * 微信订阅消息记录列表
      * @GetMapping(path="templage_list")
+     * @param PageValidate $validate
      * @return ResponseInterface
      */
-    public function index(): ResponseInterface
+    public function index(PageValidate $validate): ResponseInterface
     {
         $items = (new MiNiSubscribeService)->serviceSelect($this->request->all());
         return $this->httpResponse->success($items);

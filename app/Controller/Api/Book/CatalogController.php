@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace App\Controller\Api\Book;
 
 use App\Controller\ApiBaseController;
+use App\Request\Api\Common\PageValidate;
 use App\Request\Store\Common\UUIDValidate;
 use App\Service\Api\Book\CategoryService;
 use App\Service\Api\Book\ContentService;
@@ -22,9 +23,10 @@ class CatalogController extends ApiBaseController
      * 数据目录
      * @GetMapping(path="catalog")
      * @param UUIDValidate $validate
+     * @param PageValidate $pageValidate
      * @return ResponseInterface
      */
-    public function catalog(UUIDValidate $validate): ResponseInterface
+    public function catalog(UUIDValidate $validate, PageValidate $pageValidate): ResponseInterface
     {
         return $this->httpResponse->success((new ContentService())->serviceCatalog($this->request->all()));
     }

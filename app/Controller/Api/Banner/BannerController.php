@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace App\Controller\Api\Banner;
 
 use App\Controller\ApiBaseController;
+use App\Request\Api\Common\PageValidate;
 use App\Service\Api\Platform\BannerService;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
@@ -22,7 +23,7 @@ class BannerController extends ApiBaseController
      * @GetMapping(path="list")
      * @return ResponseInterface
      */
-    public function index(): ResponseInterface
+    public function index(PageValidate $validate): ResponseInterface
     {
         $items = (new BannerService)->serviceSelect($this->request->all());
         return $this->httpResponse->success($items);

@@ -5,6 +5,7 @@ namespace App\Controller\Api\Book;
 
 use App\Controller\ApiBaseController;
 use App\Request\Api\Book\UuidValidate;
+use App\Request\Api\Common\PageValidate;
 use App\Service\Api\Book\BookService;
 use App\Service\Api\Book\ClickService;
 use App\Service\Api\Book\CollectionService;
@@ -26,7 +27,7 @@ class BookController extends ApiBaseController
      * @GetMapping(path="list")
      * @return ResponseInterface
      */
-    public function index(): ResponseInterface
+    public function index(PageValidate $validate): ResponseInterface
     {
         return $this->httpResponse->success((new BookService())->serviceSelect($this->request->all()));
     }

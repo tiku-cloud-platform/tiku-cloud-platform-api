@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace App\Controller\Api\Article;
 
 use App\Controller\ApiBaseController;
+use App\Request\Api\Common\PageValidate;
 use App\Service\Api\Article\CategoryService;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
@@ -20,9 +21,10 @@ class CategoryController extends ApiBaseController
     /**
      * 分类列表
      * @GetMapping(path="list")
+     * @param PageValidate $validate
      * @return ResponseInterface
      */
-    public function index(): ResponseInterface
+    public function index(PageValidate $validate): ResponseInterface
     {
         $items = (new CategoryService)->serviceSelect($this->request->all());
         return $this->httpResponse->success($items);
