@@ -58,6 +58,13 @@ class ContentService implements ApiServiceInterface
         // TODO: Implement serviceDelete() method.
     }
 
+    public function serviceFirst($requestParams): array
+    {
+        return (new ContentRepository())->repositoryFind(function ($query) use ($requestParams) {
+            $query->where("store_book_uuid", "=", $requestParams["uuid"]);
+        });
+    }
+
     /**
      * 内容详情
      * @param array $requestParams
