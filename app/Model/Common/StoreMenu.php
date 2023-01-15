@@ -17,18 +17,6 @@ class StoreMenu extends BaseModel
 {
     protected $table = 'store_menu';
 
-    protected $fillable = [
-        'uuid',
-        'title',
-        'file_uuid',
-        'type',
-        'url',
-        'position',
-        'orders',
-        'is_show',
-        'store_uuid',
-    ];
-
     /**
      * 菜单图标地址
      *
