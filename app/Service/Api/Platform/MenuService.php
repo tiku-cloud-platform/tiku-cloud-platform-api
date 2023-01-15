@@ -29,7 +29,6 @@ class MenuService implements ApiServiceInterface
 
     /**
      * 格式化查询条件
-     *
      * @param array $requestParams 请求参数
      * @return Closure 组装的查询条件
      */
@@ -38,19 +37,24 @@ class MenuService implements ApiServiceInterface
         return function ($query) use ($requestParams) {
             extract($requestParams);
             if (!empty($position)) {
-                $query->where('position', '=', $position);
-            };
+                $query->where('position_position', '=', $position);
+            }
+            if (!empty($client)) {
+                $query->where("client_position", "=", $client);
+            }
         };
     }
 
     /**
      * 查询数据
-     *
      * @param array $requestParams 请求参数
      * @return array 查询结果
      */
     public function serviceSelect(array $requestParams): array
     {
+        if (!isset($requestParams["client"]) || !isset($requestParams["position"])) {
+            return [];
+        }
         $items = $this->menuRepository->repositorySelect(self::searchWhere($requestParams),
             (int)$requestParams['size'] ?? 20);
         foreach ($items["items"] as $item) {
@@ -62,7 +66,6 @@ class MenuService implements ApiServiceInterface
 
     /**
      * 创建数据
-     *
      * @param array $requestParams 请求参数
      * @return bool true|false
      */

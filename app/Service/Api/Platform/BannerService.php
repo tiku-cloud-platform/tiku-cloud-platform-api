@@ -37,8 +37,11 @@ class BannerService implements ApiServiceInterface
         return function ($query) use ($requestParams) {
             extract($requestParams);
             if (!empty($position)) {
-                $query->where('position', '=', $position);
-            };
+                $query->where('position_position', '=', $position);
+            }
+            if (!empty($client)) {
+                $query->where("client_position", "=", $client);
+            }
         };
     }
 
@@ -50,6 +53,9 @@ class BannerService implements ApiServiceInterface
      */
     public function serviceSelect(array $requestParams): array
     {
+        if (!isset($requestParams["client"]) || !isset($requestParams["position"])) {
+            return [];
+        }
         $items = $this->bannerRepository->repositorySelect(self::searchWhere($requestParams),
             (int)$requestParams['size'] ?? 20);
         foreach ($items["items"] as $item) {
