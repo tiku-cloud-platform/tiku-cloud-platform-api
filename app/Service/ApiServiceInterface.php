@@ -12,7 +12,6 @@ interface ApiServiceInterface
 {
     /**
      * 格式化查询条件
-     *
      * @param array $requestParams 请求参数
      * @return Closure 组装的查询条件
      */
@@ -20,7 +19,6 @@ interface ApiServiceInterface
 
     /**
      * 查询数据
-     *
      * @param array $requestParams 请求参数
      * @return array 查询结果
      */
@@ -28,7 +26,6 @@ interface ApiServiceInterface
 
     /**
      * 创建数据
-     *
      * @param array $requestParams 请求参数
      * @return bool true|false
      */
@@ -36,7 +33,6 @@ interface ApiServiceInterface
 
     /**
      * 更新数据
-     *
      * @param array $requestParams 请求参数
      * @return int 更新行数
      */
@@ -44,7 +40,6 @@ interface ApiServiceInterface
 
     /**
      * 删除数据
-     *
      * @param array $requestParams 请求参数
      * @return int 删除行数
      */
@@ -52,7 +47,6 @@ interface ApiServiceInterface
 
     /**
      * 查询单条数据
-     *
      * @param array $requestParams 请求参数
      * @return array
      */
