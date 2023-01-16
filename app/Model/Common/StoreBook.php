@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace App\Model\Common;
 
+use App\Model\Api\StoreBookContent;
 use App\Model\BaseModel;
 use Hyperf\Database\Model\Relations\BelongsTo;
 
@@ -30,6 +31,17 @@ class StoreBook extends BaseModel
         "is_show",
         "orders",
     ];
+
+    protected $appends = [
+        "read_number",
+    ];
+
+    public function getReadNumberAttribute(): int
+    {
+        return (int)(new StoreBookContent())::query()->where([
+            ["store_book_uuid", "=", $this->getAttribute("uuid")]
+        ])->sum("read_number");
+    }
 
     public function image(): BelongsTo
     {

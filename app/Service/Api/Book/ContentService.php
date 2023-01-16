@@ -40,22 +40,22 @@ class ContentService implements ApiServiceInterface
 
     public function serviceSelect(array $requestParams): array
     {
-        // TODO: Implement serviceSelect() method.
+        return [];
     }
 
     public function serviceCreate(array $requestParams): bool
     {
-        // TODO: Implement serviceCreate() method.
+        return false;
     }
 
     public function serviceUpdate(array $requestParams): int
     {
-        // TODO: Implement serviceUpdate() method.
+        return 0;
     }
 
     public function serviceDelete(array $requestParams): int
     {
-        // TODO: Implement serviceDelete() method.
+        return 0;
     }
 
     public function serviceFirst($requestParams): array
