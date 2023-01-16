@@ -15,6 +15,6 @@ class StoreBanner extends \App\Model\Common\StoreBanner
         'title',
         'file_uuid',
         'url',
-        'type',
+        'type as redirect_type',
     ];
 }

@@ -5,7 +5,6 @@ namespace App\Model\Api;
 
 /**
  * 用户端菜单
- *
  * Class StoreMenu
  * @package App\Model\Api
  */
