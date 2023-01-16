@@ -16,6 +16,7 @@ class CollectionService implements ApiServiceInterface
     {
         return function ($query) use ($requestParams) {
             extract($requestParams);
+            $query->where("user_uuid", "=", UserLoginInfo::getUserId());
             if (!empty($uuid)) {
                 $query->where("book_uuid", "=", $uuid);
             }
