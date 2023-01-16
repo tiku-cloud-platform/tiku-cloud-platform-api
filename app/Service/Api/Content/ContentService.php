@@ -8,6 +8,7 @@ use App\Repository\Api\Platform\ContentRepository;
 use App\Service\ApiServiceInterface;
 use Closure;
 use Hyperf\Di\Annotation\Inject;
+use function Swoole\Coroutine\Http\request;
 
 /**
  * 平台内容
@@ -16,21 +17,6 @@ use Hyperf\Di\Annotation\Inject;
  */
 class ContentService implements ApiServiceInterface
 {
-    /**
-     * @Inject()
-     * @var ContentRepository
-     */
-    protected $contentRepository;
-
-    public function __construct()
-    {
-    }
-
-    /**
-     * 格式化查询条件
-     * @param array $requestParams 请求参数
-     * @return Closure 组装的查询条件
-     */
     public static function searchWhere(array $requestParams): Closure
     {
         return function ($query) use ($requestParams) {
@@ -41,53 +27,31 @@ class ContentService implements ApiServiceInterface
         };
     }
 
-    /**
-     * 查询数据
-     * @param array $requestParams 请求参数
-     * @return array 查询结果
-     */
     public function serviceSelect(array $requestParams): array
     {
-        // TODO: Implement serviceSelect() method.
+        return [];
     }
 
-    /**
-     * 创建数据
-     * @param array $requestParams 请求参数
-     * @return bool true|false
-     */
     public function serviceCreate(array $requestParams): bool
     {
-        // TODO: Implement serviceCreate() method.
+        return false;
     }
 
-    /**
-     * 更新数据
-     * @param array $requestParams 请求参数
-     * @return int 更新行数
-     */
     public function serviceUpdate(array $requestParams): int
     {
-        // TODO: Implement serviceUpdate() method.
+        return 0;
     }
 
-    /**
-     * 删除数据
-     * @param array $requestParams 请求参数
-     * @return int 删除行数
-     */
     public function serviceDelete(array $requestParams): int
     {
-        // TODO: Implement serviceDelete() method.
+        return 0;
     }
 
-    /**
-     * 查询单条数据
-     * @param array $requestParams 请求参数
-     * @return array 删除行数
-     */
     public function serviceFind(array $requestParams): array
     {
-        return $this->contentRepository->repositoryFind(self::searchWhere($requestParams));
+        if (empty($requestParams["uuid"])) {
+            return [];
+        }
+        return (new ContentRepository)->repositoryFind(self::searchWhere($requestParams));
     }
 }
