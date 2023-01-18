@@ -13,7 +13,7 @@ use App\Model\BaseModel;
  */
 class StorePlatformUserGroup extends BaseModel
 {
-    protected $table = 'store_platform_user_group';
+    protected $table = 'store_platform_user_grade';
 
     protected $fillable = [
         'title',
