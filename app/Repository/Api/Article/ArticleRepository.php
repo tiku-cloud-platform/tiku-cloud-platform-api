@@ -35,12 +35,21 @@ class ArticleRepository implements ApiRepositoryInterface
      */
     public function repositorySelect(Closure $closure, int $perSize): array
     {
-        $items = $this->articleModel::query()
+        $items = (new StoreArticle)::query()
             ->with(['image:uuid,file_url as url,file_name as name,file_hash as hash'])
             ->with(['category:uuid,title'])
             ->where([['is_show', '=', 1]])
             ->where($closure)
-            ->select($this->articleModel->listSearchFields)
+            ->select([
+                'uuid',
+                'title',
+                'file_uuid',
+                'source',
+                'read_number',
+                'author',
+                "article_category_uuid as category_uid",
+                "click_number",
+            ])
             ->orderByDesc('orders')
             ->paginate($perSize);
 
@@ -79,12 +88,23 @@ class ArticleRepository implements ApiRepositoryInterface
      */
     public function repositoryFind(Closure $closure): array
     {
-        $bean = $this->articleModel::query()
+        $bean = (new StoreArticle)::query()
             ->with(['image:uuid,file_url as url,file_name as name,file_hash as hash'])
             ->with(['category:uuid,title'])
             ->where($closure)
             ->where([['is_show', '=', 1]])
-            ->select($this->articleModel->searchFields)
+            ->select([
+                'uuid',
+                'article_category_uuid as category_uid',
+                'title',
+                'file_uuid',
+                'content',
+                'publish_date',
+                'author',
+                'source',
+                'read_number',
+                'click_number',
+            ])
             ->first();
 
         if (!empty($bean)) return $bean->toArray();
@@ -134,7 +154,7 @@ class ArticleRepository implements ApiRepositoryInterface
      */
     public function repositoryUpdateReadNumber(string $uuid): int
     {
-        return $this->articleModel->fieldIncr($this->articleModel->getTable(),
+        return (new StoreArticle)->fieldIncr((new StoreArticle)->getTable(),
             [['uuid', '=', $uuid]],
             'read_number', 1);
     }
@@ -147,7 +167,7 @@ class ArticleRepository implements ApiRepositoryInterface
      */
     public function repositoryUpdateClickNumber(string $uuid): int
     {
-        return $this->articleModel->fieldIncr($this->articleModel->getTable(),
+        return (new StoreArticle)->fieldIncr((new StoreArticle)->getTable(),
             [['uuid', '=', $uuid]],
             'click_number', 1);
     }
@@ -159,7 +179,7 @@ class ArticleRepository implements ApiRepositoryInterface
      */
     public function repositoryUpdateCollectionNumber(string $uuid): int
     {
-        return $this->articleModel->fieldIncr($this->articleModel->getTable(),
+        return (new StoreArticle)->fieldIncr((new StoreArticle)->getTable(),
             [['uuid', '=', $uuid]],
             'collection_number', 1);
     }
