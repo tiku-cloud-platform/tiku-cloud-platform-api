@@ -3,35 +3,19 @@ declare(strict_types = 1);
 
 namespace App\Service\Api\Article;
 
+use App\Mapping\RedisClient;
 use App\Repository\Api\Article\ArticleRepository;
 use App\Service\ApiServiceInterface;
 use Closure;
-use Hyperf\Di\Annotation\Inject;
+use Throwable;
 
 /**
  * 文章
- *
  * Class ArticleService
  * @package App\Service\Api\Article
  */
 class ArticleService implements ApiServiceInterface
 {
-    /**
-     * @Inject()
-     * @var ArticleRepository
-     */
-    protected $articleRepository;
-
-    public function __construct()
-    {
-    }
-
-    /**
-     * 格式化查询条件
-     *
-     * @param array $requestParams 请求参数
-     * @return Closure 组装的查询条件
-     */
     public static function searchWhere(array $requestParams): Closure
     {
         return function ($query) use ($requestParams) {
@@ -48,15 +32,9 @@ class ArticleService implements ApiServiceInterface
         };
     }
 
-    /**
-     * 查询数据
-     *
-     * @param array $requestParams 请求参数
-     * @return array 查询结果
-     */
     public function serviceSelect(array $requestParams): array
     {
-        $items = $this->articleRepository->repositorySelect(self::searchWhere($requestParams),
+        $items = (new ArticleRepository)->repositorySelect(self::searchWhere($requestParams),
             (int)$requestParams['size'] ?? 20);
 
         foreach ($items["items"] as $item) {
@@ -66,77 +44,46 @@ class ArticleService implements ApiServiceInterface
         return $items;
     }
 
-    /**
-     * 创建数据
-     *
-     * @param array $requestParams 请求参数
-     * @return bool true|false
-     */
     public function serviceCreate(array $requestParams): bool
     {
-        // TODO: Implement serviceCreate() method.
+        return false;
     }
 
-    /**
-     * 更新数据
-     *
-     * @param array $requestParams 请求参数
-     * @return int 更新行数
-     */
     public function serviceUpdate(array $requestParams): int
     {
-        // TODO: Implement serviceUpdate() method.
+        return 0;
     }
 
-    /**
-     * 删除数据
-     *
-     * @param array $requestParams 请求参数
-     * @return int 删除行数
-     */
     public function serviceDelete(array $requestParams): int
     {
-        // TODO: Implement serviceDelete() method.
+        return 0;
     }
 
-    /**
-     * 查询单条数据
-     *
-     * @param array $requestParams 请求参数
-     * @return array
-     */
     public function serviceFind(array $requestParams): array
     {
-        $bean = $this->articleRepository->repositoryFind(self::searchWhere($requestParams));
-        if (empty($bean['is_read'])) {
-            $this->articleRepository->repositoryUpdateReadNumber((string)$requestParams['uuid']);
-            (new ReadClickService())->serviceCreate(['article_uuid' => $requestParams['uuid'], 'type' => 2]);
+        $bean = (new ArticleRepository)->repositoryFind(self::searchWhere($requestParams));
+        if (!empty($bean)) {
+            try {
+                RedisClient::getInstance()->lPush("article_queue", $bean["uuid"]);
+            } catch (Throwable $throwable) {
+                // TODO 抛出异常
+            }
         }
         return $bean;
     }
 
-    /**
-     * 文章点赞
-     * @param array $requestParams
-     * @return int
-     */
     public function serviceClick(array $requestParams): int
     {
         if ((new ReadClickService())->serviceCreate(['article_uuid' => $requestParams['uuid'], 'type' => 1])) {
-            return $this->articleRepository->repositoryUpdateClickNumber((string)$requestParams['uuid']);
+            return (new ArticleRepository)->repositoryUpdateClickNumber((string)$requestParams['uuid']);
         }
         return 0;
     }
 
-    /**
-     * 文章收藏
-     * @param array $requestParams
-     * @return int
-     */
     public function serviceCollection(array $requestParams): int
     {
         if ((new ReadClickService())->serviceCreate(['article_uuid' => $requestParams['uuid'], 'type' => 2])) {
-            return $this->articleRepository->repositoryUpdateCollectionNumber((string)$requestParams['uuid']);
+            return (new ArticleRepository)->repositoryUpdateCollectionNumber((string)$requestParams['uuid']);
         }
         return 0;
     }
