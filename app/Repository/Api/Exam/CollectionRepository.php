@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Repository\Api\Exam;
 
@@ -7,7 +7,6 @@ namespace App\Repository\Api\Exam;
 use App\Model\Api\StoreExamCollection;
 use App\Repository\ApiRepositoryInterface;
 use Closure;
-use Hyperf\Di\Annotation\Inject;
 
 /**
  * 试卷
@@ -18,16 +17,6 @@ use Hyperf\Di\Annotation\Inject;
 class CollectionRepository implements ApiRepositoryInterface
 {
     /**
-     * @Inject()
-     * @var StoreExamCollection
-     */
-    protected $collectionModel;
-
-    public function __construct()
-    {
-    }
-
-    /**
      * 查询数据
      *
      * @param int $perSize 分页大小
@@ -35,7 +24,7 @@ class CollectionRepository implements ApiRepositoryInterface
      */
     public function repositorySelect(Closure $closure, int $perSize): array
     {
-        $items = $this->collectionModel::query()
+        $items = (new StoreExamCollection)::query()
             ->with(['image:uuid,file_url as url,file_name as name,file_hash as hash'])
             ->with(['category:uuid,title'])
             ->where([['is_show', '=', 1]])
@@ -81,7 +70,7 @@ class CollectionRepository implements ApiRepositoryInterface
      */
     public function repositoryFind(Closure $closure): array
     {
-        $bean = $this->collectionModel::query()
+        $bean = (new StoreExamCollection)::query()
             ->with(['image:uuid,file_url as url,file_name as name,file_hash as hash'])
             ->with(['category:uuid,title'])
             ->where([['is_show', '=', 1]])
@@ -136,6 +125,6 @@ class CollectionRepository implements ApiRepositoryInterface
      */
     public function repositoryIncrField(array $incrWhere, string $field = 'submit_number', int $incrValue = 1)
     {
-        return $this->collectionModel::query()->where($incrWhere)->increment($field, $incrValue);
+        return (new StoreExamCollection)::query()->where($incrWhere)->increment($field, $incrValue);
     }
 }

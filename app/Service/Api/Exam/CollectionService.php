@@ -7,7 +7,6 @@ namespace App\Service\Api\Exam;
 use App\Repository\Api\Exam\CollectionRepository;
 use App\Service\ApiServiceInterface;
 use Closure;
-use Hyperf\Di\Annotation\Inject;
 
 /**
  * 试卷
@@ -17,16 +16,6 @@ use Hyperf\Di\Annotation\Inject;
  */
 class CollectionService implements ApiServiceInterface
 {
-    /**
-     * @Inject()
-     * @var CollectionRepository
-     */
-    protected $collectionRepository;
-
-    public function __construct()
-    {
-    }
-
     /**
      * 格式化查询条件
      *
@@ -43,8 +32,8 @@ class CollectionService implements ApiServiceInterface
             if (!empty($uuid)) {
                 $query->where('uuid', '=', $uuid);
             }
-            if (!empty($category_uid)) {
-                $query->where('exam_category_uuid', '=', $category_uid);
+            if (!empty($category_uuid)) {
+                $query->where('exam_category_uuid', '=', $category_uuid);
             }
         };
     }
@@ -57,7 +46,7 @@ class CollectionService implements ApiServiceInterface
      */
     public function serviceSelect(array $requestParams): array
     {
-        $items = $this->collectionRepository->repositorySelect(self::searchWhere($requestParams),
+        $items = (new CollectionRepository)->repositorySelect(self::searchWhere($requestParams),
             (int)$requestParams['size'] ?? 20);
         foreach ($items["items"] as $item) {
             $item->img           = $item->image["url"] . $item->image["name"];
@@ -112,7 +101,7 @@ class CollectionService implements ApiServiceInterface
      */
     public function serviceFind(array $requestParams): array
     {
-        $bean                  = $this->collectionRepository->repositoryFind(self::searchWhere($requestParams));
+        $bean                  = (new CollectionRepository)->repositoryFind(self::searchWhere($requestParams));
         $bean["img"]           = $bean["image"]["url"] . $bean["image"]["name"];
         $bean["category_uuid"] = $bean["exam_category_uuid"];
         $bean["publish_time"]  = date("Y-m-d", strtotime((string)$bean["created_at"]));
