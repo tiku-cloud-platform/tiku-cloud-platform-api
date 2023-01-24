@@ -14,7 +14,7 @@ class PageValidate extends ApiBaseController
     {
         return [
             "page" => "required|integer",
-            "size" => "required|between:1,20|integer",
+            "size" => "required|between:1,100|integer",
         ];
     }
 
@@ -24,7 +24,7 @@ class PageValidate extends ApiBaseController
             "page.required" => "当前页码不能为空",
             "page.integer" => "当前页码必须是数字",
             "size.required" => "分页大小不能为空",
-            "size.between" => "分页大小只能是1-20之间",
+            "size.between" => "分页大小只能是1-100之间",
             "size.integer" => "分页大小必须是数字",
         ];
     }
