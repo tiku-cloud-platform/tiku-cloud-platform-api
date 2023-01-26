@@ -12,11 +12,6 @@ use Hyperf\Database\Model\Relations\BelongsTo;
  */
 class StoreExamReading extends \App\Model\Common\StoreExamReading
 {
-    public $listSearchFields = [
-        'uuid',
-        'title',
-    ];
-
     /**
      * 试卷信息
      * @return BelongsTo
