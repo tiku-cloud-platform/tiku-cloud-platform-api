@@ -14,6 +14,7 @@ use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\Middleware;
 use Hyperf\HttpServer\Annotation\PostMapping;
 use Psr\Http\Message\ResponseInterface;
+use App\Middleware\Auth\UserEmptyAuthMiddleware;
 
 /**
  * 文章管理
@@ -38,6 +39,7 @@ class ArticleController extends ApiBaseController
     /**
      * 文章详情
      * @GetMapping(path="detail")
+     * @Middleware(UserEmptyAuthMiddleware::class)
      * @param UuidValidate $validate
      * @return ResponseInterface
      */
