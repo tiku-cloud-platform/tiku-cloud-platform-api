@@ -68,8 +68,8 @@ class ArticleService implements ApiServiceInterface
         if (!empty($bean)) {
             try {
                 $cacheValue = [
-                    "article_uuid" => $bean["uuid"],
                     "user_uuid" => UserLoginInfo::getUserId(),
+                    "article_uuid" => $bean["uuid"],
                     "store_uuid" => RequestApp::getStoreUuid(),
                     "client_type" => 1,
                     "read_score" => $bean["read_score"],
