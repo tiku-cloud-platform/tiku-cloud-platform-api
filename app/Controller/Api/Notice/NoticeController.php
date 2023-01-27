@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace App\Controller\Api\Notice;
 
 use App\Controller\ApiBaseController;
+use App\Request\Api\Common\PageValidate;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Psr\Http\Message\ResponseInterface;
@@ -15,9 +16,10 @@ class NoticeController extends ApiBaseController
 {
     /**
      * @GetMapping(path="list")
+     * @param PageValidate $pageValidate
      * @return ResponseInterface
      */
-    public function list(): ResponseInterface
+    public function list(PageValidate $pageValidate): ResponseInterface
     {
         return $this->httpResponse->success([
             "items" => [

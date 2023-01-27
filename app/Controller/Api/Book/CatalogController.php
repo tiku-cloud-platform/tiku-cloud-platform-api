@@ -23,10 +23,9 @@ class CatalogController extends ApiBaseController
      * 数据目录
      * @GetMapping(path="catalog")
      * @param UUIDValidate $validate
-     * @param PageValidate $pageValidate
      * @return ResponseInterface
      */
-    public function catalog(UUIDValidate $validate, PageValidate $pageValidate): ResponseInterface
+    public function catalog(UUIDValidate $validate): ResponseInterface
     {
         return $this->httpResponse->success((new ContentService())->serviceCatalog($this->request->all()));
     }
