@@ -20,9 +20,14 @@ class NoticeController extends ApiBaseController
     public function list(): ResponseInterface
     {
         return $this->httpResponse->success([
-            ["title" => "程序员面试题大全正式发布v1.0.0版本", "path" => "", "type" => ""],
-            ["title" => "题库云开发赋能已全面发布", "path" => "", "type" => ""],
-            ["title" => "更新最新Redis大厂面试题", "path" => "", "type" => ""],
+            "items" => [
+                ["title" => "程序员面试题大全正式发布v1.0.0版本", "path" => "", "type" => ""],
+                ["title" => "题库云开发赋能已全面发布", "path" => "", "type" => ""],
+                ["title" => "更新最新Redis大厂面试题", "path" => "", "type" => ""],
+            ],
+            "page" => 1,
+            "size" => 20,
+            "total" => 10,
         ]);
     }
 }
