@@ -42,6 +42,7 @@ class UserLoginInfo
      */
     public static function getUserId(): string
     {
+        var_dump("登录信息", Context::get("login:info"));
         if (!empty(Context::get("login:info"))) {
             return Context::get("login:info")["user_uuid"];
         }
