@@ -14,7 +14,7 @@ class PageValidate extends ApiBaseController
     {
         return [
             "page" => "required|integer",
-            "size" => "required|between:1,100|integer",
+            "size" => "required|between:1,30|integer",
         ];
     }
 
