@@ -49,7 +49,6 @@ class UserEmptyAuthMiddleware implements MiddlewareInterface
             }
             if (!empty($userInfo)) {
                 Context::set("login:info", array_merge(json_decode($userInfo, true), ["login_token" => $loginToken]));
-                var_dump(array_merge(json_decode($userInfo, true), ["login_token" => $loginToken]));
             }
         }
         return $handler->handle($request);
