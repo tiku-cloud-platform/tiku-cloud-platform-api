@@ -104,6 +104,11 @@ class ArticleRepository implements ApiRepositoryInterface
                 'source',
                 'read_number',
                 'click_number',
+                "read_score",
+                "click_score",
+                "share_score",
+                "collection_score",
+                "read_expend_score",
             ])
             ->first();
 

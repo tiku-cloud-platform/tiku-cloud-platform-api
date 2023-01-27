@@ -4,6 +4,9 @@ declare(strict_types = 1);
 namespace App\Service\Api\Article;
 
 use App\Mapping\RedisClient;
+use App\Mapping\Request\RequestApp;
+use App\Mapping\Request\UserLoginInfo;
+use App\Model\Common\StoreUser;
 use App\Repository\Api\Article\ArticleRepository;
 use App\Service\ApiServiceInterface;
 use Closure;
@@ -64,7 +67,19 @@ class ArticleService implements ApiServiceInterface
         $bean = (new ArticleRepository)->repositoryFind(self::searchWhere($requestParams));
         if (!empty($bean)) {
             try {
-                RedisClient::getInstance()->lPush("article_queue", $bean["uuid"]);
+                $cacheValue = [
+                    "article_uuid" => $bean["uuid"],
+                    "user_uuid" => UserLoginInfo::getUserId(),
+                    "store_uuid" => RequestApp::getStoreUuid(),
+                    "client_type" => 1,
+                    "read_score" => $bean["read_score"],
+                    "click_score" => $bean["click_score"],
+                    "share_score" => $bean["share_score"],
+                    "collection_score" => $bean["collection_score"],
+                    "read_expend_score" => $bean["read_expend_score"],
+                    "created_at" => date("Y-m-d H:i:s"),
+                ];
+                RedisClient::getInstance()->lPush("article_queue", json_encode($cacheValue, JSON_UNESCAPED_UNICODE));
             } catch (Throwable $throwable) {
                 // TODO 抛出异常
             }
