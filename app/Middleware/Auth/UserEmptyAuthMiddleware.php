@@ -4,8 +4,6 @@ declare(strict_types = 1);
 namespace App\Middleware\Auth;
 
 use App\Constants\CacheKey;
-use App\Constants\ErrorCode;
-use App\Constants\HttpCode;
 use App\Mapping\HttpDataResponse;
 use App\Mapping\RedisClient;
 use App\Mapping\Request\RequestApp;
@@ -18,10 +16,10 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 /**
- * 用户授权中间件.
- * Class UserAuthMiddleware
+ * 非强制验证登录
+ * 如果用户登录则将登录添加到上下文
  */
-class UserAuthMiddleware implements MiddlewareInterface
+class UserEmptyAuthMiddleware implements MiddlewareInterface
 {
     /**
      * @var ContainerInterface
@@ -52,19 +50,7 @@ class UserAuthMiddleware implements MiddlewareInterface
             if (!empty($userInfo)) {
                 Context::set("login:info", array_merge(json_decode($userInfo, true), ["login_token" => $loginToken]));
                 var_dump(array_merge(json_decode($userInfo, true), ["login_token" => $loginToken]));
-            } else {
-                return $this->httpResponse->error([],
-                    ErrorCode::REQUEST_ERROR,
-                    "登录已失效",
-                    HttpCode::NO_AUTH
-                );
             }
-        } else {
-            return $this->httpResponse->error([],
-                ErrorCode::REQUEST_ERROR,
-                HttpCode::getMessage(HttpCode::NO_AUTH),
-                HttpCode::NO_AUTH
-            );
         }
         return $handler->handle($request);
     }
