@@ -51,7 +51,7 @@ class UserAuthMiddleware implements MiddlewareInterface
                 $userInfo = RedisClient::getInstance()->get(CacheKey::MINI_LOGIN_TOKEN . $loginToken);
             }
             if (!empty($userInfo)) {
-                Context::set("login:info", array_merge(json_decode($userInfo, true), ["login_token" => $loginToken]));
+                Context::set("login:info", array_merge($userInfo, ["login_token" => $loginToken]));
             } else {
                 return $this->httpResponse->error([],
                     ErrorCode::REQUEST_ERROR,
