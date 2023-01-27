@@ -9,6 +9,7 @@ use App\Mapping\UUID;
 use App\Model\Api\StoreMiniUserDevice;
 use App\Model\Api\StoreMiNiWeChatUser;
 use App\Model\Api\StorePlatformUser;
+use App\Model\Common\StoreUserScoreCollection;
 use App\Repository\ApiRepositoryInterface;
 use Closure;
 use Hyperf\DbConnection\Db;
@@ -112,7 +113,13 @@ class WeChatApiRepository implements ApiRepositoryInterface
                         "sdk_version" => $insertInfo["device"]["SDKVersion"] ?? "",
                     ]);
                 }
-                if ($insertUser && $insertMiniUser) {
+                $createScoreCollection = (new StoreUserScoreCollection())::query()->create([
+                    "user_uuid" => $insertInfo["user_uuid"],
+                    "uuid" => UUID::getUUID(),
+                    "score" => 0,
+                    "store_uuid" => $storeUuid,
+                ]);
+                if ($insertUser && $insertMiniUser && $createScoreCollection) {
                     $insertUserResult = true;
                 }
             }, 2);
