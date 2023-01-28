@@ -42,6 +42,7 @@ class StoreMiniUserDevice extends Model
         "id",
         "uuid",
         "store_uuid",
+        "user_uuid",
         "mini_user_uuid",
         "device_type",
         "device_brand",
