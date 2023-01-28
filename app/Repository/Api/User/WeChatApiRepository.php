@@ -90,6 +90,7 @@ class WeChatApiRepository implements ApiRepositoryInterface
                     $deviceModel::query()->create([
                         "uuid" => UUID::getUUID(),
                         "store_uuid" => $storeUuid,
+                        "user_uuid" => $insertInfo["user_uuid"],
                         "mini_user_uuid" => $miniUserId,
                         "device_type" => $insertInfo["device"]["deviceType"] ?? "",
                         "device_brand" => $insertInfo["device"]["deviceBrand"] ?? "",
