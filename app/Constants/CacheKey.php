@@ -46,4 +46,19 @@ class CacheKey extends AbstractConstants
      * @Message("请先登录")
      */
     const MINI_NO_LOGIN = "min:not_login:msg";
+
+    /**
+     * @Message("用户签到")
+     */
+    const USER_SIGN = "user:sign:";
+
+    /**
+     * @Message("用户签到总数")
+     */
+    const USER_SIGN_TOTAL = "user:sign:total:";
+
+    /**
+     * @Message("签到天数配置")
+     */
+    const  SIGN_CONFIG = "sign_config:";
 }

@@ -81,4 +81,22 @@ class DataFormatter
             return $requestParams['remote_addr'];
         }
     }
+
+    /**
+     * 获取本周的所有日期
+     * @param string $time
+     * @param string $format
+     * @return array
+     */
+    public static function getCurrentWeek(string $time = '', string $format = 'Y-m-d'): array
+    {
+        $time = $time != '' ? $time : time();
+        //获取当前周几
+        $week = date('w', (int)$time);
+        $date = [];
+        for ($i = 1; $i <= 7; $i++) {
+            $date[$i - 1] = date($format, strtotime('+' . ($i - $week) . ' days', (int)$time));
+        }
+        return $date;
+    }
 }
