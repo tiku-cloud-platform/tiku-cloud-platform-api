@@ -10,6 +10,7 @@ use App\Model\Api\StoreMiniUserDevice;
 use App\Model\Api\StoreMiNiWeChatUser;
 use App\Model\Api\StorePlatformUser;
 use App\Model\Common\StoreUserScoreCollection;
+use App\Repository\Api\Sign\CollectionRepository;
 use App\Repository\ApiRepositoryInterface;
 use Closure;
 use Hyperf\DbConnection\Db;
@@ -120,7 +121,14 @@ class WeChatApiRepository implements ApiRepositoryInterface
                     "score" => 0,
                     "store_uuid" => $storeUuid,
                 ]);
-                if ($insertUser && $insertMiniUser && $createScoreCollection) {
+                $createSignCollection  = (new CollectionRepository())->repositoryCreate([
+                    'uuid' => UUID::getUUID(),
+                    'user_uuid' => $insertInfo["user_uuid"],
+                    'sign_number' => 0,
+                    'store_uuid' => $storeUuid,
+                    'is_show' => 1,
+                ]);
+                if ($insertUser && $insertMiniUser && $createScoreCollection && $createSignCollection) {
                     $insertUserResult = true;
                 }
             }, 2);
