@@ -17,6 +17,9 @@ class HistoryRepository implements ApiRepositoryInterface
     {
         $items = (new StoreUserScoreHistory())::query()
             ->where($closure)
+            ->where([
+                ["is_show", "=", 1]
+            ])
             ->orderByDesc("id")
             ->paginate($perSize,
                 ["title", "type", "score", "created_at as time"]);
