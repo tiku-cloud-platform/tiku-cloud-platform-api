@@ -5,6 +5,7 @@ namespace App\Exception\Handler;
 
 use App\Constants\ErrorCode;
 use App\Constants\HttpCode;
+use App\Mapping\RedisClient;
 use App\Mapping\UUID;
 use Cassandra\Exception\ValidationException;
 use Hyperf\Contract\StdoutLoggerInterface;
@@ -39,6 +40,7 @@ class AppExceptionHandler extends ExceptionHandler
             'data' => [],
             "request_id" => UUID::snowFlakeId(),
         ]);
+        RedisClient::getInstance()->lPush("log_queue", $throwable->getFile() . $throwable->getLine() . $throwable->getMessage());
         return $response->withStatus(HttpCode::SERVER_ERROR)->withBody(new SwooleStream($data));
     }
 
