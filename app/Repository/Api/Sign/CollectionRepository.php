@@ -19,7 +19,7 @@ class CollectionRepository implements ApiRepositoryInterface
 
     public function repositoryCreate(array $insertInfo): bool
     {
-        if ((new StoreUserSignCollection())::query()->created($insertInfo)) {
+        if ((new StoreUserSignCollection())::query()->create($insertInfo)) {
             return true;
         }
         return false;
