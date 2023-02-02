@@ -44,10 +44,14 @@ class LoginService implements ApiServiceInterface
         });
         $userId   = UUID::getUUID();
         // 不存在则创建（提前生成用户uuid，当返回值为true时，表示用户创建成功，则把改uuid插入队列，方便队列对该用户增加额外的业务操作）。
+        $userGrade = [];
         if (empty($userInfo)) {
+            // 查询最会员等级
+            $userGrade  = (new GradeService())->serviceFind([]);
             $insertUser = $this->miniUserRepository->repositoryCreate([
                 "openid" => $jsonCode["openid"],
                 "user_uuid" => $userId,
+                "grade_uuid" => isset($userGrade["uuid"]) ? $userGrade["uuid"] : "",
                 "device" => $requestParams["device"] ?? [],
             ]);
             if ($insertUser) {
@@ -70,8 +74,7 @@ class LoginService implements ApiServiceInterface
                 "avatar_url" => $userInfo["avatar_url"],
                 "nickname" => $userInfo["nickname"],
                 "gender" => $userInfo["gender"],
-                "level_title" => "普通会员",
-                "level_uuid" => "xxxxxx",
+                "level_title" => isset($userGrade["uuid"]) ? $userGrade["title"] : "普通会员",
             ], ["code" => 1, "login_token" => $loginToken]);
         }
         return ["code" => 2];
@@ -94,37 +97,34 @@ class LoginService implements ApiServiceInterface
         return false;
     }
 
-    /**
-     * @param array $requestParams
-     * @return Closure
-     */
     public static function searchWhere(array $requestParams): Closure
     {
-        // TODO: Implement searchWhere() method.
+        return function () {
+        };
     }
 
     public function serviceSelect(array $requestParams): array
     {
-        // TODO: Implement serviceSelect() method.
+        return [];
     }
 
     public function serviceCreate(array $requestParams): bool
     {
-        // TODO: Implement serviceCreate() method.
+        return false;
     }
 
     public function serviceUpdate(array $requestParams): int
     {
-        // TODO: Implement serviceUpdate() method.
+        return 0;
     }
 
     public function serviceDelete(array $requestParams): int
     {
-        // TODO: Implement serviceDelete() method.
+        return 0;
     }
 
     public function serviceFind(array $requestParams): array
     {
-        // TODO: Implement serviceFind() method.
+        return [];
     }
 }
