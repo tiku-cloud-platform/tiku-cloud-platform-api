@@ -67,7 +67,7 @@ class WeChatApiRepository implements ApiRepositoryInterface
                     'uuid' => $insertInfo["user_uuid"],
                     'real_name' => "小白号",
                     'store_uuid' => $storeUuid,
-                    'store_platform_user_group_uuid' => "0309fe67-7d01-bcba-ba6a-0cf425800848",
+                    'store_platform_user_group_uuid' => $insertInfo["grade_uuid"],
                     "avatar_url" => "https://qiniucloud.qqdeveloper.com/avatar_tiku_cloud.png",
                     "remark" => "这家伙很懒，什么都没留下...",
                     "channel_uuid",
