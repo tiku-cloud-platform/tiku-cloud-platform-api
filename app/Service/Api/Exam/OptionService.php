@@ -18,16 +18,6 @@ use Hyperf\Di\Annotation\Inject;
 class OptionService implements ApiServiceInterface
 {
     /**
-     * @Inject
-     * @var OptionRepository
-     */
-    protected $optionRepository;
-
-    public function __construct()
-    {
-    }
-
-    /**
      * 格式化查询条件
      *
      * @param array $requestParams 请求参数
@@ -37,8 +27,8 @@ class OptionService implements ApiServiceInterface
     {
         return function ($query) use ($requestParams) {
             extract($requestParams);
-            if (!empty($exam_id)) {
-                $query->where('exam_collection_uuid', '=', $exam_id);
+            if (!empty($exam_uuid)) {
+                $query->where('exam_collection_uuid', '=', $exam_uuid);
             }
         };
     }
@@ -51,13 +41,8 @@ class OptionService implements ApiServiceInterface
      */
     public function serviceSelect(array $requestParams): array
     {
-        $items = $this->optionRepository->repositorySelect(self::searchWhere($requestParams),
-            (int)$requestParams['size'] ?? 20);
-        foreach ($items["items"] as $item) {
-            $item->img = $item->image["url"] . $item->image["name"];
-            unset($item->image);
-        }
-        return $items;
+        return (new OptionRepository)->repositorySelect(self::searchWhere($requestParams),
+            (int)($requestParams['size'] ?? 20));
     }
 
     /**
@@ -112,6 +97,6 @@ class OptionService implements ApiServiceInterface
      */
     public function serviceIdWhereIn(array $uuidArray): array
     {
-        return $this->optionRepository->repositoryWhereId('uuid', $uuidArray);
+        return (new OptionRepository)->repositoryWhereId('uuid', $uuidArray);
     }
 }
