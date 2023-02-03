@@ -6,6 +6,7 @@ namespace App\Repository\Api\Exam;
 
 use App\Model\Api\StoreExamOption;
 use App\Repository\ApiRepositoryInterface;
+use Closure;
 use Hyperf\Di\Annotation\Inject;
 
 /**
@@ -17,30 +18,25 @@ use Hyperf\Di\Annotation\Inject;
 class OptionRepository implements ApiRepositoryInterface
 {
     /**
-     * @Inject
-     * @var StoreExamOption
-     */
-    protected $optionModel;
-
-    public function __construct()
-    {
-    }
-
-    /**
      * 查询数据
      *
      * @param int $perSize 分页大小
      * @return array
      */
-    public function repositorySelect(\Closure $closure, int $perSize): array
+    public function repositorySelect(Closure $closure, int $perSize): array
     {
-        $items = $this->optionModel::query()
-            ->with(['image:uuid,file_url as url,file_name as name'])
-            ->with(['items:uuid as id,title,option_uuid as option_id,check,is_check'])
+        $items = (new StoreExamOption)::query()
+            ->with(['items:uuid,title,option_uuid,check,is_check'])
             ->whereHas('relationCollection', $closure)
             ->where([['is_show', '=', 1]])
-            ->select($this->optionModel->listSearchFields)
-            ->paginate((int)$perSize);
+            ->select([
+                'uuid',
+                'title',
+                'answer',
+                'analysis',
+                'level',
+            ])
+            ->paginate($perSize);
 
         return [
             'items' => $items->items(),
@@ -58,7 +54,7 @@ class OptionRepository implements ApiRepositoryInterface
      */
     public function repositoryCreate(array $insertInfo): bool
     {
-        // TODO: Implement repositoryCreate() method.
+        return false;
     }
 
     /**
@@ -69,17 +65,17 @@ class OptionRepository implements ApiRepositoryInterface
      */
     public function repositoryAdd(array $addInfo): int
     {
-        // TODO: Implement repositoryAdd() method.
+        return 0;
     }
 
     /**
      * 单条数据查询
-     * @param \Closure $closure
+     * @param Closure $closure
      * @return array
      */
-    public function repositoryFind(\Closure $closure): array
+    public function repositoryFind(Closure $closure): array
     {
-        // TODO: Implement repositoryFind() method.
+        return [];
     }
 
     /**
@@ -91,7 +87,7 @@ class OptionRepository implements ApiRepositoryInterface
      */
     public function repositoryUpdate(array $updateWhere, array $updateInfo): int
     {
-        // TODO: Implement repositoryUpdate() method.
+        return 0;
     }
 
     /**
@@ -102,7 +98,7 @@ class OptionRepository implements ApiRepositoryInterface
      */
     public function repositoryDelete(array $deleteWhere): int
     {
-        // TODO: Implement repositoryDelete() method.
+        return 0;
     }
 
     /**
@@ -114,7 +110,7 @@ class OptionRepository implements ApiRepositoryInterface
      */
     public function repositoryWhereInDelete(array $deleteWhere, string $field): int
     {
-        // TODO: Implement repositoryWhereInDelete() method.
+        return 0;
     }
 
     /**
@@ -126,7 +122,7 @@ class OptionRepository implements ApiRepositoryInterface
      */
     public function repositoryWhereId(string $field, array $searchWhere): array
     {
-        $items = $this->optionModel::query()->whereIn($field, $searchWhere)->get(['answer', 'answer_income_score', 'uuid', 'store_uuid']);
+        $items = (new StoreExamOption)::query()->whereIn($field, $searchWhere)->get(['answer', 'answer_income_score', 'uuid', 'store_uuid']);
         if (!empty($items)) return $items->toArray();
         return [];
     }

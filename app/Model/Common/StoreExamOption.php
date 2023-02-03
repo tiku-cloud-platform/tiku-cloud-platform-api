@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Model\Common;
 
@@ -36,18 +36,13 @@ class StoreExamOption extends BaseModel
         return empty($key) ? '' : $key;
     }
 
-    public function getAnswerAttribute($key)
-    {
-        return explode(',', $key);
-    }
+//    public function getAnswerAttribute($key)
+//    {
+//        return explode(',', $key);
+//    }
 
     public function items(): HasMany
     {
         return $this->hasMany(StoreExamOptionItem::class, 'option_uuid', 'uuid');
-    }
-
-    public function image(): BelongsTo
-    {
-        return $this->belongsTo(StorePlatformFile::class, 'file_uuid', 'uuid');
     }
 }

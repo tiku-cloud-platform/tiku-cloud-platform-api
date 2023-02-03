@@ -1,7 +1,9 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Model\Api;
+
+use Hyperf\Database\Model\Relations\BelongsTo;
 
 /**
  * 试题
@@ -24,12 +26,12 @@ class StoreExamOption extends \App\Model\Common\StoreExamOption
         'type',// 1单选题2多选题
     ];
 
-    public function getTypeAttribute()
+    public function getTypeAttribute(): int
     {
-        return count(explode(',', $this->attributes['answer'])) > 1 ? 1 : 2;
+        return count(explode(',', $this->attributes['answer'])) < 2 ? 1 : 2;
     }
 
-    public function relationCollection()
+    public function relationCollection(): BelongsTo
     {
         return $this->belongsTo(StoreExamCollectionRelation::class, 'uuid', 'exam_uuid');
     }
