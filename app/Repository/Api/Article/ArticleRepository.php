@@ -50,6 +50,7 @@ class ArticleRepository implements ApiRepositoryInterface
                 "article_category_uuid as category_uid",
                 "click_number",
             ])
+            ->orderBy("is_top")
             ->orderByDesc('orders')
             ->paginate($perSize);
 
