@@ -3,6 +3,8 @@ declare(strict_types = 1);
 
 namespace App\Service\Api\Score;
 
+use App\Constants\CacheKey;
+use App\Mapping\RedisClient;
 use App\Mapping\Request\UserLoginInfo;
 use App\Repository\Api\Score\CollectionRepository;
 use App\Service\ApiServiceInterface;
@@ -44,6 +46,14 @@ class CollectionService implements ApiServiceInterface
 
     public function serviceFind(array $requestParams): array
     {
-        return (new CollectionRepository())->repositoryFind(self::searchWhere($requestParams));
+        $score = RedisClient::getInstance()->get(CacheKey::SCORE_TOTAL . UserLoginInfo::getUserId());
+        if (empty($score)) {
+            $score = (new CollectionRepository())->repositoryFind(self::searchWhere($requestParams));
+            RedisClient::getInstance()->set(CacheKey::SCORE_TOTAL . UserLoginInfo::getUserId(), $score["score"]);
+            $score = $score["score"];
+        }
+        return [
+            "score" => number_format((float)$score, 2),
+        ];
     }
 }

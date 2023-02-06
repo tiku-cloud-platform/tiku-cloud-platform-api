@@ -61,4 +61,19 @@ class CacheKey extends AbstractConstants
      * @Message("签到天数配置")
      */
     const  SIGN_CONFIG = "sign_config:";
+
+    /**
+     * @Message("用户积分总数")
+     */
+    const SCORE_TOTAL = "score:total:";
+
+    /**
+     * @Message("文章阅读队列")
+     */
+    const ARTICLE_QUEUE = "article_queue";
+
+    /**
+     * @Message("签到积分队列")
+     */
+    const SIGN_QUEUE = "sign_queue";
 }

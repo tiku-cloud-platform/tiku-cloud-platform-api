@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace App\Service\Api\Article;
 
+use App\Constants\CacheKey;
 use App\Mapping\RedisClient;
 use App\Mapping\Request\RequestApp;
 use App\Mapping\Request\UserLoginInfo;
@@ -79,7 +80,7 @@ class ArticleService implements ApiServiceInterface
                     "read_expend_score" => $bean["read_expend_score"],
                     "created_at" => date("Y-m-d H:i:s"),
                 ];
-                RedisClient::getInstance()->lPush("article_queue", json_encode($cacheValue, JSON_UNESCAPED_UNICODE));
+                RedisClient::getInstance()->lPush(CacheKey::ARTICLE_QUEUE, json_encode($cacheValue, JSON_UNESCAPED_UNICODE));
             } catch (Throwable $throwable) {
                 // TODO 抛出异常
             }
