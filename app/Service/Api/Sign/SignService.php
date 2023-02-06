@@ -36,12 +36,28 @@ class SignService implements ApiServiceInterface
         if (!$this->serviceStatus($requestParams)["today_sign_status"]) {
             if (RedisClient::getInstance()->zAdd(CacheKey::USER_SIGN . UserLoginInfo::getUserId(), [], (int)date("Ymd"), (int)date("Ymd")) === 1) {
                 // 处理连续签到天数
+                $days = 1;
                 if (RedisClient::getInstance()->zScore(CacheKey::USER_SIGN . UserLoginInfo::getUserId(), date("Ymd", strtotime("-1 day")))) {
                     RedisClient::getInstance()->incr(CacheKey::USER_SIGN_TOTAL . UserLoginInfo::getUserId());
+                    $days += 1;
                 } else {
-                    RedisClient::getInstance()->set(CacheKey::USER_SIGN_TOTAL . UserLoginInfo::getUserId(), 1);
+                    RedisClient::getInstance()->set(CacheKey::USER_SIGN_TOTAL . UserLoginInfo::getUserId(), $days);
                 }
-                return ["sign_status" => true, "sign_message" => "签到成功", "score" => 10.01];
+                $score = RedisClient::getInstance()->hGet(CacheKey::SIGN_CONFIG . RequestApp::getStoreUuid(), (string)$days);
+                if (!empty($score)) {
+                    $score = json_decode($score, true);
+                    if (!empty($score["score"])) {// 积分大于0才添加到队列中
+                        RedisClient::getInstance()->lPush(CacheKey::SIGN_QUEUE, json_encode([
+                            "user_uuid" => UserLoginInfo::getUserId(),
+                            "store_uuid" => RequestApp::getStoreUuid(),
+                            "client_type" => 1,
+                            "score" => $score["score"],
+                            "day" => $days,
+                        ]));
+                    }
+                    RedisClient::getInstance()->incrByFloat(CacheKey::SCORE_TOTAL . UserLoginInfo::getUserId(), (float)$score["score"]);
+                }
+                return ["sign_status" => true, "sign_message" => "签到成功", "score" => !empty($score) ? $score["score"] : 0.00];
             }
             return ["sign_status" => false, "sign_message" => "签到失败"];
         }

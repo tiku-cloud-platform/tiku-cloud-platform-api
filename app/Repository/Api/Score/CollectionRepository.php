@@ -30,7 +30,7 @@ class CollectionRepository implements ApiRepositoryInterface
 
     public function repositoryFind(Closure $closure): array
     {
-        $bean = (new StoreUserScoreCollection())::query()->where($closure)->first(["uuid", "score", "is_show"]);
+        $bean = (new StoreUserScoreCollection())::query()->where($closure)->first(["score"]);
         return !empty($bean) ? $bean->toArray() : [];
     }
 
