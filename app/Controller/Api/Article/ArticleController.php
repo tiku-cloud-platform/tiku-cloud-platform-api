@@ -71,7 +71,7 @@ class ArticleController extends ApiBaseController
      */
     public function collection(UuidValidate $validate): ResponseInterface
     {
-        $collectionResult = (new ArticleService)->serviceClick($this->request->all());
+        $collectionResult = (new ArticleService)->serviceCollection($this->request->all());
         if ($collectionResult) {
             return $this->httpResponse->success();
         }

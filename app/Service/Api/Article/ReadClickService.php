@@ -18,80 +18,40 @@ use Hyperf\Di\Annotation\Inject;
  */
 class ReadClickService implements ApiServiceInterface
 {
-    /**
-     * @Inject()
-     * @var ReadClickRepository
-     */
-    protected $readClickRepository;
-
-    public function __construct()
-    {
-    }
-
-    /**
-     * 格式化查询条件
-     *
-     * @param array $requestParams 请求参数
-     * @return Closure 组装的查询条件
-     */
     public static function searchWhere(array $requestParams): Closure
     {
-        // TODO: Implement searchWhere() method.
+        return function () {
+        };
     }
 
-    /**
-     * 查询数据
-     * @param array $requestParams 请求参数
-     * @return array 查询结果
-     */
     public function serviceSelect(array $requestParams): array
     {
-        // TODO: Implement serviceSelect() method.
+        return [];
     }
 
-    /**
-     * 创建数据
-     * @param array $requestParams 请求参数
-     * @return bool true|false
-     */
     public function serviceCreate(array $requestParams): bool
     {
         if (!empty(UserLoginInfo::getUserId())) {
             $requestParams['uuid']       = UUID::getUUID();
             $requestParams['store_uuid'] = RequestApp::getStoreUuid();
             $requestParams['user_uuid']  = UserLoginInfo::getUserId();
-            return $this->readClickRepository->repositoryCreate($requestParams);
+            return (new ReadClickRepository)->repositoryCreate($requestParams);
         }
         return true;
     }
 
-    /**
-     * 更新数据
-     * @param array $requestParams 请求参数
-     * @return int 更新行数
-     */
     public function serviceUpdate(array $requestParams): int
     {
-        // TODO: Implement serviceUpdate() method.
+        return 0;
     }
 
-    /**
-     * 删除数据
-     * @param array $requestParams 请求参数
-     * @return int 删除行数
-     */
     public function serviceDelete(array $requestParams): int
     {
-        // TODO: Implement serviceDelete() method.
+        return 0;
     }
 
-    /**
-     * 查询单条数据
-     * @param array $requestParams 请求参数
-     * @return array 删除行数
-     */
     public function serviceFind(array $requestParams): array
     {
-        // TODO: Implement serviceFind() method.
+        return [];
     }
 }
