@@ -4,7 +4,6 @@ declare(strict_types = 1);
 namespace App\Mapping;
 
 use App\Constants\ErrorCode;
-use Godruoyi\Snowflake\Snowflake;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Contract\ResponseInterface;
 use Psr\Http\Message\ResponseInterface as Psr7ResponseInterface;
@@ -77,5 +76,29 @@ class HttpDataResponse
             'data' => $data,
             "request_id" => UUID::snowFlakeId(),
         ])->withStatus($httpCode);
+    }
+
+    /**
+     * @param array $data 业务数据
+     * @param int $code 业务状态码
+     * @param string $message 业务状态信息
+     * @param int $httpCode 网络状态码
+     * @return Psr7ResponseInterface
+     */
+    public static function responseSuccess(array $data = [], int $code = 0, string $message = '', int $httpCode = 200): Psr7ResponseInterface
+    {
+        return (new self())->success($data, $code, $message, $httpCode);
+    }
+
+    /**
+     * @param array $data 业务数据
+     * @param int $code 业务状态码
+     * @param string $message 业务状态信息
+     * @param int $httpCode 网络状态码
+     * @return Psr7ResponseInterface
+     */
+    public static function responseError(array $data = [], int $code = 0, string $message = '', int $httpCode = 200): Psr7ResponseInterface
+    {
+        return (new self())->error($data, $code, $message, $httpCode);
     }
 }

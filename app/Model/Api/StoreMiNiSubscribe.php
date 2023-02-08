@@ -12,13 +12,6 @@ use App\Model\Common\StoreMiNiSubscribe as SubscribeModel;
  */
 class StoreMiNiSubscribe extends SubscribeModel
 {
-    public $searchFields = [
-        'uuid',
-        'title',
-        'template_id',
-        'file_uuid',
-    ];
-
     protected $hidden = [
         "file_uuid",
     ];

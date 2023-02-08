@@ -14,12 +14,6 @@ use App\Mapping\UserInfo;
  */
 class StorePlatformMessageCategory extends \App\Model\Common\StorePlatformMessageCategory
 {
-    public $searchFields = [
-        'uuid',
-        'title',
-        'file_uuid',
-    ];
-
     protected $appends = [
         'message_number'
     ];

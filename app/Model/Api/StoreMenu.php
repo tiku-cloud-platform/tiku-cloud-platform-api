@@ -10,13 +10,6 @@ namespace App\Model\Api;
  */
 class StoreMenu extends \App\Model\Common\StoreMenu
 {
-    public $searchFields = [
-        'title',
-        'file_uuid',
-        'url',
-        'type',
-    ];
-
     protected $hidden = [
         "file_uuid",
     ];

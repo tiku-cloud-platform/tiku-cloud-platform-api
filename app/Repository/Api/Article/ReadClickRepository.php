@@ -3,23 +3,20 @@ declare(strict_types = 1);
 
 namespace App\Repository\Api\Article;
 
-
-use App\Exception\DbDataMessageException;
-use App\Exception\DbDuplicateMessageException;
-use App\Model\Api\StoreArticleReadClick;
+use App\Mapping\HttpDataResponse;
+use App\Model\Api\StoreArticleRead;
 use App\Repository\ApiRepositoryInterface;
-use Hyperf\Di\Annotation\Inject;
+use Closure;
 use Throwable;
 
 /**
- * 文章阅读点赞历史
- *
+ * 文章阅点赞记录
  * Class ReadClickRepository
  * @package App\Repository\Api\Article
  */
 class ReadClickRepository implements ApiRepositoryInterface
 {
-    public function repositorySelect(\Closure $closure, int $perSize): array
+    public function repositorySelect(Closure $closure, int $perSize, array $searchFields = []): array
     {
         return [];
     }
@@ -27,11 +24,16 @@ class ReadClickRepository implements ApiRepositoryInterface
     public function repositoryCreate(array $insertInfo): bool
     {
         try {
-            if ((new StoreArticleReadClick)::query()->create($insertInfo)) {
+            if ((new StoreArticleRead)::query()->create($insertInfo)) {
                 return true;
             }
         } catch (Throwable $throwable) {
-            throw  new DbDuplicateMessageException("你已" . ($insertInfo["type"] == 1 ? "点赞" : "收藏"));
+            preg_match("/Duplicate entry/", $throwable->getMessage(), $msg);
+            if (!empty($msg)) {
+                HttpDataResponse::responseError(["msg" => "已存在点赞记录"]);
+            } else {
+                HttpDataResponse::responseError();
+            }
         }
         return false;
     }
@@ -41,7 +43,7 @@ class ReadClickRepository implements ApiRepositoryInterface
         return 0;
     }
 
-    public function repositoryFind(\Closure $closure): array
+    public function repositoryFind(Closure $closure, array $searchFields = []): array
     {
         return [];
     }

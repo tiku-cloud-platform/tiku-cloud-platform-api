@@ -12,10 +12,4 @@ namespace App\Model\Api;
  */
 class StorePlatformScore extends \App\Model\Common\StorePlatformScore
 {
-    public $searchFields = [
-        'score',
-        'title',
-        'uuid as id',
-        'key',
-    ];
 }

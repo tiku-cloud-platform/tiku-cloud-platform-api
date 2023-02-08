@@ -13,7 +13,7 @@ use Closure;
 class CollectionRepository implements ApiRepositoryInterface
 {
 
-    public function repositorySelect(Closure $closure, int $perSize): array
+    public function repositorySelect(Closure $closure, int $perSize, array $searchFields = []): array
     {
         return [];
     }
@@ -28,9 +28,12 @@ class CollectionRepository implements ApiRepositoryInterface
         return 0;
     }
 
-    public function repositoryFind(Closure $closure): array
+    public function repositoryFind(Closure $closure, array $searchFields = []): array
     {
-        $bean = (new StoreUserScoreCollection())::query()->where($closure)->first(["score"]);
+        if (count($searchFields)) {
+            $searchFields = ["score"];
+        }
+        $bean = (new StoreUserScoreCollection())::query()->where($closure)->first($searchFields);
         return !empty($bean) ? $bean->toArray() : [];
     }
 

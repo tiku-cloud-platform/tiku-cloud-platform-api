@@ -12,12 +12,14 @@ use Closure;
  */
 class GradeRepository implements ApiRepositoryInterface
 {
-
-    public function repositorySelect(Closure $closure, int $perSize): array
+    public function repositorySelect(Closure $closure, int $perSize, array $searchFields = []): array
     {
+        if (count($searchFields) === 0) {
+            $searchFields = ["uuid", "title", "remark"];
+        }
         $items = (new StorePlatformUserGrade())::query()->where($closure)->where([
             ["is_show", "=", 1]
-        ])->paginate($perSize, ["uuid", "title", "remark"]);
+        ])->paginate($perSize, $searchFields);
 
         return [
             "items" => $items->items(),
@@ -37,13 +39,15 @@ class GradeRepository implements ApiRepositoryInterface
         return 0;
     }
 
-    public function repositoryFind(Closure $closure): array
+    public function repositoryFind(Closure $closure, array $searchFields = []): array
     {
+        if (count($searchFields) === 0) {
+            $searchFields = ["uuid", "title", "remark"];
+        }
         $bean = (new StorePlatformUserGrade())::query()->where($closure)->where([
             ["is_show", "=", 1]
-        ])->orderBy("id")->first(["uuid", "title", "remark"]);
-        if (!empty($bean)) return $bean->toArray();
-        return [];
+        ])->orderBy("id")->first($searchFields);
+        return !empty($bean) ? $bean->toArray() : [];
     }
 
     public function repositoryUpdate(array $updateWhere, array $updateInfo): int
