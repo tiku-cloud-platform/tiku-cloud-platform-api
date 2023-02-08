@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Model\Api;
 
@@ -11,8 +11,4 @@ namespace App\Model\Api;
  */
 class StorePlatformUserGroup extends \App\Model\Common\StorePlatformUserGroup
 {
-    public $searchFields = [
-        'uuid',
-        'title'
-    ];
 }

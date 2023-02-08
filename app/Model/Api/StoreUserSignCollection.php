@@ -12,9 +12,5 @@ namespace App\Model\Api;
  */
 class StoreUserSignCollection extends \App\Model\Common\StoreUserSignCollection
 {
-    public $searchFields = [
-        'uuid',
-        'user_uuid',
-        'sign_number',
-    ];
+
 }

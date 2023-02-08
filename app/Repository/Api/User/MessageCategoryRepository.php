@@ -18,7 +18,7 @@ class MessageCategoryRepository implements ApiRepositoryInterface
 {
     public function repositorySelect(Closure $closure, int $perSize, array $searchFields = []): array
     {
-        if (count($searchFields)) {
+        if (count($searchFields) === 0) {
             $searchFields = ['uuid', 'title', 'file_uuid',];
         }
         $items = (new StorePlatformMessageCategory)::query()

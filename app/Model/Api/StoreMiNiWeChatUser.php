@@ -13,25 +13,6 @@ use Hyperf\Database\Model\Relations\BelongsTo;
  */
 class StoreMiNiWeChatUser extends \App\Model\Common\StoreMiNiWeChatUser
 {
-    public $searchFields = [
-        'uuid',
-        'openid',
-        'nickname',
-        'avatar_url',
-        'gender',
-        'country',
-        'province',
-        'city',
-        'is_forbidden',
-        'language',
-        'longitude',
-        'latitude',
-        'district',
-        'store_uuid',
-        'user_uuid',
-        'created_at',
-    ];
-
     /**
      * 主账号
      * @return BelongsTo

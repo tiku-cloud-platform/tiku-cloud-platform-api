@@ -11,9 +11,4 @@ namespace App\Model\Api;
  */
 class StoreUserSignHistory extends \App\Model\Common\StoreUserSignHistory
 {
-    public $searchFields = [
-        'uuid',
-        'user_uuid',
-        'sign_date',
-    ];
 }

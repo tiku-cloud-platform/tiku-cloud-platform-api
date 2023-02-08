@@ -18,7 +18,7 @@ class MessageContentRepository implements ApiRepositoryInterface
 {
     public function repositorySelect(Closure $closure, int $perSize, array $searchFields = []): array
     {
-        if (count($searchFields)) {
+        if (count($searchFields) === 0) {
             $searchFields = ['uuid', 'platform_message_category_uuid', 'title', 'created_at'];
         }
         $items = (new StorePlatformMessageContent)::query()

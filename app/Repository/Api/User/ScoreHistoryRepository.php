@@ -6,6 +6,7 @@ namespace App\Repository\Api\User;
 
 use App\Model\Api\StoreUserScoreHistory;
 use App\Repository\ApiRepositoryInterface;
+use Closure;
 use Hyperf\Di\Annotation\Inject;
 
 /**
@@ -16,29 +17,16 @@ use Hyperf\Di\Annotation\Inject;
  */
 class ScoreHistoryRepository implements ApiRepositoryInterface
 {
-    /**
-     * @Inject()
-     * @var StoreUserScoreHistory
-     */
-    protected $historyModel;
-
-    public function __construct()
+    public function repositorySelect(Closure $closure, int $perSize, array $searchFields = []): array
     {
-    }
-
-    /**
-     * 查询数据
-     *
-     * @param int $perSize 分页大小
-     * @return array
-     */
-    public function repositorySelect(\Closure $closure, int $perSize): array
-    {
-        $items = $this->historyModel::query()->where($closure)
-            ->select($this->historyModel->searchFields)
+        if (count($searchFields) === 0) {
+            $searchFields = ['title', 'type', 'score', 'created_at',];
+        }
+        $items = (new StoreUserScoreHistory())::query()->where($closure)
+            ->select($searchFields)
             ->where([['is_show', '=', 1]])
             ->orderByDesc('id')
-            ->paginate((int)$perSize);
+            ->paginate($perSize);
 
         return [
             'items' => $items->items(),
@@ -48,89 +36,49 @@ class ScoreHistoryRepository implements ApiRepositoryInterface
         ];
     }
 
-    /**
-     * 创建数据
-     *
-     * @param array $insertInfo 创建信息
-     * @return bool true|false
-     */
     public function repositoryCreate(array $insertInfo): bool
     {
-        if ($this->historyModel::query()->create($insertInfo)) return true;
+        if ((new StoreUserScoreHistory())::query()->create($insertInfo)) return true;
         return false;
     }
 
-    /**
-     * 添加数据
-     *
-     * @param array $addInfo 添加信息
-     * @return int 添加之后的ID或者行数
-     */
     public function repositoryAdd(array $addInfo): int
     {
-        // TODO: Implement repositoryAdd() method.
+        return 0;
     }
 
-    /**
-     * 单条数据查询
-     */
-    public function repositoryFind(\Closure $closure): array
+    public function repositoryFind(Closure $closure, array $searchFields = []): array
     {
-        $bean = $this->historyModel::query()
+        if (count($searchFields) === 0) {
+            $searchFields = ['title', 'type', 'score', 'created_at',];
+        }
+        $bean = (new StoreUserScoreHistory())::query()
             ->where($closure)
-            ->select($this->historyModel->searchFields)
+            ->select($searchFields)
             ->first();
 
-        if (!empty($bean)) return $bean->toArray();
-        return [];
+        return !empty($bean) ? $bean->toArray() : [];
     }
 
-    /**
-     * 更新数据
-     *
-     * @param array $updateWhere 修改条件
-     * @param array $updateInfo 修改信息
-     * @return int 更新行数
-     */
     public function repositoryUpdate(array $updateWhere, array $updateInfo): int
     {
-        // TODO: Implement repositoryUpdate() method.
+        return 0;
     }
 
-    /**
-     * 删除数据
-     *
-     * @param array $deleteWhere 删除条件
-     * @return int 删除行数
-     */
     public function repositoryDelete(array $deleteWhere): int
     {
-        // TODO: Implement repositoryDelete() method.
+        return 0;
     }
 
-    /**
-     * 范围删除
-     *
-     * @param array $deleteWhere 删除条件
-     * @param string $field 删除字段
-     * @return int
-     */
     public function repositoryWhereInDelete(array $deleteWhere, string $field): int
     {
-        // TODO: Implement repositoryWhereInDelete() method.
+        return 0;
     }
 
-    /**
-     * 查询数据总数
-     *
-     * @param array $searchWhere
-     * @param array $searchFields
-     * @return array
-     */
     public function repositorySum(array $searchWhere, array $searchFields): array
     {
         foreach ($searchFields as $value) {
-            $searchFields[$value] = $this->historyModel::query()->where($searchWhere)->sum($value);
+            $searchFields[$value] = (new StoreUserScoreHistory())::query()->where($searchWhere)->sum($value);
         }
 
         return $searchFields;
