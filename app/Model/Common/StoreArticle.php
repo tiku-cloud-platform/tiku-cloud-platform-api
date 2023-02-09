@@ -33,9 +33,29 @@ class StoreArticle extends BaseModel
         'is_top',
     ];
 
+    protected $appends = [
+        "is_click",
+        "is_collection",
+    ];
+
+    public function getIsClickAttribute(): bool
+    {
+        if ((new StoreArticleClick())::query()->where("article_uuid", "=", $this->getAttribute("uuid"))->first(["id"])) {
+            return true;
+        }
+        return false;
+    }
+
+    public function getIsCollectionAttribute(): bool
+    {
+        if ((new StoreArticleCollection())::query()->where("article_uuid", "=", $this->getAttribute("uuid"))->first(["id"])) {
+            return true;
+        }
+        return false;
+    }
+
     /**
      * 文章封面
-     *
      * @return BelongsTo
      * @author kert
      */

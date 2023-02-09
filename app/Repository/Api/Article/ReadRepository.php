@@ -3,19 +3,17 @@ declare(strict_types = 1);
 
 namespace App\Repository\Api\Article;
 
-use App\Exception\DbDataMessageException;
-use App\Model\Api\StoreArticleShare;
+use App\Model\Api\StoreArticleRead;
 use App\Repository\ApiRepositoryInterface;
+use Closure;
 use Throwable;
 
 /**
- * 文章阅点赞记录
- * Class ReadShareRepository
- * @package App\Repository\Api\Article
+ * 阅读历史
  */
-class ReadShareRepository implements ApiRepositoryInterface
+class ReadRepository implements ApiRepositoryInterface
 {
-    public function repositorySelect(\Closure $closure, int $perSize, array $searchFields = []): array
+    public function repositorySelect(Closure $closure, int $perSize, array $searchFields = []): array
     {
         return [];
     }
@@ -23,11 +21,10 @@ class ReadShareRepository implements ApiRepositoryInterface
     public function repositoryCreate(array $insertInfo): bool
     {
         try {
-            if ((new StoreArticleShare())::query()->create($insertInfo)) {
-                return true;
-            }
+            if ((new StoreArticleRead())::query()->create($insertInfo)) return true;
+            return false;
         } catch (Throwable $throwable) {
-            throw new DbDataMessageException($throwable->getMessage());
+
         }
         return false;
     }
@@ -37,7 +34,7 @@ class ReadShareRepository implements ApiRepositoryInterface
         return 0;
     }
 
-    public function repositoryFind(\Closure $closure, array $searchFields = []): array
+    public function repositoryFind(Closure $closure, array $searchFields = []): array
     {
         return [];
     }

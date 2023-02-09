@@ -54,8 +54,7 @@ class BookRepository implements ApiRepositoryInterface
             ->where([["is_show", "=", 1]])
             ->select($searchFields)
             ->first();
-        if (!empty($bean)) return $bean->toArray();
-        return [];
+        return !empty($bean) ? $bean->toArray() : [];
     }
 
     public function repositoryUpdate(array $updateWhere, array $updateInfo): int

@@ -17,11 +17,11 @@ class BannerRepository implements ApiRepositoryInterface
 {
     public function repositorySelect(Closure $closure, int $perSize, array $searchFields = []): array
     {
-        if (count($searchFields)) {
+        if (count($searchFields) === 0) {
             $searchFields = ['title', 'file_uuid', 'url', 'type as redirect_type',];
         }
         $items = (new StoreBanner())::query()
-            ->with(['image:uuid,file_url as url,file_name as name,file_hash as hash'])
+            ->with(['image:uuid,file_url as url,file_name as path,file_hash as hash'])
             ->where($closure)
             ->where([['is_show', '=', 1]])
             ->select($searchFields)

@@ -6,19 +6,16 @@ namespace App\Model\Common;
 use App\Model\BaseModel;
 
 /**
- * 文章分享历史
- * Class StoreArticleShare
- * @package App\Model\Common
+ * 文章点赞历史
  */
-class StoreArticleShare extends BaseModel
+class StoreArticleClick extends BaseModel
 {
-    protected $table = 'store_article_share_history';
+    protected $table = "store_article_click_history";
 
     protected $fillable = [
         'uuid',
         'store_uuid',
         'user_uuid',
         'article_uuid',
-        "share_type"
     ];
 }

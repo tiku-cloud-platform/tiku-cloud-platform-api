@@ -1,17 +1,24 @@
 <?php
 declare(strict_types = 1);
 
-namespace App\Repository\Api\Book;
+namespace App\Repository\Api\Article;
 
 use App\Exception\DbDataMessageException;
 use App\Exception\DbDuplicateMessageException;
-use App\Model\Api\StoreBook;
-use App\Model\Api\StoreBookClick;
+use App\Mapping\HttpDataResponse;
+use App\Model\Api\StoreArticle;
+use App\Model\Api\StoreArticleClick;
+use App\Model\Api\StoreArticleRead;
 use App\Repository\ApiRepositoryInterface;
 use Closure;
 use Hyperf\DbConnection\Db;
 use Throwable;
 
+/**
+ * 文章阅点赞记录
+ * Class ReadClickRepository
+ * @package App\Repository\Api\Article
+ */
 class ClickRepository implements ApiRepositoryInterface
 {
     public function repositorySelect(Closure $closure, int $perSize, array $searchFields = []): array
@@ -22,21 +29,21 @@ class ClickRepository implements ApiRepositoryInterface
     public function repositoryCreate(array $insertInfo): bool
     {
         try {
-            Db::beginTransaction();
-            $newModel  = StoreBookClick::query()->create($insertInfo);
-            $updateRow = StoreBook::query()->increment("click_number");
-            if (!empty($newModel->getKey()) && $updateRow) {
-                Db::commit();
-                return true;
-            }
-            Db::rollBack();
-            return false;
+            $updateRow = 0;
+            Db::transaction(function () use ($insertInfo, &$updateRow) {
+                $insertResult = (new StoreArticleClick())::query()->create($insertInfo);
+                $updateResult = (new ArticleRepository())->repositoryUpdateClickNumber($insertInfo["article_uuid"]);
+                if (!empty($insertResult->getKey()) && $updateResult > 0) {
+                    $updateRow = 1;
+                }
+            }, 2);
+            return $updateRow > 0;
         } catch (Throwable $throwable) {
             preg_match("/Duplicate entry/", $throwable->getMessage(), $msg);
-            if (!empty($msg)) {
-                throw new DbDuplicateMessageException("你已点赞");
+            if (!empty($msg[0])) {
+                throw  new DbDuplicateMessageException("已存在点赞记录");
             } else {
-                throw new DbDataMessageException("点赞失败");
+                throw new DbDataMessageException($throwable->getMessage());
             }
         }
     }
@@ -48,11 +55,6 @@ class ClickRepository implements ApiRepositoryInterface
 
     public function repositoryFind(Closure $closure, array $searchFields = []): array
     {
-        if (count($searchFields) === 0) {
-            $searchFields = ["created_at as click_time"];
-        }
-        $bean = (new StoreBookClick())::query()->where($closure)->first($searchFields);
-        if (!empty($bean)) return $bean->toArray();
         return [];
     }
 

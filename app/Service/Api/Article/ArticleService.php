@@ -38,14 +38,8 @@ class ArticleService implements ApiServiceInterface
 
     public function serviceSelect(array $requestParams): array
     {
-        $items = (new ArticleRepository)->repositorySelect(self::searchWhere($requestParams),
+        return (new ArticleRepository)->repositorySelect(self::searchWhere($requestParams),
             (int)$requestParams['size'] ?? 20);
-
-        foreach ($items["items"] as $item) {
-            $item->img = $item->image["url"] . $item->image["name"];
-            unset($item->image);
-        }
-        return $items;
     }
 
     public function serviceCreate(array $requestParams): bool
@@ -68,39 +62,11 @@ class ArticleService implements ApiServiceInterface
         $bean = (new ArticleRepository)->repositoryFind(self::searchWhere($requestParams));
         if (!empty($bean)) {
             try {
-                $cacheValue = [
-                    "user_uuid" => UserLoginInfo::getUserId(),
-                    "article_uuid" => $bean["uuid"],
-                    "store_uuid" => RequestApp::getStoreUuid(),
-                    "client_type" => 1,
-                    "read_score" => $bean["read_score"],
-                    "click_score" => $bean["click_score"],
-                    "share_score" => $bean["share_score"],
-                    "collection_score" => $bean["collection_score"],
-                    "read_expend_score" => $bean["read_expend_score"],
-                    "created_at" => date("Y-m-d H:i:s"),
-                ];
-                RedisClient::getInstance()->lPush(CacheKey::ARTICLE_QUEUE, json_encode($cacheValue, JSON_UNESCAPED_UNICODE));
+                $createResult = (new ReadService())->serviceCreate(["uuid" => $requestParams["uuid"]]);
             } catch (Throwable $throwable) {
                 // TODO 抛出异常
             }
         }
         return $bean;
-    }
-
-    public function serviceClick(array $requestParams): int
-    {
-        if ((new ReadClickService())->serviceCreate(['article_uuid' => $requestParams['uuid'], 'type' => 1])) {
-            return (new ArticleRepository)->repositoryUpdateClickNumber((string)$requestParams['uuid']);
-        }
-        return 0;
-    }
-
-    public function serviceCollection(array $requestParams): int
-    {
-        if ((new ReadClickService())->serviceCreate(['article_uuid' => $requestParams['uuid'], 'type' => 2])) {
-            return (new ArticleRepository)->repositoryUpdateCollectionNumber((string)$requestParams['uuid']);
-        }
-        return 0;
     }
 }

@@ -20,11 +20,11 @@ class ArticleRepository implements ApiRepositoryInterface
         if (count($searchFields) === 0) {
             $searchFields = [
                 'uuid', 'title', 'file_uuid', 'source', 'read_number', 'author', "article_category_uuid as category_uid",
-                "click_number",
+                "click_number", "share_number", "collection_number",
             ];
         }
         $items = (new StoreArticle)::query()
-            ->with(['image:uuid,file_url as url,file_name as name,file_hash as hash'])
+            ->with(['image:uuid,file_url as url,file_name as path,file_hash as hash'])
             ->with(['category:uuid,title'])
             ->where([['is_show', '=', 1]])
             ->where($closure)
@@ -104,5 +104,12 @@ class ArticleRepository implements ApiRepositoryInterface
         return (new StoreArticle)->fieldIncr((new StoreArticle)->getTable(),
             [['uuid', '=', $uuid]],
             'collection_number', 1);
+    }
+
+    public function repositoryUpdateShareNumber(string $uuid): int
+    {
+        return (new StoreArticle)->fieldIncr((new StoreArticle)->getTable(),
+            [['uuid', '=', $uuid]],
+            'share_number', 1);
     }
 }

@@ -3,38 +3,35 @@ declare(strict_types = 1);
 
 namespace App\Service\Api\Article;
 
-
-use App\Repository\Api\Article\CategoryRepository;
+use App\Mapping\Request\RequestApp;
+use App\Mapping\Request\UserLoginInfo;
+use App\Mapping\UUID;
+use App\Repository\Api\Article\CollectionRepository;
 use App\Service\ApiServiceInterface;
 use Closure;
-use Hyperf\Di\Annotation\Inject;
 
-/**
- * 文章分类
- *
- * Class CategoryService
- * @package App\Service\Api\Article]
- */
-class CategoryService implements ApiServiceInterface
+class CollectionService implements ApiServiceInterface
 {
+
     public static function searchWhere(array $requestParams): Closure
     {
-        return function ($query) use ($requestParams) {
-            extract($requestParams);
-            $query->where('uuid', '<>', '');
+        return function () {
         };
     }
 
     public function serviceSelect(array $requestParams): array
     {
-        // TODO 二级分类的场景待考虑
-        return (new CategoryRepository)->repositorySelect(self::searchWhere($requestParams),
-            (int)$requestParams['size'] ?? 20);
+        return [];
     }
 
     public function serviceCreate(array $requestParams): bool
     {
-        return false;
+        $requestParams["article_uuid"] = $requestParams["uuid"];
+        $requestParams['uuid']         = UUID::getUUID();
+        $requestParams['store_uuid']   = RequestApp::getStoreUuid();
+        $requestParams['user_uuid']    = UserLoginInfo::getUserId();
+
+        return (new CollectionRepository())->repositoryCreate($requestParams);
     }
 
     public function serviceUpdate(array $requestParams): int
