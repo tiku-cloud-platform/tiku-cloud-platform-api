@@ -15,7 +15,7 @@ class HistoryRepository implements ApiRepositoryInterface
 
     public function repositorySelect(Closure $closure, int $perSize, array $searchFields = []): array
     {
-        if (count($searchFields)) {
+        if (count($searchFields) === 0) {
             $searchFields = ["title", "type", "score", "created_at as time"];
         }
         $items = (new StoreUserScoreHistory())::query()
