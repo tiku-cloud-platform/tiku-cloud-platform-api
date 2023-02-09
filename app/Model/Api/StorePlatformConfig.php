@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Model\Api;
 
@@ -11,10 +11,5 @@ namespace App\Model\Api;
  */
 class StorePlatformConfig extends \App\Model\Common\StorePlatformConfig
 {
-	public $searchFields = [
-		'title',
-		'type',
-		'values',
-		'store_uuid',
-	];
+
 }

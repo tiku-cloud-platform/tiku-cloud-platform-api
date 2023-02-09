@@ -9,6 +9,9 @@ use App\Middleware\Auth\UserAuthMiddleware;
 use App\Request\Api\Article\UuidValidate;
 use App\Request\Api\Common\PageValidate;
 use App\Service\Api\Article\ArticleService;
+use App\Service\Api\Article\CollectionService;
+use App\Service\Api\Article\ClickService;
+use App\Service\Api\Article\ShareService;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\Middleware;
@@ -58,8 +61,11 @@ class ArticleController extends ApiBaseController
      */
     public function click(UuidValidate $validate): ResponseInterface
     {
-        $updateResult = (new ArticleService)->serviceClick($this->request->all());
-        return $updateResult ? $this->httpResponse->success() : $this->httpResponse->error();
+        $clickResult = (new ClickService())->serviceCreate($this->request->all());
+        if ($clickResult) {
+            return $this->httpResponse->success(["message" => "点赞成功"]);
+        }
+        return $this->httpResponse->error();
     }
 
     /**
@@ -71,10 +77,44 @@ class ArticleController extends ApiBaseController
      */
     public function collection(UuidValidate $validate): ResponseInterface
     {
-        $collectionResult = (new ArticleService)->serviceCollection($this->request->all());
+        $collectionResult = (new CollectionService())->serviceCreate($this->request->all());
         if ($collectionResult) {
-            return $this->httpResponse->success();
+            return $this->httpResponse->success(["message" => "收藏成功"]);
         }
         return $this->httpResponse->error();
+    }
+
+    /**
+     * 分享记录
+     * @PostMapping(path="share")
+     * @Middleware(UserEmptyAuthMiddleware::class)
+     * @param UuidValidate $validate
+     * @return ResponseInterface
+     */
+    public function share(UuidValidate $validate): ResponseInterface
+    {
+        $shareResult = (new ShareService())->serviceCreate($this->request->all());
+        if ($shareResult) {
+            return $this->httpResponse->success(["message" => "分享成功"]);
+        }
+        return $this->httpResponse->error();
+    }
+
+    /**
+     * @GetMapping(path="search")
+     * @return ResponseInterface
+     */
+    public function search(): ResponseInterface
+    {
+        return $this->httpResponse->success([
+            "page" => 1,
+            "total" => 20,
+            "size" => 10,
+            "items" => [
+                ["uuid" => 1, "title" => "微服务"],
+                ["uuid" => 2, "title" => "算法"],
+                ["uuid" => 3, "title" => "Go1.2"],
+            ]
+        ]);
     }
 }

@@ -14,9 +14,9 @@ use Throwable;
 
 class CollectionRepository implements ApiRepositoryInterface
 {
-    public function repositorySelect(Closure $closure, int $perSize): array
+    public function repositorySelect(Closure $closure, int $perSize, array $searchFields = []): array
     {
-        // TODO: Implement repositorySelect() method.
+        return [];
     }
 
     public function repositoryCreate(array $insertInfo): bool
@@ -43,30 +43,31 @@ class CollectionRepository implements ApiRepositoryInterface
 
     public function repositoryAdd(array $addInfo): int
     {
-        // TODO: Implement repositoryAdd() method.
+        return 0;
     }
 
-    public function repositoryFind(Closure $closure): array
+    public function repositoryFind(Closure $closure, array $searchFields = []): array
     {
-        $bean = (new StoreBookCollection())::query()->where($closure)->first(["created_at as collection_time"]);
-        if (!empty($bean)) {
-            return $bean->toArray();
+        if (count($searchFields) === 0) {
+            $searchFields = ["created_at as collection_time"];
         }
+        $bean = (new StoreBookCollection())::query()->where($closure)->first($searchFields);
+        if (!empty($bean)) return $bean->toArray();
         return [];
     }
 
     public function repositoryUpdate(array $updateWhere, array $updateInfo): int
     {
-        // TODO: Implement repositoryUpdate() method.
+        return 0;
     }
 
     public function repositoryDelete(array $deleteWhere): int
     {
-        // TODO: Implement repositoryDelete() method.
+        return 0;
     }
 
     public function repositoryWhereInDelete(array $deleteWhere, string $field): int
     {
-        // TODO: Implement repositoryWhereInDelete() method.
+        return 0;
     }
 }

@@ -12,9 +12,6 @@ namespace App\Model\Api;
 class StoreBanner extends \App\Model\Common\StoreBanner
 {
     public $searchFields = [
-        'title',
-        'file_uuid',
-        'url',
-        'type as redirect_type',
+
     ];
 }

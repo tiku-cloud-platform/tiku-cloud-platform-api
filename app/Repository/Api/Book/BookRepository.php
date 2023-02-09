@@ -12,20 +12,17 @@ use Closure;
  */
 class BookRepository implements ApiRepositoryInterface
 {
-    /**
-     * 书籍列表
-     * @param Closure $closure
-     * @param int $perSize
-     * @return array
-     */
-    public function repositorySelect(Closure $closure, int $perSize): array
+    public function repositorySelect(Closure $closure, int $perSize, array $searchFields = []): array
     {
+        if (count($searchFields) === 0) {
+            $searchFields = ["uuid", "file_uuid", "title", "author", "tags", "source", "numbers", "collection_number", "level",
+                "score", "click_number"];
+        }
         $items = StoreBook::query()
             ->with(["image:uuid,file_url as url,file_name as path"])
             ->where($closure)
             ->where([["is_show", "=", 1]])
-            ->select(["uuid", "file_uuid", "title", "author", "tags", "source", "numbers", "collection_number", "level",
-                "score", "click_number"])
+            ->select($searchFields)
             ->orderByDesc("orders")
             ->paginate($perSize);
         return [
@@ -38,45 +35,40 @@ class BookRepository implements ApiRepositoryInterface
 
     public function repositoryCreate(array $insertInfo): bool
     {
-        // TODO: Implement repositoryCreate() method.
+        return false;
     }
 
     public function repositoryAdd(array $addInfo): int
     {
-        // TODO: Implement repositoryAdd() method.
+        return 0;
     }
 
-    /**
-     * 查询详情
-     * @param Closure $closure
-     * @return array
-     */
-    public function repositoryFind(Closure $closure): array
+    public function repositoryFind(Closure $closure, array $searchFields = []): array
     {
+        if (count($searchFields) === 0) {
+            $searchFields = ["uuid", "file_uuid", "title", "author", "tags", "source", "numbers", "collection_number",
+                "level", "score", "intro", "click_number"];
+        }
         $bean = StoreBook::query()->where($closure)
             ->with(["image:uuid,file_url as url,file_name as path"])
             ->where([["is_show", "=", 1]])
-            ->select(["uuid", "file_uuid", "title", "author", "tags", "source", "numbers", "collection_number",
-                "level", "score", "intro", "click_number"])
+            ->select($searchFields)
             ->first();
-        if (!empty($bean)) {
-            return $bean->toArray();
-        }
-        return [];
+        return !empty($bean) ? $bean->toArray() : [];
     }
 
     public function repositoryUpdate(array $updateWhere, array $updateInfo): int
     {
-        // TODO: Implement repositoryUpdate() method.
+        return 0;
     }
 
     public function repositoryDelete(array $deleteWhere): int
     {
-        // TODO: Implement repositoryDelete() method.
+        return 0;
     }
 
     public function repositoryWhereInDelete(array $deleteWhere, string $field): int
     {
-        // TODO: Implement repositoryWhereInDelete() method.
+        return 0;
     }
 }

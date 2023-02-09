@@ -14,21 +14,6 @@ use App\Mapping\UserInfo;
  */
 class StorePlatformMessageContent extends \App\Model\Common\StorePlatformMessageContent
 {
-    public $searchFields = [
-        'uuid',
-        'platform_message_category_uuid',
-        'title',
-        'content',
-        'created_at'
-    ];
-
-    public $listSearchFields = [
-        'uuid',
-        'platform_message_category_uuid',
-        'title',
-        'created_at'
-    ];
-
     protected $appends = [
         'is_read'
     ];

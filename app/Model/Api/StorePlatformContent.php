@@ -10,8 +10,4 @@ namespace App\Model\Api;
  */
 class StorePlatformContent extends \App\Model\Common\StorePlatformContent
 {
-    public $searchFields = [
-        'content',
-        'title',
-    ];
 }

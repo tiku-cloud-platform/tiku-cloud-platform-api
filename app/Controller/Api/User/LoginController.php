@@ -10,6 +10,7 @@ use EasyWeChat\Kernel\Exceptions\InvalidConfigException;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\PostMapping;
 use Psr\Http\Message\ResponseInterface;
+use RedisException;
 
 /**
  * @Controller(prefix="api/user/login")
@@ -21,7 +22,7 @@ class LoginController extends ApiBaseController
      * @PostMapping(path="wechat_code")
      * @param CodeValidate $codeValidate
      * @return ResponseInterface
-     * @throws InvalidConfigException
+     * @throws InvalidConfigException|RedisException
      */
     public function code(CodeValidate $codeValidate): ResponseInterface
     {

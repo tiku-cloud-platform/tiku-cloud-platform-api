@@ -5,6 +5,7 @@ namespace App\Repository\Api\User;
 
 use App\Model\Api\StoreMiniUserDevice;
 use App\Repository\ApiRepositoryInterface;
+use Closure;
 use Hyperf\Di\Annotation\Inject;
 use Throwable;
 
@@ -13,26 +14,15 @@ use Throwable;
  */
 class MiniUserDeviceRepository implements ApiRepositoryInterface
 {
-    /**
-     * @Inject()
-     * @var StoreMiniUserDevice
-     */
-    protected $deviceModel;
-
-    public function repositorySelect(\Closure $closure, int $perSize): array
+    public function repositorySelect(Closure $closure, int $perSize, array $searchFields = []): array
     {
-        // TODO: Implement repositorySelect() method.
+        return [];
     }
 
-    /**
-     * 记录注册设备信息
-     * @param array $insertInfo
-     * @return bool
-     */
     public function repositoryCreate(array $insertInfo): bool
     {
         try {
-            $newModel = $this->deviceModel::query()->create($insertInfo);
+            $newModel = (new StoreMiniUserDevice)::query()->create($insertInfo);
             return !empty($newModel->getKey());
         } catch (Throwable $throwable) {
             return false;
@@ -41,26 +31,26 @@ class MiniUserDeviceRepository implements ApiRepositoryInterface
 
     public function repositoryAdd(array $addInfo): int
     {
-        // TODO: Implement repositoryAdd() method.
+        return 0;
     }
 
-    public function repositoryFind(\Closure $closure): array
+    public function repositoryFind(Closure $closure, array $searchFields = []): array
     {
-        // TODO: Implement repositoryFind() method.
+        return [];
     }
 
     public function repositoryUpdate(array $updateWhere, array $updateInfo): int
     {
-        // TODO: Implement repositoryUpdate() method.
+        return 0;
     }
 
     public function repositoryDelete(array $deleteWhere): int
     {
-        // TODO: Implement repositoryDelete() method.
+        return 0;
     }
 
     public function repositoryWhereInDelete(array $deleteWhere, string $field): int
     {
-        // TODO: Implement repositoryWhereInDelete() method.
+        return 0;
     }
 }

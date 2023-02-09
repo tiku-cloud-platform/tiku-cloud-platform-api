@@ -6,7 +6,6 @@ namespace App\Repository\Api\Exam;
 use App\Model\Api\StoreExamReading;
 use App\Repository\ApiRepositoryInterface;
 use Closure;
-use Hyperf\Di\Annotation\Inject;
 
 /**
  * 问答试题
@@ -15,12 +14,15 @@ use Hyperf\Di\Annotation\Inject;
  */
 class ReadingRepository implements ApiRepositoryInterface
 {
-    public function repositorySelect(Closure $closure, int $perSize): array
+    public function repositorySelect(Closure $closure, int $perSize, array $searchFields = []): array
     {
+        if (count($searchFields) === 0) {
+            $searchFields = ["uuid", "title"];
+        }
         $items = (new StoreExamReading)::query()
             ->whereHas('relationCollection', $closure)
             ->where([['is_show', '=', 1]])
-            ->select(["uuid", "title"])
+            ->select($searchFields)
             ->paginate($perSize);
 
         return [
@@ -41,15 +43,18 @@ class ReadingRepository implements ApiRepositoryInterface
         return 0;
     }
 
-    public function repositoryFind(Closure $closure): array
+    public function repositoryFind(Closure $closure, array $searchFields = []): array
     {
+        if (count($searchFields) === 0) {
+            $searchFields = ['uuid', 'title', 'content', "tips_expend_score as expend_score",
+                "answer_income_score as income_score", "analysis", "level", "source_url",
+                "source_author", "video_url", "created_at as publish_date", "read_number"
+            ];
+        }
         $bean = (new StoreExamReading)::query()
             ->where($closure)
             ->where([['is_show', '=', 1]])
-            ->first(['uuid', 'title', 'content', "tips_expend_score as expend_score",
-                "answer_income_score as income_score", "analysis", "level", "source_url",
-                "source_author", "video_url", "created_at as publish_date", "read_number"
-            ]);
+            ->first($searchFields);
         if (!empty($bean)) return $bean->toArray();
         return [];
     }

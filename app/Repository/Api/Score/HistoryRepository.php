@@ -13,16 +13,16 @@ use Closure;
 class HistoryRepository implements ApiRepositoryInterface
 {
 
-    public function repositorySelect(Closure $closure, int $perSize): array
+    public function repositorySelect(Closure $closure, int $perSize, array $searchFields = []): array
     {
+        if (count($searchFields)) {
+            $searchFields = ["title", "type", "score", "created_at as time"];
+        }
         $items = (new StoreUserScoreHistory())::query()
             ->where($closure)
-            ->where([
-                ["is_show", "=", 1]
-            ])
+            ->where([["is_show", "=", 1]])
             ->orderByDesc("id")
-            ->paginate($perSize,
-                ["title", "type", "score", "created_at as time"]);
+            ->paginate($perSize, $searchFields);
 
         return [
             "items" => $items->items(),
@@ -42,7 +42,7 @@ class HistoryRepository implements ApiRepositoryInterface
         return 0;
     }
 
-    public function repositoryFind(Closure $closure): array
+    public function repositoryFind(Closure $closure, array $searchFields = []): array
     {
         return [];
     }

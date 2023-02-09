@@ -52,42 +52,21 @@ class StoreExamCollection extends BaseModel
 
     protected $hidden = [
         "file_uuid",
-        "level_text",
     ];
 
     protected $casts = [
         "level" => "integer",
     ];
 
-    /**
-     * 试题难度等级
-     * @return string
-     */
-    public function getLevelTextAttribute(): string
+    public function getCreatedAtAttribute($key)
     {
-        $text = "未知";
-        switch ($this->getAttribute("level")) {
-            case 1:
-            case 2:
-                $text = "简单";
-            case 3:
-            case 4:
-                $text = "中等";
-            case 5:
-                $text = "难";
-        }
-        return $text;
+        return date("Y-md", strtotime($key));
     }
 
     public function image(): BelongsTo
     {
         return $this->belongsTo(StorePlatformFile::class, 'file_uuid', 'uuid');
     }
-
-//    public function collectionType(): BelongsTo
-//    {
-//        return $this->belongsTo(StoreExamCategory::class, 'exam_category_uuid', 'uuid');
-//    }
 
     public function category(): BelongsTo
     {

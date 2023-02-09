@@ -12,12 +12,6 @@ namespace App\Model\Api;
  */
 class StoreArticleCategory extends \App\Model\Common\StoreArticleCategory
 {
-    public $searchFields = [
-        'uuid',
-        'title',
-        'file_uuid',
-    ];
-
     protected $hidden = [
         "file_uuid",
     ];

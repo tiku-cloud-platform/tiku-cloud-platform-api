@@ -5,6 +5,7 @@ namespace App\Repository\Api\User;
 
 use App\Model\Api\StorePlatformUserGroup;
 use App\Repository\ApiRepositoryInterface;
+use Closure;
 use Hyperf\Di\Annotation\Inject;
 
 /**
@@ -15,22 +16,16 @@ use Hyperf\Di\Annotation\Inject;
  */
 class StorePlatformApiGroupRepository implements ApiRepositoryInterface
 {
-    /**
-     * @Inject()
-     * @var StorePlatformUserGroup
-     */
-    protected $groupModel;
-
-    /**
-     * @inheritDoc
-     */
-    public function repositorySelect(\Closure $closure, int $perSize): array
+    public function repositorySelect(Closure $closure, int $perSize, array $searchFields = []): array
     {
-        $items = $this->groupModel::query()->where($closure)
-            ->select($this->groupModel->searchFields)
+        if (count($searchFields) === 0) {
+            $searchFields = ['uuid', 'title'];
+        }
+        $items = (new StorePlatformUserGroup())::query()->where($closure)
+            ->select($searchFields)
             ->where([['is_show', '=', 1]])
             ->orderByDesc('id')
-            ->paginate((int)$perSize);
+            ->paginate($perSize);
 
         return [
             'items' => $items->items(),
@@ -40,57 +35,41 @@ class StorePlatformApiGroupRepository implements ApiRepositoryInterface
         ];
     }
 
-    /**
-     * @inheritDoc
-     */
     public function repositoryCreate(array $insertInfo): bool
     {
-        // TODO: Implement repositoryCreate() method.
+        return false;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function repositoryAdd(array $addInfo): int
     {
-        // TODO: Implement repositoryAdd() method.
+        return 0;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function repositoryFind(\Closure $closure): array
+    public function repositoryFind(Closure $closure, array $searchFields = []): array
     {
-        $bean = $this->groupModel::query()
+        if (count($searchFields) === 0) {
+            $searchFields = ["uuid", "title"];
+        }
+        $bean = (new StorePlatformUserGroup)::query()
             ->where($closure)
-            ->select($this->groupModel->searchFields)
+            ->select($searchFields)
             ->first();
 
-        if (!empty($bean)) return $bean->toArray();
-        return [];
+        return !empty($bean) ? $bean->toArray() : [];
     }
 
-    /**
-     * @inheritDoc
-     */
     public function repositoryUpdate(array $updateWhere, array $updateInfo): int
     {
-        // TODO: Implement repositoryUpdate() method.
+        return 0;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function repositoryDelete(array $deleteWhere): int
     {
-        // TODO: Implement repositoryDelete() method.
+        return 0;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function repositoryWhereInDelete(array $deleteWhere, string $field): int
     {
-        // TODO: Implement repositoryWhereInDelete() method.
+        return 0;
     }
 }

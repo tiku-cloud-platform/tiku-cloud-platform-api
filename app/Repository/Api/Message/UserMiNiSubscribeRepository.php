@@ -5,7 +5,7 @@ namespace App\Repository\Api\Message;
 use App\Exception\DbDataMessageException;
 use App\Model\Api\StoreUserMiNiSubscribe;
 use App\Repository\ApiRepositoryInterface;
-use Hyperf\Di\Annotation\Inject;
+use Closure;
 use Throwable;
 
 /**
@@ -13,26 +13,15 @@ use Throwable;
  */
 class UserMiNiSubscribeRepository implements ApiRepositoryInterface
 {
-    /**
-     * @Inject()
-     * @var StoreUserMiNiSubscribe
-     */
-    protected $subscribeModel;
-
-    public function repositorySelect(\Closure $closure, int $perSize): array
+    public function repositorySelect(Closure $closure, int $perSize, array $searchFields = []): array
     {
-        // TODO: Implement repositorySelect() method.
+        return [];
     }
 
-    /**
-     * 创建用户订阅微信小程序模板消息
-     * @param array $insertInfo
-     * @return bool
-     */
     public function repositoryCreate(array $insertInfo): bool
     {
         try {
-            $createSubscribe = $this->subscribeModel::query()->create($insertInfo);
+            $createSubscribe = (new StoreUserMiNiSubscribe)::query()->create($insertInfo);
             if (!empty($createSubscribe->getAttribute("uuid"))) {
                 return true;
             }
@@ -44,26 +33,26 @@ class UserMiNiSubscribeRepository implements ApiRepositoryInterface
 
     public function repositoryAdd(array $addInfo): int
     {
-        // TODO: Implement repositoryAdd() method.
+        return 0;
     }
 
-    public function repositoryFind(\Closure $closure): array
+    public function repositoryFind(Closure $closure, array $searchFields = []): array
     {
-        // TODO: Implement repositoryFind() method.
+        return [];
     }
 
     public function repositoryUpdate(array $updateWhere, array $updateInfo): int
     {
-        // TODO: Implement repositoryUpdate() method.
+        return 0;
     }
 
     public function repositoryDelete(array $deleteWhere): int
     {
-        // TODO: Implement repositoryDelete() method.
+        return 0;
     }
 
     public function repositoryWhereInDelete(array $deleteWhere, string $field): int
     {
-        // TODO: Implement repositoryWhereInDelete() method.
+        return 0;
     }
 }

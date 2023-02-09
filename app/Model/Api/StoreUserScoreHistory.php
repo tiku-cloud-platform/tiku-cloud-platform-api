@@ -12,13 +12,6 @@ namespace App\Model\Api;
  */
 class StoreUserScoreHistory extends \App\Model\Common\StoreUserScoreHistory
 {
-    public $searchFields = [
-        'title',
-        'type',
-        'score',
-        'created_at',
-    ];
-
     public function getCreatedAtAttribute($key)
     {
         return date('Y-m-d', strtotime($key));

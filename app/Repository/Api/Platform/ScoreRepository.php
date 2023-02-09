@@ -6,7 +6,7 @@ namespace App\Repository\Api\Platform;
 
 use App\Model\Api\StorePlatformScore;
 use App\Repository\ApiRepositoryInterface;
-use Hyperf\Di\Annotation\Inject;
+use Closure;
 
 /**
  * 平台积分配置
@@ -16,94 +16,46 @@ use Hyperf\Di\Annotation\Inject;
  */
 class ScoreRepository implements ApiRepositoryInterface
 {
-    /**
-     * @Inject()
-     * @var StorePlatformScore
-     */
-    protected $scoreModel;
-
-    public function __construct()
+    public function repositorySelect(Closure $closure, int $perSize, array $searchFields = []): array
     {
+        return [];
     }
 
-    /**
-     * 查询数据
-     *
-     * @param int $perSize 分页大小
-     * @return array
-     */
-    public function repositorySelect(\Closure $closure, int $perSize): array
-    {
-        // TODO: Implement repositorySelect() method.
-    }
-
-    /**
-     * 创建数据
-     *
-     * @param array $insertInfo 创建信息
-     * @return bool true|false
-     */
     public function repositoryCreate(array $insertInfo): bool
     {
-        // TODO: Implement repositoryCreate() method.
+        return false;
     }
 
-    /**
-     * 添加数据
-     *
-     * @param array $addInfo 添加信息
-     * @return int 添加之后的ID或者行数
-     */
     public function repositoryAdd(array $addInfo): int
     {
-        // TODO: Implement repositoryAdd() method.
+        return 0;
     }
 
-    /**
-     * 单条数据查询
-     */
-    public function repositoryFind(\Closure $closure): array
+    public function repositoryFind(Closure $closure, array $searchFields = []): array
     {
-        $bean = $this->scoreModel::query()->where([['is_show', '=', 1]])
+        if (count($searchFields)) {
+            $searchFields = ['score', 'title', 'uuid', 'key'];
+        }
+        $bean = (new StorePlatformScore())::query()->where([['is_show', '=', 1]])
             ->where($closure)
-            ->first($this->scoreModel->searchFields);
+            ->first($searchFields);
 
         if (!empty($bean)) return $bean->toArray();
         return [];
     }
 
-    /**
-     * 更新数据
-     *
-     * @param array $updateWhere 修改条件
-     * @param array $updateInfo 修改信息
-     * @return int 更新行数
-     */
     public function repositoryUpdate(array $updateWhere, array $updateInfo): int
     {
-        // TODO: Implement repositoryUpdate() method.
+        return 0;
     }
 
-    /**
-     * 删除数据
-     *
-     * @param array $deleteWhere 删除条件
-     * @return int 删除行数
-     */
     public function repositoryDelete(array $deleteWhere): int
     {
-        // TODO: Implement repositoryDelete() method.
+        return 0;
     }
 
-    /**
-     * 范围删除
-     *
-     * @param array $deleteWhere 删除条件
-     * @param string $field 删除字段
-     * @return int
-     */
     public function repositoryWhereInDelete(array $deleteWhere, string $field): int
     {
-        // TODO: Implement repositoryWhereInDelete() method.
+        return 0;
     }
 }

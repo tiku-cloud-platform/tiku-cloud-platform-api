@@ -7,6 +7,7 @@ namespace App\Repository\Api\User;
 use App\Mapping\UUID;
 use App\Model\Api\StoreUserSignCollection;
 use App\Repository\ApiRepositoryInterface;
+use Closure;
 use Hyperf\Di\Annotation\Inject;
 
 /**
@@ -17,76 +18,39 @@ use Hyperf\Di\Annotation\Inject;
  */
 class SignCollectionRepository implements ApiRepositoryInterface
 {
-    /**
-     * @Inject()
-     * @var StoreUserSignCollection
-     */
-    protected $signCollectionModel;
-
-    public function __construct()
+    public function repositorySelect(Closure $closure, int $perSize, array $searchFields = []): array
     {
-    }
-
-    /**
-     * 查询数据
-     *
-     * @param int $perSize 分页大小
-     * @return array
-     */
-    public function repositorySelect(\Closure $closure, int $perSize): array
-    {
-        // TODO: Implement repositorySelect() method.
-    }
-
-    /**
-     * 创建数据
-     *
-     * @param array $insertInfo 创建信息
-     * @return bool true|false
-     */
-    public function repositoryCreate(array $insertInfo): bool
-    {
-        // TODO: Implement repositoryCreate() method.
-    }
-
-    /**
-     * 添加数据
-     *
-     * @param array $addInfo 添加信息
-     * @return int 添加之后的ID或者行数
-     */
-    public function repositoryAdd(array $addInfo): int
-    {
-        // TODO: Implement repositoryAdd() method.
-    }
-
-    /**
-     * 单条数据查询
-     */
-    public function repositoryFind(\Closure $closure): array
-    {
-        $bean = $this->signCollectionModel::query()
-            ->where($closure)
-            ->select($this->signCollectionModel->searchFields)
-            ->first();
-
-        if (!empty($bean)) return $bean->toArray();
         return [];
     }
 
-    /**
-     * 更新数据
-     *
-     * @param array $updateWhere 修改条件
-     * @param array $updateInfo 修改信息
-     * @return int 更新行数
-     */
+    public function repositoryCreate(array $insertInfo): bool
+    {
+        return false;
+    }
+
+    public function repositoryAdd(array $addInfo): int
+    {
+        return 0;
+    }
+
+    public function repositoryFind(Closure $closure, array $searchFields = []): array
+    {
+        if (count($searchFields) === 0) {
+            $searchFields = ['uuid', 'user_uuid', 'sign_number',];
+        }
+        $bean = (new StoreUserSignCollection)::query()
+            ->where($closure)
+            ->select($searchFields)
+            ->first();
+        return !empty($bean) ? $bean->toArray() : [];
+    }
+
     public function repositoryUpdate(array $updateWhere, array $updateInfo): int
     {
-        $bean = $this->signCollectionModel::query()->where('user_uuid', '=', $updateWhere['user_uuid'])->first(['uuid']);
+        $bean = (new StoreUserSignCollection)::query()->where('user_uuid', '=', $updateWhere['user_uuid'])->first(['uuid']);
         if (empty($bean)) {
             // 不存在记录
-            if ($this->signCollectionModel::query()->create([
+            if ((new StoreUserSignCollection)::query()->create([
                 'uuid' => UUID::getUUID(),
                 'user_uuid' => $updateWhere['user_uuid'],
                 'sign_number' => 1,
@@ -98,42 +62,23 @@ class SignCollectionRepository implements ApiRepositoryInterface
             return 1;
         } else {
             // 存在记录
-            return $this->signCollectionModel::query()->where($updateWhere)->update($updateInfo);
+            return (new StoreUserSignCollection)::query()->where($updateWhere)->update($updateInfo);
         }
     }
 
-    /**
-     * 删除数据
-     *
-     * @param array $deleteWhere 删除条件
-     * @return int 删除行数
-     */
     public function repositoryDelete(array $deleteWhere): int
     {
-        // TODO: Implement repositoryDelete() method.
+        return 0;
     }
 
-    /**
-     * 范围删除
-     *
-     * @param array $deleteWhere 删除条件
-     * @param string $field 删除字段
-     * @return int
-     */
     public function repositoryWhereInDelete(array $deleteWhere, string $field): int
     {
-        // TODO: Implement repositoryWhereInDelete() method.
+        return 0;
     }
 
-    /**
-     * 增加签到字段值
-     *
-     * @param array $updateWhere 更新条件
-     * @return int
-     */
     public function repositoryIncry(array $updateWhere): int
     {
-        return $this->signCollectionModel->fieldIncr((string)$this->signCollectionModel->getTable(), (array)$updateWhere,
-            (string)'sign_number', (int)1);
+        return (new StoreUserSignCollection())->fieldIncr((new StoreUserSignCollection())->getTable(), $updateWhere,
+            'sign_number', 1);
     }
 }

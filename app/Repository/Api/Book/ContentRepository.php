@@ -17,12 +17,16 @@ class ContentRepository implements ApiRepositoryInterface
      * 文章目录
      * @param Closure $closure
      * @param int $perSize
+     * @param array $searchFields
      * @return array
      */
-    public function repositoryCatalog(Closure $closure, int $perSize): array
+    public function repositoryCatalog(Closure $closure, int $perSize, array $searchFields = []): array
     {
+        if (count($searchFields) === 0) {
+            $searchFields = ["title", "uuid"];
+        }
         $items = StoreBookContent::query()->where($closure)
-            ->select(["title", "uuid"])
+            ->select($searchFields)
             ->where([["is_show", "=", 1]])
             ->paginate($perSize);
 
@@ -34,50 +38,49 @@ class ContentRepository implements ApiRepositoryInterface
         ];
     }
 
-    public function repositorySelect(Closure $closure, int $perSize): array
+    public function repositorySelect(Closure $closure, int $perSize, array $searchFields = []): array
     {
-        // TODO: Implement repositorySelect() method.
+        return [];
     }
 
     public function repositoryCreate(array $insertInfo): bool
     {
-        // TODO: Implement repositoryCreate() method.
+        return false;
     }
 
     public function repositoryAdd(array $addInfo): int
     {
-        // TODO: Implement repositoryAdd() method.
+        return 0;
     }
 
-    /**
-     * 内容详情
-     * @param Closure $closure
-     * @return array
-     */
-    public function repositoryFind(Closure $closure): array
+    public function repositoryFind(Closure $closure, array $searchFields = []): array
     {
+        if (count($searchFields) === 0) {
+            $searchFields = [
+                "uuid", "title", "content", "author", "source", "read_number", "click_number", "collection_number"
+            ];
+        }
         $bean = StoreBookContent::query()->where($closure)
             ->where([["is_show", "=", 1]])
-            ->select([
-                "uuid", "title", "content", "author", "source", "read_number", "click_number", "collection_number"
-            ])->first();
+            ->select()->first($searchFields);
+
         if (!empty($bean)) return $bean->toArray();
         return [];
     }
 
     public function repositoryUpdate(array $updateWhere, array $updateInfo): int
     {
-        // TODO: Implement repositoryUpdate() method.
+        return 0;
     }
 
     public function repositoryDelete(array $deleteWhere): int
     {
-        // TODO: Implement repositoryDelete() method.
+        return 0;
     }
 
     public function repositoryWhereInDelete(array $deleteWhere, string $field): int
     {
-        // TODO: Implement repositoryWhereInDelete() method.
+        return 0;
     }
 
     public function repositoryIncrement(array $updateWhere, string $incrementField, int $incrementValue = 1): int

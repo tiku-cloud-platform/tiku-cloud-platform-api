@@ -3,23 +3,19 @@ declare(strict_types = 1);
 
 namespace App\Repository\Api\Article;
 
-
 use App\Exception\DbDataMessageException;
-use App\Exception\DbDuplicateMessageException;
-use App\Model\Api\StoreArticleReadClick;
+use App\Model\Api\StoreArticleShare;
 use App\Repository\ApiRepositoryInterface;
-use Hyperf\Di\Annotation\Inject;
 use Throwable;
 
 /**
- * 文章阅读点赞历史
- *
- * Class ReadClickRepository
+ * 文章阅点赞记录
+ * Class ReadShareRepository
  * @package App\Repository\Api\Article
  */
-class ReadClickRepository implements ApiRepositoryInterface
+class ShareRepository implements ApiRepositoryInterface
 {
-    public function repositorySelect(\Closure $closure, int $perSize): array
+    public function repositorySelect(\Closure $closure, int $perSize, array $searchFields = []): array
     {
         return [];
     }
@@ -27,11 +23,11 @@ class ReadClickRepository implements ApiRepositoryInterface
     public function repositoryCreate(array $insertInfo): bool
     {
         try {
-            if ((new StoreArticleReadClick)::query()->create($insertInfo)) {
+            if ((new StoreArticleShare())::query()->create($insertInfo)) {
                 return true;
             }
         } catch (Throwable $throwable) {
-            throw  new DbDuplicateMessageException("你已" . ($insertInfo["type"] == 1 ? "点赞" : "收藏"));
+
         }
         return false;
     }
@@ -41,7 +37,7 @@ class ReadClickRepository implements ApiRepositoryInterface
         return 0;
     }
 
-    public function repositoryFind(\Closure $closure): array
+    public function repositoryFind(\Closure $closure, array $searchFields = []): array
     {
         return [];
     }

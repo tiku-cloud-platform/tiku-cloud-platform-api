@@ -1,44 +1,31 @@
 <?php
 declare(strict_types = 1);
 
-namespace App\Repository\Api\Platform;
+namespace App\Repository\Api\Article;
 
-
-use App\Model\Api\StoreMenu;
+use App\Model\Api\StoreArticleRead;
 use App\Repository\ApiRepositoryInterface;
 use Closure;
+use Throwable;
 
 /**
- * 用户端菜单
- *
- * Class BannerRepository
- * @package App\Repository\Api\Platform
+ * 阅读历史
  */
-class MenuRepository implements ApiRepositoryInterface
+class ReadRepository implements ApiRepositoryInterface
 {
     public function repositorySelect(Closure $closure, int $perSize, array $searchFields = []): array
     {
-        if (count($searchFields) === 0) {
-            $searchFields = ['title', 'file_uuid', 'url', 'type',];
-        }
-        $items = (new StoreMenu())::query()
-            ->with(['image:uuid,file_url as url,file_name as path,file_hash as hash'])
-            ->where([['is_show', '=', 1]])
-            ->where($closure)
-            ->select($searchFields)
-            ->orderByDesc('orders')
-            ->paginate($perSize);
-
-        return [
-            'items' => $items->items(),
-            'total' => $items->total(),
-            'size' => $items->perPage(),
-            'page' => $items->currentPage(),
-        ];
+        return [];
     }
 
     public function repositoryCreate(array $insertInfo): bool
     {
+        try {
+            if ((new StoreArticleRead())::query()->create($insertInfo)) return true;
+            return false;
+        } catch (Throwable $throwable) {
+
+        }
         return false;
     }
 
