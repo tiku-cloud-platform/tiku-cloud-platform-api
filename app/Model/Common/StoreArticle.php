@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace App\Model\Common;
 
 
+use App\Mapping\Request\UserLoginInfo;
 use App\Model\BaseModel;
 use Hyperf\Database\Model\Relations\BelongsTo;
 
@@ -40,16 +41,27 @@ class StoreArticle extends BaseModel
 
     public function getIsClickAttribute(): bool
     {
-        if ((new StoreArticleClick())::query()->where("article_uuid", "=", $this->getAttribute("uuid"))->first(["id"])) {
-            return true;
+        if (!empty(UserLoginInfo::getUserId())) {
+            if ((new StoreArticleClick())::query()->where([
+                ["article_uuid", "=", $this->getAttribute("uuid")],
+                ["user_uuid", "=", UserLoginInfo::getUserId()]
+            ])->first(["id"])) {
+                return true;
+            }
         }
+
         return false;
     }
 
     public function getIsCollectionAttribute(): bool
     {
-        if ((new StoreArticleCollection())::query()->where("article_uuid", "=", $this->getAttribute("uuid"))->first(["id"])) {
-            return true;
+        if (!empty(UserLoginInfo::getUserId())) {
+            if ((new StoreArticleCollection())::query()->where([
+                ["article_uuid", "=", $this->getAttribute("uuid")],
+                ["user_uuid", "=", UserLoginInfo::getUserId()]
+            ])->first(["id"])) {
+                return true;
+            }
         }
         return false;
     }
