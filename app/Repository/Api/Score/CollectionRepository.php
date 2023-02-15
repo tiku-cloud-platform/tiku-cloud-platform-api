@@ -30,7 +30,7 @@ class CollectionRepository implements ApiRepositoryInterface
 
     public function repositoryFind(Closure $closure, array $searchFields = []): array
     {
-        if (count($searchFields)) {
+        if (count($searchFields) == 0) {
             $searchFields = ["score"];
         }
         $bean = (new StoreUserScoreCollection())::query()->where($closure)->first($searchFields);
