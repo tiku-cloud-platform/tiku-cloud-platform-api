@@ -3,6 +3,8 @@ declare(strict_types = 1);
 
 namespace App\Service\Api\Article;
 
+use App\Constants\CacheKey;
+use App\Mapping\RedisClient;
 use App\Mapping\Request\RequestApp;
 use App\Mapping\Request\UserLoginInfo;
 use App\Mapping\UUID;
@@ -30,14 +32,14 @@ class ReadService implements ApiServiceInterface
 
     public function serviceCreate(array $requestParams): bool
     {
-        if (!empty(UserLoginInfo::getUserId())) {// 只有登录时才记录阅读历史
-            $requestParams["article_uuid"] = $requestParams["uuid"];
-            $requestParams['uuid']         = UUID::getUUID();
-            $requestParams['store_uuid']   = RequestApp::getStoreUuid();
-            $requestParams['user_uuid']    = UserLoginInfo::getUserId();
-            (new ReadRepository())->repositoryCreate($requestParams);
-        }
-        return (new ArticleRepository())->repositoryUpdateReadNumber($requestParams["article_uuid"]) > 0;
+        // 将数据写入Redis中，实现异步队列消费方式存储到数据库中
+        $cacheArticle = [
+            "article_uuid" => $requestParams["uuid"],
+            "store_uuid" => RequestApp::getStoreUuid(),
+            "user_uuid" => UserLoginInfo::getUserId(),
+        ];
+        $len          = RedisClient::getInstance()->lPush(CacheKey::ARTICLE_QUEUE, json_encode($cacheArticle, JSON_UNESCAPED_UNICODE));
+        return is_integer($len);
     }
 
     public function serviceUpdate(array $requestParams): int
