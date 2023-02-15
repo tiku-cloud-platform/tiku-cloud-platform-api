@@ -70,6 +70,7 @@ class ReadTask
                             "user_uuid" => $value["user_uuid"],
                         ]);
                     } catch (Throwable $throwable) {
+                        $row = 1;
                         preg_match("/Duplicate entry/", $throwable->getMessage(), $msg);
                         var_dump($throwable->getMessage());
                     }
