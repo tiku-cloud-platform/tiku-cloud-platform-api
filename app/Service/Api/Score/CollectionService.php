@@ -15,7 +15,6 @@ use Closure;
  */
 class CollectionService implements ApiServiceInterface
 {
-
     public static function searchWhere(array $requestParams): Closure
     {
         return function ($query) use ($requestParams) {
