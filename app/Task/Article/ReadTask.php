@@ -62,16 +62,16 @@ class ReadTask
                         ]);
                     }
                     // 增加文章阅读记录
-                    try {
-                        (new StoreArticleReadHistory())::query()->create([
-                            "uuid" => UUID::getUUID(),
-                            "store_uuid" => $value["store_uuid"],
-                            "article_uuid" => $value["article_uuid"],
-                            "user_uuid" => $value["user_uuid"],
-                        ]);
-                    } catch (Throwable $throwable) {
-                        preg_match("/Duplicate entry/", $throwable->getMessage(), $msg);
-                    }
+//                    try {
+//                        (new StoreArticleReadHistory())::query()->create([
+//                            "uuid" => UUID::getUUID(),
+//                            "store_uuid" => $value["store_uuid"],
+//                            "article_uuid" => $value["article_uuid"],
+//                            "user_uuid" => $value["user_uuid"],
+//                        ]);
+//                    } catch (Throwable $throwable) {
+//                        preg_match("/Duplicate entry/", $throwable->getMessage(), $msg);
+//                    }
                     // 更新用户总积分缓存
                     $score = RedisClient::getInstance()->incrByFloat(CacheKey::SCORE_TOTAL . $value["user_uuid"],
                         ($article->read_score - $article->read_expend_score));
