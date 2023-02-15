@@ -11,6 +11,7 @@ use App\Mapping\Request\UserLoginInfo;
 use App\Mapping\UUID;
 use App\Model\Shell\StoreArticle;
 use App\Model\Shell\StoreArticleReadHistory;
+use App\Model\Shell\StoreUserScoreCollection;
 use App\Model\Shell\StoreUserScoreHistory;
 use Hyperf\Crontab\Annotation\Crontab;
 use Hyperf\DbConnection\Db;
@@ -76,6 +77,12 @@ class ReadTask
                         ($article->read_score - $article->read_expend_score));
                     if (is_float($score)) {
                         var_dump("用户积分添加成功", $score);
+                    }
+                    // 更新数据库总积分
+                    if (!empty($article->read_score - $article->read_expend_score)) {
+                        (new StoreUserScoreCollection())::query()->where([
+                            ["user_uuid", "=", $value["user_uuid"]]
+                        ])->increment("score", $article->read_score - $article->read_expend_score);
                     }
                 }
             }, 2);
