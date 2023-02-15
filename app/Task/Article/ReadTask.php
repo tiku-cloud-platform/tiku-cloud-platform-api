@@ -68,7 +68,7 @@ class ReadTask
                             ["article_uuid", "=", $value["article_uuid"]]
                         ])->first(["id"]);
                         var_dump("记录", $history->toArray());
-                        if (!empty($history)) {
+                        if (empty($history)) {
                             (new StoreArticleReadHistory())::query()->create([
                                 "uuid" => UUID::getUUID(),
                                 "store_uuid" => $value["store_uuid"],
