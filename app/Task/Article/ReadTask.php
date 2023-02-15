@@ -71,6 +71,7 @@ class ReadTask
                         ]);
                     } catch (Throwable $throwable) {
                         preg_match("/Duplicate entry/", $throwable->getMessage(), $msg);
+                        var_dump($throwable->getMessage());
                     }
                     // 更新用户总积分缓存
                     $score = RedisClient::getInstance()->incrByFloat(CacheKey::SCORE_TOTAL . $value["user_uuid"],
