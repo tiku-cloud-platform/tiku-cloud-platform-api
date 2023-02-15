@@ -63,14 +63,19 @@ class ReadTask
                     }
                     // 增加文章阅读记录
                     try {
-                        (new StoreArticleReadHistory())::query()->create([
-                            "uuid" => UUID::getUUID(),
-                            "store_uuid" => $value["store_uuid"],
-                            "article_uuid" => $value["article_uuid"],
-                            "user_uuid" => $value["user_uuid"],
-                        ]);
+                        $history = (new StoreArticleReadHistory())::query()->where([
+                            ["store_uuid", "=", $value["store_uuid"]],
+                            ["article_uuid", "=", $value["article_uuid"]]
+                        ])->first(["id"]);
+                        if (!empty($history)) {
+                            (new StoreArticleReadHistory())::query()->create([
+                                "uuid" => UUID::getUUID(),
+                                "store_uuid" => $value["store_uuid"],
+                                "article_uuid" => $value["article_uuid"],
+                                "user_uuid" => $value["user_uuid"],
+                            ]);
+                        }
                     } catch (Throwable $throwable) {
-                        $row = 1;
                         preg_match("/Duplicate entry/", $throwable->getMessage(), $msg);
                         var_dump($throwable->getMessage());
                     }
