@@ -68,14 +68,12 @@ class ReadTask
                             ["article_uuid", "=", $value["article_uuid"]]
                         ])->first(["id"]);
                         var_dump("记录", $history->toArray());
-                        if (empty($history)) {
-                            (new StoreArticleReadHistory())::query()->create([
-                                "uuid" => UUID::getUUID(),
-                                "store_uuid" => $value["store_uuid"],
-                                "article_uuid" => $value["article_uuid"],
-                                "user_uuid" => $value["user_uuid"],
-                            ]);
-                        }
+                        (new StoreArticleReadHistory())::query()->create([
+                            "uuid" => UUID::getUUID(),
+                            "store_uuid" => $value["store_uuid"],
+                            "article_uuid" => $value["article_uuid"],
+                            "user_uuid" => $value["user_uuid"],
+                        ]);
                     } catch (Throwable $throwable) {
                         preg_match("/Duplicate entry/", $throwable->getMessage(), $msg);
                         var_dump($throwable->getMessage());
@@ -95,7 +93,7 @@ class ReadTask
                 }
                 $row = 1;
             }, 2);
-            if ($row > 0) {
+            if ($row < 1) {
                 RedisClient::getInstance()->lPush(CacheKey::ARTICLE_QUEUE, json_encode($value, JSON_UNESCAPED_UNICODE));
             }
         }
