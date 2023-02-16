@@ -6,6 +6,7 @@ namespace App\Service\Api\Exam;
 use App\Constants\CacheKey;
 use App\Mapping\RedisClient;
 use App\Mapping\Request\RequestApp;
+use App\Mapping\Request\User;
 use App\Mapping\Request\UserLoginInfo;
 use App\Repository\Api\Exam\ReadingRepository;
 use App\Service\ApiServiceInterface;
@@ -64,6 +65,7 @@ class ReadingService implements ApiServiceInterface
     {
         $exam = (new ReadingRepository())->repositoryFind(self::searchWhere($requestParams));
         try {
+            User::checkoutScore((float)$exam["expend_score"]);
             if (!empty($exam["income_score"]) || !empty($exam["expend_score"])) {
                 RedisClient::getInstance()->lPush(CacheKey::EXAM_READING, json_encode([
                     "exam_uuid" => $requestParams["uuid"],

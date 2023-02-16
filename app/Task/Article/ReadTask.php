@@ -4,10 +4,7 @@ declare(strict_types = 1);
 namespace App\Task\Article;
 
 use App\Constants\CacheKey;
-use App\Exception\DbDataMessageException;
-use App\Exception\DbDuplicateMessageException;
 use App\Mapping\RedisClient;
-use App\Mapping\Request\UserLoginInfo;
 use App\Mapping\UUID;
 use App\Model\Shell\StoreArticle;
 use App\Model\Shell\StoreArticleReadHistory;

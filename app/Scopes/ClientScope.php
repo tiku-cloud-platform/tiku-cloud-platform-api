@@ -9,6 +9,7 @@ use Hyperf\Database\Model\Model;
 use Hyperf\Database\Model\Scope;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Contract\RequestInterface;
+use Hyperf\Utils\Context;
 
 /**
  * 客户端作用域
@@ -25,18 +26,7 @@ class ClientScope implements Scope
 
     public function apply(Builder $builder, Model $model)
     {
-        $appIdSecret = $this->request->header('App', '');
-
-        if (empty($appIdSecret)) {
-            $builder->where('id', '=', 0);
-        } else {
-            $secretString = AesEncrypt::getInstance()->aesDecrypt($appIdSecret);
-            $configArray  = json_decode($secretString, true);
-            if (is_array($configArray)) {
-                $builder->where('store_uuid', '=', $configArray["uuid"]);
-            } else {
-                $builder->where('id', '=', 0);
-            }
-        }
+        $storeUuid = Context::get("app")["store_uuid"];
+        $builder->where('store_uuid', '=', $storeUuid);
     }
 }

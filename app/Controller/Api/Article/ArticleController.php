@@ -5,6 +5,7 @@ namespace App\Controller\Api\Article;
 
 
 use App\Controller\ApiBaseController;
+use App\Exception\ScoreException;
 use App\Middleware\Auth\UserAuthMiddleware;
 use App\Request\Api\Article\UuidValidate;
 use App\Request\Api\Common\PageValidate;
