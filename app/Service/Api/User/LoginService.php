@@ -7,6 +7,7 @@ use App\Constants\CacheKey;
 use App\Constants\CacheTime;
 use App\Library\WeChat\WeChatMiNi;
 use App\Mapping\RedisClient;
+use App\Mapping\Request\RequestApp;
 use App\Mapping\UUID;
 use App\Repository\Api\User\WeChatApiRepository;
 use App\Service\ApiServiceInterface;
@@ -68,6 +69,10 @@ class LoginService implements ApiServiceInterface
         }
         $loginToken  = md5(UUID::getUUID());
         $cacheResult = $this->setLoginCache(CacheKey::MINI_LOGIN_TOKEN . $loginToken, $userInfo);
+        RedisClient::getInstance()->lPush(CacheKey::USER_REGISTER, json_encode([
+            "store_uuid" => RequestApp::getStoreUuid(),
+            "user_uuid" => $userId
+        ], JSON_UNESCAPED_UNICODE));
         if ($cacheResult) {
             return array_merge([
                 "user_uuid" => $userId,
