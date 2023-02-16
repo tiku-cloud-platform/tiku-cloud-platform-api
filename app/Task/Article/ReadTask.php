@@ -74,6 +74,8 @@ class ReadTask
                     Db::commit();
                 } catch (Throwable $throwable) {
                     Db::rollBack();
+                    RedisClient::getInstance()->incrByFloat(CacheKey::SCORE_TOTAL . $value["user_uuid"],
+                        $article["read_expend_score"] - $article["read_score"]);// 回退Redis积分总数
                     RedisClient::getInstance()->lPush(CacheKey::ARTICLE_QUEUE, json_encode($value, JSON_UNESCAPED_UNICODE));
                 }
             }
