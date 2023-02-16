@@ -48,6 +48,7 @@ class ReadingTask
                     ["user_uuid", "=", $value["user_uuid"]],
                     ["store_uuid", "=", $value["store_uuid"]],
                 ])->increment("score", $value["income_score"] - $value["expend_score"]);
+                $row = 1;
             }, 2);
             if ($row < 1) {
                 RedisClient::getInstance()->lPush(CacheKey::EXAM_READING, json_encode($value, JSON_UNESCAPED_UNICODE));
