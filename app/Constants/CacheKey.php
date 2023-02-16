@@ -76,4 +76,9 @@ class CacheKey extends AbstractConstants
      * @Message("签到积分队列")
      */
     const SIGN_QUEUE = "sign_queue";
+
+    /**
+     * @Message("问答试题队列")
+     */
+    const EXAM_READING = "exam_reading_queue";
 }
