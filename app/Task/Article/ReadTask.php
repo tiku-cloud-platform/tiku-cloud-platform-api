@@ -34,10 +34,12 @@ class ReadTask
                 Db::beginTransaction();
                 try {
                     $articleModel::query()->where([["uuid", "=", $value["article_uuid"]]])->increment("read_number");// 增加文章阅读量
-                    (new StoreArticleReadHistory())::query()->where([
-                        ["store_uuid", "=", $value["store_uuid"]],
-                        ["article_uuid", "=", $value["article_uuid"]]
-                    ])->first(["id"]);
+                    (new StoreArticleReadHistory())::query()->create([
+                        "uuid" => UUID::getUUID(),
+                        "store_uuid" => $value["store_uuid"],
+                        "article_uuid" => $value["article_uuid"],
+                        "user_uuid" => $value["user_uuid"],
+                    ]);
                     RedisClient::getInstance()->incrByFloat(CacheKey::SCORE_TOTAL . $value["user_uuid"],
                         ($article["read_score"] - $article["read_expend_score"]));// 更新Redis积分总数
                     if (!empty($article["read_score"] - $article["read_expend_score"])) {
