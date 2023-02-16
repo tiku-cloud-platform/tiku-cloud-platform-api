@@ -84,6 +84,7 @@ class ReadTask
                             ])->increment("score", $article->read_score - $article->read_expend_score);
                         }
                     } catch (Throwable $throwable) {
+                        // 阅读过就不能重复计算积分
                         preg_match("/Duplicate entry/", $throwable->getMessage(), $msg);
                         var_dump($throwable->getMessage());
                     }
