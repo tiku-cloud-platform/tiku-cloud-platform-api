@@ -4,8 +4,10 @@ declare(strict_types = 1);
 namespace App\Service\Api\Article;
 
 use App\Constants\CacheKey;
+use App\Exception\ScoreException;
 use App\Mapping\RedisClient;
 use App\Mapping\Request\RequestApp;
+use App\Mapping\Request\User;
 use App\Mapping\Request\UserLoginInfo;
 use App\Model\Common\StoreUser;
 use App\Repository\Api\Article\ArticleRepository;
@@ -61,11 +63,8 @@ class ArticleService implements ApiServiceInterface
     {
         $bean = (new ArticleRepository)->repositoryFind(self::searchWhere($requestParams));
         if (!empty($bean)) {
-            try {
-                $createResult = (new ReadService())->serviceCreate(["uuid" => $requestParams["uuid"]]);
-            } catch (Throwable $throwable) {
-                // TODO 抛出异常
-            }
+            User::checkoutScore((float)$bean["read_expend_score"]);
+            (new ReadService())->serviceCreate(["uuid" => $requestParams["uuid"]]);
         }
         return $bean;
     }

@@ -4,30 +4,29 @@ declare(strict_types = 1);
 namespace App\Exception\Handler;
 
 use App\Constants\ErrorCode;
+use App\Exception\ScoreException;
 use App\Mapping\UUID;
 use Hyperf\ExceptionHandler\ExceptionHandler;
-use Hyperf\HttpMessage\Exception\NotFoundHttpException;
 use Hyperf\HttpMessage\Stream\SwooleStream;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
 /**
- * 请求地址不存在异常处理器.
- * Class NotFundHttpExceptionHandler
+ * 积分不足处理异常
  */
-class NotFundHttpExceptionHandler extends ExceptionHandler
+class ScoreExceptionHandler extends ExceptionHandler
 {
     public function handle(Throwable $throwable, ResponseInterface $response): ResponseInterface
     {
-        if ($throwable instanceof NotFoundHttpException) {
+        if ($throwable instanceof ScoreException) {
             $data = json_encode([
-                'code' => empty($throwable->getCode()) ? ErrorCode::REQUEST_ERROR : $throwable->getCode(),
-                'message' => '请求地址不存在',
+                'code' => empty($throwable->getCode()) ? ErrorCode::REQUEST_SUCCESS : $throwable->getCode(),
+                'message' => '积分不足',
                 'data' => [],
                 "request_id" => UUID::snowFlakeId(),
             ]);
             $this->stopPropagation();
-            return $response->withStatus(404)->withBody(new SwooleStream($data));
+            return $response->withStatus(302)->withBody(new SwooleStream($data));
         }
         return $response;
     }

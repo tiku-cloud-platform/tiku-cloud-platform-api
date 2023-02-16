@@ -11,6 +11,7 @@ use App\Mapping\RedisClient;
 use App\Mapping\Request\RequestApp;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Contract\RequestInterface;
+use Hyperf\Utils\Context;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -59,15 +60,15 @@ class ClientMiddleware implements MiddlewareInterface
         if (!in_array($configArray["client"], ["wechat_miniprogram", "wechat_office_count", "h5", "pc"])) {
             return (new HttpDataResponse)->response('客户端不存在', 0, [], HttpCode::BAD_REQUEST);
         }
-        // 参数是否正确
-        $cacheConfig = RedisClient::getInstance()->hGetAll(CacheKey::STORE_DEVEL_CONFIG . RequestApp::getStoreUuid());
+        // 验证商户开发appid
+        $cacheConfig = RedisClient::getInstance()->hGetAll(CacheKey::STORE_DEVEL_CONFIG . $configArray["store_uuid"]);
         if (empty($cacheConfig)) {
             return (new HttpDataResponse)->response('参数不存在', 0, [], HttpCode::BAD_REQUEST);
         }
         if ($cacheConfig["appid"] !== $configArray["appid"]) {
             return (new HttpDataResponse)->response('appid错误', 0, [], HttpCode::BAD_REQUEST);
         }
-
+        Context::set("app", $configArray);
         return $handler->handle($request);
     }
 }

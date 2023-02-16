@@ -19,13 +19,7 @@ use Throwable;
  */
 class MethodNotAllowedHttpExceptionHandler extends ExceptionHandler
 {
-    /**
-     * @Inject
-     * @var RequestInterface
-     */
-    protected $request;
-
-    public function handle(Throwable $throwable, ResponseInterface $response)
+    public function handle(Throwable $throwable, ResponseInterface $response): ResponseInterface
     {
         if ($throwable instanceof MethodNotAllowedHttpException) {
             $data = json_encode([
