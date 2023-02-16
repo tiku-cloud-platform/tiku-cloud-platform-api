@@ -12,7 +12,7 @@ use Hyperf\Crontab\Annotation\Crontab;
 use Hyperf\DbConnection\Db;
 
 /**
- * @Crontab(name="register_task", rule="* * * * * *", memo="用户注册积分任务", callback="executre")
+ * @Crontab(name="register_task", rule="* * * * * *", callback="execute", memo="用户注册积分任务")
  */
 class RegisterTask
 {
@@ -20,6 +20,7 @@ class RegisterTask
     {
         // 添加积分历史，更新积分汇总
         $value = RedisClient::getInstance()->lPop(CacheKey::USER_REGISTER);
+        var_dump("注册用户信息", $value);
         if (!empty($value)) {
             $value = json_decode($value, true);
             $row   = 0;
