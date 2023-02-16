@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace App\Task\Article;
+namespace App\Task\Sign;
 
 use App\Constants\CacheKey;
 use App\Mapping\RedisClient;
