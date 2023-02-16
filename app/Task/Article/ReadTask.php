@@ -71,21 +71,21 @@ class ReadTask
                             "article_uuid" => $value["article_uuid"],
                             "user_uuid" => $value["user_uuid"],
                         ]);
+                        // 更新用户总积分缓存
+                        $score = RedisClient::getInstance()->incrByFloat(CacheKey::SCORE_TOTAL . $value["user_uuid"],
+                            ($article->read_score - $article->read_expend_score));
+                        if (is_float($score)) {
+                            var_dump("用户积分添加成功", $score);
+                        }
+                        // 更新数据库总积分
+                        if (!empty($article->read_score - $article->read_expend_score)) {
+                            (new StoreUserScoreCollection())::query()->where([
+                                ["user_uuid", "=", $value["user_uuid"]]
+                            ])->increment("score", $article->read_score - $article->read_expend_score);
+                        }
                     } catch (Throwable $throwable) {
                         preg_match("/Duplicate entry/", $throwable->getMessage(), $msg);
                         var_dump($throwable->getMessage());
-                    }
-                    // 更新用户总积分缓存
-                    $score = RedisClient::getInstance()->incrByFloat(CacheKey::SCORE_TOTAL . $value["user_uuid"],
-                        ($article->read_score - $article->read_expend_score));
-                    if (is_float($score)) {
-                        var_dump("用户积分添加成功", $score);
-                    }
-                    // 更新数据库总积分
-                    if (!empty($article->read_score - $article->read_expend_score)) {
-                        (new StoreUserScoreCollection())::query()->where([
-                            ["user_uuid", "=", $value["user_uuid"]]
-                        ])->increment("score", $article->read_score - $article->read_expend_score);
                     }
                 }
                 $row = 1;
