@@ -34,30 +34,6 @@ class ReadTask
                 // 增加文章阅读数量
                 $row = $articleModel::query()->where([["uuid", "=", $value["article_uuid"]]])->increment("read_number");
                 if (!empty($value["user_uuid"])) {
-                    // 增加(减少)用户积分
-                    $userScoreHistory = new StoreUserScoreHistory();
-                    if (!empty($article->read_score)) {
-                        $userScoreHistory::query()->create([
-                            "client_type" => 1,
-                            "uuid" => UUID::getUUID(),
-                            "type" => 1,
-                            "title" => "阅读文章",
-                            "score" => $article->read_score,
-                            "user_uuid" => $value["user_uuid"],
-                            "store_uuid" => $value["store_uuid"],
-                        ]);
-                    }
-                    if (!empty($article->read_expend_score)) {
-                        $userScoreHistory::query()->create([
-                            "client_type" => 1,
-                            "uuid" => UUID::getUUID(),
-                            "type" => 2,
-                            "title" => "阅读文章",
-                            "score" => $article->read_expend_score,
-                            "user_uuid" => $value["user_uuid"],
-                            "store_uuid" => $value["store_uuid"],
-                        ]);
-                    }
                     // 增加文章阅读记录
                     try {
                         $history = (new StoreArticleReadHistory())::query()->where([
@@ -87,6 +63,30 @@ class ReadTask
                         // 阅读过就不能重复计算积分
                         preg_match("/Duplicate entry/", $throwable->getMessage(), $msg);
                         var_dump($throwable->getMessage());
+                    }
+                    // 增加(减少)用户积分
+                    $userScoreHistory = new StoreUserScoreHistory();
+                    if (!empty($article->read_score)) {
+                        $userScoreHistory::query()->create([
+                            "client_type" => 1,
+                            "uuid" => UUID::getUUID(),
+                            "type" => 1,
+                            "title" => "阅读文章",
+                            "score" => $article->read_score,
+                            "user_uuid" => $value["user_uuid"],
+                            "store_uuid" => $value["store_uuid"],
+                        ]);
+                    }
+                    if (!empty($article->read_expend_score)) {
+                        $userScoreHistory::query()->create([
+                            "client_type" => 1,
+                            "uuid" => UUID::getUUID(),
+                            "type" => 2,
+                            "title" => "阅读文章",
+                            "score" => $article->read_expend_score,
+                            "user_uuid" => $value["user_uuid"],
+                            "store_uuid" => $value["store_uuid"],
+                        ]);
                     }
                 }
                 $row = 1;
