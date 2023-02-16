@@ -63,7 +63,9 @@ class ArticleService implements ApiServiceInterface
     {
         $bean = (new ArticleRepository)->repositoryFind(self::searchWhere($requestParams));
         if (!empty($bean)) {
-            User::checkoutScore((float)$bean["read_expend_score"]);
+            if (!empty(UserLoginInfo::getUserId())) {
+                User::checkoutScore((float)$bean["read_expend_score"]);
+            }
             (new ReadService())->serviceCreate(["uuid" => $requestParams["uuid"]]);
         }
         return $bean;

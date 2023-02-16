@@ -64,21 +64,18 @@ class ReadingService implements ApiServiceInterface
     public function serviceFind(array $requestParams): array
     {
         $exam = (new ReadingRepository())->repositoryFind(self::searchWhere($requestParams));
-        try {
-            User::checkoutScore((float)$exam["expend_score"]);
-            if (!empty($exam["income_score"]) || !empty($exam["expend_score"])) {
-                RedisClient::getInstance()->lPush(CacheKey::EXAM_READING, json_encode([
-                    "exam_uuid" => $requestParams["uuid"],
-                    "income_score" => $exam["income_score"],
-                    "expend_score" => $exam["expend_score"],
-                    "client_type" => 1,
-                    "user_uuid" => UserLoginInfo::getUserId(),
-                    "store_uuid" => RequestApp::getStoreUuid(),
-                ]));
-            }
-        } catch (Throwable $throwable) {
-            // TODO 记录错误信息
+        User::checkoutScore((float)$exam["expend_score"]);
+        if (!empty($exam["income_score"]) || !empty($exam["expend_score"])) {
+            RedisClient::getInstance()->lPush(CacheKey::EXAM_READING, json_encode([
+                "exam_uuid" => $requestParams["uuid"],
+                "income_score" => $exam["income_score"],
+                "expend_score" => $exam["expend_score"],
+                "client_type" => 1,
+                "user_uuid" => UserLoginInfo::getUserId(),
+                "store_uuid" => RequestApp::getStoreUuid(),
+            ]));
         }
+
         return $exam;
     }
 }
