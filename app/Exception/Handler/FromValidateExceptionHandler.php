@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace App\Exception\Handler;
 
 use App\Constants\ErrorCode;
+use App\Mapping\RedisClient;
 use App\Mapping\UUID;
 use Hyperf\ExceptionHandler\ExceptionHandler;
 use Hyperf\HttpMessage\Stream\SwooleStream;
@@ -26,6 +27,7 @@ class FromValidateExceptionHandler extends ExceptionHandler
                 'data' => [],
                 "request_id" => UUID::snowFlakeId(),
             ]);
+            RedisClient::getInstance()->lPush("log_queue", $throwable->getFile() . $throwable->getLine() . $throwable->getMessage());
             $this->stopPropagation();
             return $response->withStatus(422)->withBody(new SwooleStream($data));
         }
