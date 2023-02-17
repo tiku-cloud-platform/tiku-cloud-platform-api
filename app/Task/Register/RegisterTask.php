@@ -24,21 +24,23 @@ class RegisterTask
             $value = json_decode($value, true);
             $row   = 0;
             Db::transaction(function () use ($value, &$row) {
-                $userScoreHistory = new StoreUserScoreHistory();
-                $userScoreHistory::query()->create([
-                    "client_type" => 1,
-                    "uuid" => UUID::getUUID(),
-                    "type" => 1,
-                    "title" => "新用户注册",
-                    "score" => 200,
-                    "user_uuid" => $value["user_uuid"],
-                    "store_uuid" => $value["store_uuid"],
-                ]);
-                (new StoreUserScoreCollection())::query()->where([
-                    ["user_uuid", "=", $value["user_uuid"]],
-                    ["store_uuid", "=", $value["store_uuid"]],
-                ])->increment("score", 200);
-                RedisClient::getInstance()->incrByFloat(CacheKey::SCORE_TOTAL . $value["user_uuid"], 200);
+                if (!empty($value["user_uuid"]) && !empty($value["store_uuid"])) {
+                    $userScoreHistory = new StoreUserScoreHistory();
+                    $userScoreHistory::query()->create([
+                        "client_type" => 1,
+                        "uuid" => UUID::getUUID(),
+                        "type" => 1,
+                        "title" => "新用户注册",
+                        "score" => 200,
+                        "user_uuid" => $value["user_uuid"],
+                        "store_uuid" => $value["store_uuid"],
+                    ]);
+                    (new StoreUserScoreCollection())::query()->where([
+                        ["user_uuid", "=", $value["user_uuid"]],
+                        ["store_uuid", "=", $value["store_uuid"]],
+                    ])->increment("score", 200);
+                    RedisClient::getInstance()->incrByFloat(CacheKey::SCORE_TOTAL . $value["user_uuid"], 200);
+                }
                 $row = 1;
             }, 2);
             if ($row < 1) {
