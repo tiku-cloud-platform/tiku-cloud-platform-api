@@ -15,6 +15,7 @@
     "php": ">=7.3",
     "ext-cassandra": "*",
     "ext-json": "*",
+    "ext-redis": "*",
     "godruoyi/php-snowflake": "^1.1",
     "hyperf/cache": "^2.1",
     "hyperf/command": "~2.1.0",
@@ -39,7 +40,7 @@
     "overtrue/wechat": "~5.0",
     "predis/predis": "^2.0",
     "qiniu/php-sdk": "^7.4",
-    "ext-redis": "*"
+    "uptrace/uptrace": "^0.1.2"
   },
   "require-dev": {
     "swoole/ide-helper": "^4.5",
@@ -72,7 +73,8 @@
     "optimize-autoloader": true,
     "sort-packages": true,
     "allow-plugins": {
-      "easywechat-composer/easywechat-composer": true
+      "easywechat-composer/easywechat-composer": true,
+      "php-http/discovery": true
     }
   },
   "extra": [],

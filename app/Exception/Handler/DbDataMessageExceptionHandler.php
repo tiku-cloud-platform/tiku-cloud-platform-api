@@ -27,7 +27,15 @@ class DbDataMessageExceptionHandler extends ExceptionHandler
                 'data' => [],
                 "request_id" => UUID::snowFlakeId(),
             ]);
-            RedisClient::getInstance()->lPush("log_queue", $throwable->getFile() . $throwable->getLine() . $throwable->getMessage());
+            RedisClient::getInstance()->lPush("log_queue", json_encode([
+                "code" => 500,
+                "desc" => "系统级别错误信息",
+                "package" => "data_log",
+                "span" => "data",
+                "error_log_file" => $throwable->getFile(),
+                "error_log_line" => $throwable->getLine(),
+                "error_log_message" => $throwable->getMessage()
+            ]));
             $this->stopPropagation();
             return $response->withStatus(500)->withBody(new SwooleStream($data));
         }
