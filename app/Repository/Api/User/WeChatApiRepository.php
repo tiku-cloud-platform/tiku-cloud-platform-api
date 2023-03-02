@@ -4,6 +4,8 @@ declare(strict_types = 1);
 namespace App\Repository\Api\User;
 
 
+use App\Constants\ErrorCode;
+use App\Mapping\RedisClient;
 use App\Mapping\Request\RequestApp;
 use App\Mapping\UUID;
 use App\Model\Api\StoreMiniUserDevice;
@@ -112,6 +114,21 @@ class WeChatApiRepository implements ApiRepositoryInterface
         } catch (Throwable $throwable) {
             // record register error log
             var_dump($throwable->getMessage());
+            $data = json_encode([
+                'code' => empty($throwable->getCode()) ? ErrorCode::REQUEST_SUCCESS : $throwable->getCode(),
+                'message' => $throwable->getMessage(),
+                'data' => $insertInfo,
+                "request_id" => UUID::snowFlakeId(),
+            ]);
+            RedisClient::getInstance()->lPush("log_queue", json_encode([
+                "code" => 500,
+                "desc" => "系统级别错误信息",
+                "package" => "register_log",
+                "span" => "register",
+                "error_log_file" => $throwable->getFile(),
+                "error_log_line" => $throwable->getLine(),
+                "error_log_message" => $throwable->getMessage()
+            ]));
         }
         return $insertUserResult;
     }

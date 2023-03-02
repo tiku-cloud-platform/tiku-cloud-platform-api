@@ -3,17 +3,11 @@ declare(strict_types = 1);
 
 namespace App\Service\Api\Article;
 
-use App\Constants\CacheKey;
-use App\Exception\ScoreException;
-use App\Mapping\RedisClient;
-use App\Mapping\Request\RequestApp;
 use App\Mapping\Request\User;
 use App\Mapping\Request\UserLoginInfo;
-use App\Model\Common\StoreUser;
 use App\Repository\Api\Article\ArticleRepository;
 use App\Service\ApiServiceInterface;
 use Closure;
-use Throwable;
 
 /**
  * 文章
