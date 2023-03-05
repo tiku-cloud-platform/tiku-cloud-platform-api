@@ -37,7 +37,7 @@ class DbDuplicateMessageExceptionHandler extends ExceptionHandler
                 "error_log_message" => $throwable->getMessage()
             ]));
             $this->stopPropagation();
-            return $response->withStatus(200)->withBody(new SwooleStream($data));
+            return $response->withStatus(501)->withBody(new SwooleStream($data));
         }
 
         return $response;
