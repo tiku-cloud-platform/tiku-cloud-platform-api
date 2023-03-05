@@ -16,7 +16,7 @@ class BookRepository implements ApiRepositoryInterface
     {
         if (count($searchFields) === 0) {
             $searchFields = ["uuid", "file_uuid", "title", "author", "tags", "source", "numbers", "collection_number", "level",
-                "score", "click_number"];
+                "score", "click_number", "content_desc"];
         }
         $items = StoreBook::query()
             ->with(["image:uuid,file_url as url,file_name as path"])
@@ -47,7 +47,7 @@ class BookRepository implements ApiRepositoryInterface
     {
         if (count($searchFields) === 0) {
             $searchFields = ["uuid", "file_uuid", "title", "author", "tags", "source", "numbers", "collection_number",
-                "level", "score", "intro", "click_number"];
+                "level", "score", "intro", "click_number", "content_desc"];
         }
         $bean = StoreBook::query()->where($closure)
             ->with(["image:uuid,file_url as url,file_name as path"])

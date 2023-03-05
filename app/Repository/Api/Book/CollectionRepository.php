@@ -32,6 +32,7 @@ class CollectionRepository implements ApiRepositoryInterface
             Db::rollBack();
             return false;
         } catch (Throwable $throwable) {
+            Db::rollBack();
             preg_match("/Duplicate entry/", $throwable->getMessage(), $msg);
             if (!empty($msg)) {
                 throw new DbDuplicateMessageException("你已收藏");
