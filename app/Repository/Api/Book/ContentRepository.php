@@ -62,7 +62,7 @@ class ContentRepository implements ApiRepositoryInterface
         }
         $bean = StoreBookContent::query()->where($closure)
             ->where([["is_show", "=", 1]])
-            ->select()->first($searchFields);
+            ->orderByDesc("id")->first($searchFields);
 
         if (!empty($bean)) return $bean->toArray();
         return [];
