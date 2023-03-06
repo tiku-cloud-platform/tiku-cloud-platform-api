@@ -60,12 +60,13 @@ class ContentRepository implements ApiRepositoryInterface
                 "uuid", "title", "content", "author", "source", "read_number", "click_number", "collection_number"
             ];
         }
-        $bean = StoreBookContent::query()->where($closure)
+        $bean = StoreBookContent::query()
+            ->where($closure)
             ->where([["is_show", "=", 1]])
-            ->orderByDesc("orders")->first($searchFields);
+            ->orderByDesc("orders")
+            ->first($searchFields);
 
-        if (!empty($bean)) return $bean->toArray();
-        return [];
+        return !empty($bean) ? $bean->toArray() : [];
     }
 
     public function repositoryUpdate(array $updateWhere, array $updateInfo): int
