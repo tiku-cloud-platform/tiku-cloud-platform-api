@@ -78,6 +78,8 @@ class LoginService implements ApiServiceInterface
             "email" => $userInfo["user"]["email"],
             "birthday" => $userInfo["user"]["birthday"],
             "remark" => $userInfo["user"]["remark"],
+            "user_uuid" => $userInfo["user"]["uuid"],
+            "store_uuid" => $userInfo["store_uuid"]
         ]);
         RedisClient::getInstance()->lPush(CacheKey::USER_REGISTER, json_encode([
             "store_uuid" => RequestApp::getStoreUuid(),
@@ -91,6 +93,7 @@ class LoginService implements ApiServiceInterface
                 "gender" => $userInfo["gender"],
                 "birthday" => $userInfo["user"]["birthday"],
                 "remark" => $userInfo["user"]["remark"],
+                "user_uuid" => $userInfo["user"]["uuid"],
                 "level_title" => isset($userGrade["uuid"]) ? $userGrade["title"] : "普通会员",
             ], ["code" => 1, "login_token" => $loginToken]);
         }
