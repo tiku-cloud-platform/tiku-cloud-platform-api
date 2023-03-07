@@ -49,7 +49,7 @@ class PlatformUserRepository implements ApiRepositoryInterface
     public function repositoryUpdate(array $updateWhere, array $updateInfo): int
     {
         $nickname = $updateInfo["nickname"];
-        unset($updateInfo["nickname"]);
+        unset($updateInfo["nickname"], $updateInfo["avatar_url"]);
         if (empty($updateInfo["mobile"])) {
             unset($updateInfo["mobile"]);
         }
