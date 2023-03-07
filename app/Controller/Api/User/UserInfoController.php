@@ -5,11 +5,16 @@ namespace App\Controller\Api\User;
 
 use App\Controller\ApiBaseController;
 use App\Mapping\Request\UserLoginInfo;
+use App\Request\Api\User\BindPhoneValidate;
 use App\Service\Api\User\PlatformUserService;
+use App\Service\Api\User\UserInfoService;
+use EasyWeChat\Kernel\Exceptions\InvalidConfigException;
+use GuzzleHttp\Exception\GuzzleException;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\Middleware;
 use App\Middleware\Auth\UserAuthMiddleware;
+use Hyperf\HttpServer\Annotation\PostMapping;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -40,6 +45,24 @@ class UserInfoController extends ApiBaseController
     {
         $userAllInfo = (new PlatformUserService)->serviceFind(["type" => "all"]);
         return $this->httpResponse->success($userAllInfo);
+    }
+
+    /**
+     * 绑定微信手机号
+     * @Middleware(UserAuthMiddleware::class)
+     * @PostMapping(path="bind_phone")
+     * @param BindPhoneValidate $phoneValidate
+     * @return ResponseInterface
+     * @throws InvalidConfigException
+     * @throws GuzzleException
+     */
+    public function bindPhone(BindPhoneValidate $phoneValidate): ResponseInterface
+    {
+        $result = (new UserInfoService())->bindPhone($this->request->all());
+        if ($result["code"] === 1) {
+            return $this->httpResponse->success($result);
+        }
+        return $this->httpResponse->error($result);
     }
 
     /**

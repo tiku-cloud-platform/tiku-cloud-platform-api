@@ -26,7 +26,7 @@ class UpdateController extends ApiBaseController
 {
     /**
      * 更新主表信息
-     * @PutMapping(path="main_info")
+     * @PutMapping(path="info")
      * @param MainValidate $mainValidate
      * @return ResponseInterface
      */

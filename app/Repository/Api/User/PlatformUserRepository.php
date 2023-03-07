@@ -50,6 +50,12 @@ class PlatformUserRepository implements ApiRepositoryInterface
     {
         $nickname = $updateInfo["nickname"];
         unset($updateInfo["nickname"]);
+        if (empty($updateInfo["mobile"])) {
+            unset($updateInfo["mobile"]);
+        }
+        if (empty($updateInfo["email"])) {
+            unset($updateInfo["email"]);
+        }
         $row = 0;
         Db::transaction(function () use ($updateInfo, $updateWhere, &$row, $nickname) {
             (new StorePlatformUser)::query()->where($updateWhere)->update($updateInfo);

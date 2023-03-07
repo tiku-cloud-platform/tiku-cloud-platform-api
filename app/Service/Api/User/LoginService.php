@@ -68,17 +68,29 @@ class LoginService implements ApiServiceInterface
             return ["code" => 3];
         }
         $loginToken  = md5(UUID::getUUID());
-        $cacheResult = $this->setLoginCache(CacheKey::MINI_LOGIN_TOKEN . $loginToken, $userInfo);
+        $cacheResult = $this->setLoginCache(CacheKey::MINI_LOGIN_TOKEN . $loginToken, [
+            "avatar_url" => $userInfo["avatar_url"],
+            "nickname" => $userInfo["nickname"],
+            "real_name" => $userInfo["user"]["real_name"],
+            "gender" => $userInfo["gender"],
+            "age" => $userInfo["user"]["age"],
+            "mobile" => $userInfo["user"]["mobile"],
+            "email" => $userInfo["user"]["email"],
+            "birthday" => $userInfo["user"]["birthday"],
+            "remark" => $userInfo["user"]["remark"],
+        ]);
         RedisClient::getInstance()->lPush(CacheKey::USER_REGISTER, json_encode([
             "store_uuid" => RequestApp::getStoreUuid(),
             "user_uuid" => $userId
         ], JSON_UNESCAPED_UNICODE));
         if ($cacheResult) {
             return array_merge([
-                "user_uuid" => $userId,
                 "avatar_url" => $userInfo["avatar_url"],
                 "nickname" => $userInfo["nickname"],
+                "real_name" => $userInfo["user"]["real_name"],
                 "gender" => $userInfo["gender"],
+                "birthday" => $userInfo["user"]["birthday"],
+                "remark" => $userInfo["user"]["remark"],
                 "level_title" => isset($userGrade["uuid"]) ? $userGrade["title"] : "普通会员",
             ], ["code" => 1, "login_token" => $loginToken]);
         }

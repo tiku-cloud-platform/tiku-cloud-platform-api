@@ -18,7 +18,7 @@ class UserLoginInfo
      */
     public static function getUserLoginInfo(): array
     {
-        return json_decode(Context::get("login:info"), true);
+        return Context::get("login:info");
     }
 
     /**

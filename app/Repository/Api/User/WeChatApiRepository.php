@@ -147,7 +147,7 @@ class WeChatApiRepository implements ApiRepositoryInterface
             ];
         }
         $bean = (new StoreMiNiWeChatUser)::query()
-            ->with(['user:uuid,real_name,gender,email,mobile'])
+            ->with(['user:uuid,real_name,gender,email,mobile,age,real_name,birthday,remark'])
             ->where($closure)
             ->first($searchFields);
 

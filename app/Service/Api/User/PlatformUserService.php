@@ -54,6 +54,7 @@ class PlatformUserService implements ApiServiceInterface
      * 更新用户主信息
      * @param array $requestParams
      * @return int
+     * @throws \RedisException
      */
     public function serviceUpdate(array $requestParams): int
     {
