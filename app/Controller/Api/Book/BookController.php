@@ -15,6 +15,7 @@ use Hyperf\HttpServer\Annotation\Middleware;
 use Hyperf\HttpServer\Annotation\PostMapping;
 use Psr\Http\Message\ResponseInterface;
 use App\Middleware\Auth\UserAuthMiddleware;
+use App\Middleware\Auth\UserEmptyAuthMiddleware;
 
 /**
  * 教程管理
@@ -73,7 +74,7 @@ class BookController extends ApiBaseController
 
     /**
      * @GetMapping("get_click")
-     * @Middleware(UserAuthMiddleware::class)
+     * @Middleware(UserEmptyAuthMiddleware::class)
      * @param UuidValidate $validate
      * @return ResponseInterface
      */
@@ -85,7 +86,7 @@ class BookController extends ApiBaseController
 
     /**
      * @GetMapping("get_collection")
-     * @Middleware(UserAuthMiddleware::class)
+     * @Middleware(UserEmptyAuthMiddleware::class)
      * @param UuidValidate $validate
      * @return ResponseInterface
      */

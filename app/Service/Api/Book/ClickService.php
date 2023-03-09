@@ -16,9 +16,12 @@ class ClickService implements ApiServiceInterface
     {
         return function ($query) use ($requestParams) {
             extract($requestParams);
-            $query->where("user_uuid", "=", UserLoginInfo::getUserId());
+
             if (!empty($uuid)) {
                 $query->where("book_uuid", "=", $uuid);
+            }
+            if (!empty($user_uuid)) {
+                $query->where("user_uuid", "=", $user_uuid);
             }
         };
     }
@@ -53,6 +56,10 @@ class ClickService implements ApiServiceInterface
 
     public function serviceFind(array $requestParams): array
     {
-        return (new ClickRepository())->repositoryFind(self::searchWhere($requestParams));
+        if (!empty(UserLoginInfo::getUserId())) {
+            $requestParams["user_uuid"] = UserLoginInfo::getUserId();
+            return (new ClickRepository())->repositoryFind(self::searchWhere($requestParams));
+        }
+        return [];
     }
 }
