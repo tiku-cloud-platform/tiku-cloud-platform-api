@@ -19,7 +19,7 @@ class HistoryService implements ApiServiceInterface
         return function ($query) use ($requestParams) {
             extract($requestParams);
             $query->where("user_uuid", "=", UserLoginInfo::getUserId());
-            if ((int)$type !== 0) {
+            if (!empty($type)) {
                 $query->where("type", "=", $type);
             }
         };
