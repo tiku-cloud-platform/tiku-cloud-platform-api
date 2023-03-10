@@ -45,6 +45,6 @@ class EvaluateHistoryController extends ApiBaseController
      */
     public function list(UuidValidate $validate, PageValidate $pageValidate): ResponseInterface
     {
-        return $this->httpResponse->success();
+        return $this->httpResponse->success((new EvaluateHistoryService())->serviceSelect($this->request->all()));
     }
 }
