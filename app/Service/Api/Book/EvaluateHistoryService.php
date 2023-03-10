@@ -3,6 +3,8 @@ declare(strict_types = 1);
 
 namespace App\Service\Api\Book;
 
+use App\Mapping\Request\UserLoginInfo;
+use App\Mapping\UUID;
 use App\Repository\Api\Book\EvaluateHistoryRepository;
 use App\Service\ApiServiceInterface;
 use Closure;
@@ -22,6 +24,10 @@ class EvaluateHistoryService implements ApiServiceInterface
 
     public function serviceCreate(array $requestParams): bool
     {
+        $requestParams["book_uuid"] = $requestParams["uuid"];
+        $requestParams["uuid"]      = UUID::getUUID();
+        $requestParams["user_uuid"] = UserLoginInfo::getUserId();
+        unset($requestParams["uuid"]);
         return (new EvaluateHistoryRepository())->repositoryCreate($requestParams);
     }
 
