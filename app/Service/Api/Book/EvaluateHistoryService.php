@@ -25,9 +25,9 @@ class EvaluateHistoryService implements ApiServiceInterface
     public function serviceCreate(array $requestParams): bool
     {
         $requestParams["book_uuid"] = $requestParams["uuid"];
-        $requestParams["uuid"]      = UUID::getUUID();
-        $requestParams["user_uuid"] = UserLoginInfo::getUserId();
         unset($requestParams["uuid"]);
+        $requestParams["user_uuid"] = UserLoginInfo::getUserId();
+        $requestParams["uuid"]      = UUID::getUUID();
         return (new EvaluateHistoryRepository())->repositoryCreate($requestParams);
     }
 
