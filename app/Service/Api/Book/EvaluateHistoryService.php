@@ -10,19 +10,38 @@ use App\Repository\Api\Book\EvaluateHistoryRepository;
 use App\Service\ApiServiceInterface;
 use Closure;
 
+/**
+ * 教程评价
+ */
 class EvaluateHistoryService implements ApiServiceInterface
 {
 
     public static function searchWhere(array $requestParams): Closure
     {
-        // TODO: Implement searchWhere() method.
+        return function ($query) use ($requestParams) {
+            extract($requestParams);
+            if (!empty($uuid)) {
+                $query->where("book_uuid", "=", $uuid);
+            }
+        };
     }
 
+    /**
+     * 评价列表
+     * @param array $requestParams
+     * @return array
+     */
     public function serviceSelect(array $requestParams): array
     {
-        // TODO: Implement serviceSelect() method.
+        $items = (new EvaluateHistoryRepository())->repositorySelect(self::searchWhere($requestParams),
+            (int)($requestParams["size"] ?? 20), ["score", "content", "user_uuid"]);
     }
 
+    /**
+     * 创建教程评价
+     * @param array $requestParams
+     * @return bool
+     */
     public function serviceCreate(array $requestParams): bool
     {
         $requestParams["book_uuid"] = $requestParams["uuid"];

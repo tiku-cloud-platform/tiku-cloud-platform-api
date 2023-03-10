@@ -15,7 +15,18 @@ class EvaluateHistoryRepository implements ApiRepositoryInterface
 
     public function repositorySelect(Closure $closure, int $perSize, array $searchFields = []): array
     {
-        // TODO: Implement repositorySelect() method.
+        $items = (new StoreBookEvaluateHistory())::query()
+            ->with(["user:user_uuid,nickname,avatar_url"])
+            ->where($closure)
+            ->where([["is_show", "=", 1]])
+            ->paginate($perSize, $searchFields);
+
+        return [
+            "items" => $items->items(),
+            "page" => $items->currentPage(),
+            "size" => $perSize,
+            "total" => $items->total(),
+        ];
     }
 
     public function repositoryCreate(array $insertInfo): bool

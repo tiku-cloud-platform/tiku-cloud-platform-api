@@ -5,8 +5,11 @@ namespace App\Controller\Api\Book;
 
 use App\Controller\ApiBaseController;
 use App\Request\Api\Book\EvaluateValidate;
+use App\Request\Api\Book\UuidValidate;
+use App\Request\Api\Common\PageValidate;
 use App\Service\Api\Book\EvaluateHistoryService;
 use Hyperf\HttpServer\Annotation\Controller;
+use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\Middleware;
 use App\Middleware\Auth\UserAuthMiddleware;
 use Hyperf\HttpServer\Annotation\PostMapping;
@@ -31,5 +34,17 @@ class EvaluateHistoryController extends ApiBaseController
             return $this->httpResponse->success(["msg" => "点评成功"]);
         }
         return $this->httpResponse->error(["msg" => "点评失败"]);
+    }
+
+    /**
+     * 评价列表
+     * @GetMapping(path="list")
+     * @param UuidValidate $validate
+     * @param PageValidate $pageValidate
+     * @return ResponseInterface
+     */
+    public function list(UuidValidate $validate, PageValidate $pageValidate): ResponseInterface
+    {
+        return $this->httpResponse->success();
     }
 }
