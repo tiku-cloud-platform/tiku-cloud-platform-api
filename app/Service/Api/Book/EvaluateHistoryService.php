@@ -35,6 +35,11 @@ class EvaluateHistoryService implements ApiServiceInterface
     {
         $items = (new EvaluateHistoryRepository())->repositorySelect(self::searchWhere($requestParams),
             (int)($requestParams["size"] ?? 20), ["score", "content", "user_uuid"]);
+        foreach ($items["items"] as $value) {
+            unset($value->user->user_uuid);
+        }
+
+        return $items;
     }
 
     /**
