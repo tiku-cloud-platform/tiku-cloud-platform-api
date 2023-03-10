@@ -28,8 +28,8 @@ class EvaluateHistoryController extends ApiBaseController
     public function create(EvaluateValidate $validate): ResponseInterface
     {
         if ((new EvaluateHistoryService())->serviceCreate($this->request->all())) {
-            return $this->httpResponse->success(["msg" => "评价成功"]);
+            return $this->httpResponse->success(["msg" => "点评成功"]);
         }
-        return $this->httpResponse->error(["msg" => "评价失败"]);
+        return $this->httpResponse->error(["msg" => "点评失败"]);
     }
 }
