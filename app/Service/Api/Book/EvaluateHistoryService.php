@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace App\Service\Api\Book;
 
+use App\Mapping\Request\RequestApp;
 use App\Mapping\Request\UserLoginInfo;
 use App\Mapping\UUID;
 use App\Repository\Api\Book\EvaluateHistoryRepository;
