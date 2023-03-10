@@ -26,6 +26,7 @@ class BookController extends ApiBaseController
     /**
      * 教程列表
      * @GetMapping(path="list")
+     * @param PageValidate $validate
      * @return ResponseInterface
      */
     public function index(PageValidate $validate): ResponseInterface
