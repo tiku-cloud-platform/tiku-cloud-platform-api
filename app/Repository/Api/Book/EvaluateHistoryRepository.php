@@ -51,14 +51,22 @@ class EvaluateHistoryRepository implements ApiRepositoryInterface
             $avgScore = number_format($totalScore / $count, 2);
         }
         // 好看评分
-        $firstScore = $model->where([["book_uuid", "=", $uuid]])->whereBetween("score", [0.00, 3.00])->count();
+        $firstScore = $model->where([["book_uuid", "=", $uuid]])
+            ->where("score", ">=", "0.00")
+            ->where("score", "<=", "3.00")
+            ->count();
         // 一般评分
-        $second = $model->where([["book_uuid", "=", $uuid]])->whereBetween("score", [3.01, 6.00])->count();
+        $second = $model->where([["book_uuid", "=", $uuid]])
+            ->where("score", ">", "3.00")
+            ->where("score", "<=", "6.00")
+            ->count();
         // 不行评分
-        $third = $model->where([["book_uuid", "=", $uuid]])->whereBetween("score", [6.01, 10.00])->count();
+        $third = $model->where([["book_uuid", "=", $uuid]])
+            ->where("score", ">", "6.00")
+            ->where("score", "<=", "10.00")
+            ->count();
 
         return [
-            "avg_score" => $avgScore,
             "first" => $firstScore,
             "second" => $second,
             "third" => $third,
