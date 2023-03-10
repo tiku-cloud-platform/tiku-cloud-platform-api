@@ -44,7 +44,7 @@ class EvaluateHistoryRepository implements ApiRepositoryInterface
     {
         // 平均评分
         $totalScore = (new StoreBookEvaluateHistory())::query()->where([["book_uuid", "=", $uuid]])->sum("score");
-        $count      = (new StoreBookEvaluateHistory())::query()->where([["book_uuid", "=", $uuid]])->groupBy(["user_uuid"])->count();
+        $count      = (new StoreBookEvaluateHistory())::query()->where([["book_uuid", "=", $uuid]])->count();
         $avgScore   = 0.00;
         if (!empty($count)) {
             $avgScore = number_format($totalScore / $count, 2);
@@ -70,7 +70,7 @@ class EvaluateHistoryRepository implements ApiRepositoryInterface
             "second" => $second,
             "third" => $third,
             "avg" => $avgScore,
-            "count" => $count,
+            "count" => (new StoreBookEvaluateHistory())::query()->where([["book_uuid", "=", $uuid]])->groupBy(["user_uuid"])->count(),
         ];
     }
 
