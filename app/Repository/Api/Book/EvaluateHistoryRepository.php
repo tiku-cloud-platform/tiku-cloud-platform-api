@@ -19,6 +19,7 @@ class EvaluateHistoryRepository implements ApiRepositoryInterface
             ->with(["user:user_uuid,nickname,avatar_url"])
             ->where($closure)
             ->where([["is_show", "=", 1]])
+            ->orderByDesc("id")
             ->paginate($perSize, $searchFields);
 
         return [
