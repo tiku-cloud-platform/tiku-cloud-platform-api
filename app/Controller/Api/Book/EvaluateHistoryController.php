@@ -5,6 +5,7 @@ namespace App\Controller\Api\Book;
 
 use App\Controller\ApiBaseController;
 use App\Request\Api\Book\EvaluateValidate;
+use App\Service\Api\Book\EvaluateHistoryService;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\Middleware;
 use App\Middleware\Auth\UserAuthMiddleware;
@@ -26,6 +27,9 @@ class EvaluateHistoryController extends ApiBaseController
      */
     public function create(EvaluateValidate $validate): ResponseInterface
     {
-        return $this->httpResponse->success();
+        if ((new EvaluateHistoryService())->serviceCreate($this->request->all())) {
+            return $this->httpResponse->success(["msg" => "评价成功"]);
+        }
+        return $this->httpResponse->error(["msg" => "评价失败"]);
     }
 }
