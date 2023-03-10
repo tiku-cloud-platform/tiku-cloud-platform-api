@@ -49,8 +49,8 @@ class EvaluateHistoryController extends ApiBaseController
     }
 
     /**
-     * 评价详情
-     * @GetMapping(path="show")
+     * 评价汇总
+     * @GetMapping(path="collection")
      * @param UuidValidate $validate
      * @return ResponseInterface
      */
