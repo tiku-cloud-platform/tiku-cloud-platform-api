@@ -35,6 +35,38 @@ class EvaluateHistoryRepository implements ApiRepositoryInterface
         return (bool)$result->getKey();
     }
 
+    /**
+     * 评分汇总
+     * @param string $uuid 教程id
+     * @return array
+     */
+    public function repositoryCollection(string $uuid): array
+    {
+        $model = (new StoreBookEvaluateHistory())::query();
+        // 平均评分
+        $totalScore = $model->where([["book_uuid", "=", $uuid]])->sum("score");
+        $count      = $model->where([["book_uuid", "=", $uuid]])->groupBy(["user_uuid"])->count();
+        $avgScore   = 0.00;
+        if (!empty($count)) {
+            $avgScore = number_format($totalScore / $count, 2);
+        }
+        // 好看评分
+        $firstScore = $model->where([["book_uuid", "=", $uuid]])->whereBetween("score", [0.00, 3.00])->count();
+        // 一般评分
+        $second = $model->where([["book_uuid", "=", $uuid]])->whereBetween("score", [3.01, 6.00])->count();
+        // 不行评分
+        $third = $model->where([["book_uuid", "=", $uuid]])->whereBetween("score", [6.01, 10.00])->count();
+
+        return [
+            "avg_score" => $avgScore,
+            "first" => $firstScore,
+            "second" => $second,
+            "third" => $third,
+            "avg" => $avgScore,
+            "count" => $count,
+        ];
+    }
+
     public function repositoryAdd(array $addInfo): int
     {
         // TODO: Implement repositoryAdd() method.

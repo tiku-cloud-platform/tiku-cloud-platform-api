@@ -47,4 +47,15 @@ class EvaluateHistoryController extends ApiBaseController
     {
         return $this->httpResponse->success((new EvaluateHistoryService())->serviceSelect($this->request->all()));
     }
+
+    /**
+     * 评价详情
+     * @GetMapping(path="show")
+     * @param UuidValidate $validate
+     * @return ResponseInterface
+     */
+    public function show(UuidValidate $validate): ResponseInterface
+    {
+        return $this->httpResponse->success((new EvaluateHistoryService())->serviceCollection($this->request->all()));
+    }
 }

@@ -67,8 +67,23 @@ class EvaluateHistoryService implements ApiServiceInterface
         // TODO: Implement serviceDelete() method.
     }
 
+    /**
+     * 评分汇总
+     * @param array $requestParams
+     * @return array
+     */
+    public function serviceCollection(array $requestParams): array
+    {
+        return (new EvaluateHistoryRepository())->repositoryCollection((string)$requestParams["uuid"]);
+    }
+
+    /**
+     * 评价详情
+     * @param array $requestParams
+     * @return array
+     */
     public function serviceFind(array $requestParams): array
     {
-        // TODO: Implement serviceFind() method.
+
     }
 }
