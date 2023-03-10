@@ -70,9 +70,7 @@ class EvaluateHistoryRepository implements ApiRepositoryInterface
             "second" => $second,
             "third" => $third,
             "avg" => $avgScore,
-            "count" => (new StoreBookEvaluateHistory())::query()->distinct()->where([["book_uuid", "=", $uuid]])
-                ->groupBy(["user_uuid"])
-                ->count("user_uuid")
+            "count" => $count,
         ];
     }
 
