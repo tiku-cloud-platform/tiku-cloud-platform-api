@@ -31,7 +31,7 @@ class UploadTokenController extends ApiBaseController
      */
     public function get(): ResponseInterface
     {
-        $auth  = new Auth(env("FILE_A"), env("FILE_B"));
+        $auth  = new Auth(env("FILE_A"), env("FILE_K"));
         $token = $auth->uploadToken(env("FILE_B"));
 
         return $this->response->json([
