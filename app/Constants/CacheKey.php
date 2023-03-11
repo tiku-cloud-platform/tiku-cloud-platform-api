@@ -86,4 +86,6 @@ class CacheKey extends AbstractConstants
      * @Message("用户注册队列")
      */
     const  USER_REGISTER = "user_register";
+
+    const CLOUD_PLATFORM_FILE_TOKEN = "cloud_platform_file_token:";
 }
