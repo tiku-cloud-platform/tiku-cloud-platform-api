@@ -29,7 +29,7 @@ class CategoryService implements ApiServiceInterface
     {
         // TODO 二级分类的场景待考虑
         return (new CategoryRepository)->repositorySelect(self::searchWhere($requestParams),
-            (int)$requestParams['size'] ?? 20);
+            (int)($requestParams['size'] ?? 20));
     }
 
     public function serviceCreate(array $requestParams): bool
