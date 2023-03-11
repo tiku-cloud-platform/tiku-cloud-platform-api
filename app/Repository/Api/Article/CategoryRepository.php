@@ -18,10 +18,9 @@ class CategoryRepository implements ApiRepositoryInterface
     public function repositorySelect(Closure $closure, int $perSize, array $searchFields = []): array
     {
         if (count($searchFields) === 0) {
-            $searchFields = ['uuid', 'title', 'file_uuid'];
+            $searchFields = ['uuid', 'title'];
         }
         $items = (new StoreArticleCategory)::query()
-            ->with(['image:uuid,file_url as url,file_name as name,file_hash as hash'])
             ->where($closure)
             ->where([['is_show', '=', 1]])
             ->select($searchFields)

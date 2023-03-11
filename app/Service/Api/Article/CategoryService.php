@@ -21,7 +21,7 @@ class CategoryService implements ApiServiceInterface
     {
         return function ($query) use ($requestParams) {
             extract($requestParams);
-            $query->where('uuid', '<>', '');
+            $query->where('uuid', '!=', '');
         };
     }
 
