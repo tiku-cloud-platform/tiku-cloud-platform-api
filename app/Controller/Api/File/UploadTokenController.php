@@ -39,6 +39,7 @@ class UploadTokenController extends ApiBaseController
             $token = $auth->uploadToken(env("FILE_B"));
             $redis->set(CacheKey::CLOUD_PLATFORM_FILE_TOKEN . env("FILE_A"), $token, 7000);
         }
+
         return $this->response->json([
             "uptoken" => $token
         ]);
