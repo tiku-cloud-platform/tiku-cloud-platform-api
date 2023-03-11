@@ -58,7 +58,6 @@ class PlatformUserService implements ApiServiceInterface
      */
     public function serviceUpdate(array $requestParams): int
     {
-        unset($requestParams["city"], $requestParams["hobby"], $requestParams["skills"]);
         // 查询邮箱是否存在
         if (isset($requestParams["email"])) {
             $bean = (new PlatformUserRepository())->repositoryFind(function ($query) use ($requestParams) {

@@ -59,10 +59,11 @@ class PlatformUserRepository implements ApiRepositoryInterface
         }
         $row = 0;
         Db::transaction(function () use ($updateInfo, $updateWhere, &$row, $nickname) {
-            (new StorePlatformUser)::query()->where($updateWhere)->update($updateInfo);
             (new StoreMiNiWeChatUser())::query()->where([
                 ["user_uuid", "=", UserLoginInfo::getUserId()]
             ])->update(["nickname" => $nickname]);
+            unset($updateInfo["avatar_url"]);
+            (new StorePlatformUser)::query()->where($updateWhere)->update($updateInfo);
             $row = 1;
         });
         return $row;
