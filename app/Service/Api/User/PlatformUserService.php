@@ -74,14 +74,15 @@ class PlatformUserService implements ApiServiceInterface
             ], $requestParams)) {// 更新成功之后，更新缓存信息[当前只判断是微信小程序，后续增加客户端，需要根据客户端判断来更新]
                 $userInfo = RedisClient::getInstance()->get(CacheKey::MINI_LOGIN_TOKEN . UserLoginInfo::getLoginToken());
                 if (!empty($userInfo)) {
-                    $userInfo              = json_decode($userInfo, true);
-                    $userInfo["nickname"]  = $requestParams["nickname"];
-                    $userInfo["real_name"] = $requestParams["real_name"];
-                    $userInfo["remark"]    = $requestParams["remark"];
-                    $userInfo["gender"]    = $requestParams["gender"];
-                    $userInfo["birthday"]  = $requestParams["birthday"];
-                    $userInfo["email"]     = $requestParams["email"];
-                    $userInfo["age"]       = $requestParams["age"];
+                    $userInfo               = json_decode($userInfo, true);
+                    $userInfo["nickname"]   = $requestParams["nickname"];
+                    $userInfo["real_name"]  = $requestParams["real_name"];
+                    $userInfo["remark"]     = $requestParams["remark"];
+                    $userInfo["gender"]     = $requestParams["gender"];
+                    $userInfo["birthday"]   = $requestParams["birthday"];
+                    $userInfo["email"]      = $requestParams["email"];
+                    $userInfo["age"]        = $requestParams["age"];
+                    $userInfo["avatar_url"] = $requestParams["avatar_url"];
                     RedisClient::getInstance()->set(
                         CacheKey::MINI_LOGIN_TOKEN . UserLoginInfo::getLoginToken(),
                         json_encode($userInfo, JSON_UNESCAPED_UNICODE),

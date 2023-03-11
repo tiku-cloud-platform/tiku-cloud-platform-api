@@ -14,6 +14,7 @@ use Hyperf\HttpServer\Annotation\Middleware;
 use App\Middleware\Auth\UserAuthMiddleware;
 use Hyperf\HttpServer\Annotation\PutMapping;
 use Psr\Http\Message\ResponseInterface;
+use RedisException;
 
 /**
  * 用户信息修改操作
@@ -29,6 +30,7 @@ class UpdateController extends ApiBaseController
      * @PutMapping(path="info")
      * @param MainValidate $mainValidate
      * @return ResponseInterface
+     * @throws RedisException
      */
     public function updateInfo(MainValidate $mainValidate): ResponseInterface
     {
