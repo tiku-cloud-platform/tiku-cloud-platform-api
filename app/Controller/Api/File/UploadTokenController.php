@@ -28,17 +28,11 @@ class UploadTokenController extends ApiBaseController
      * 文件上传token
      * @GetMapping(path="upload_token")
      * @return ResponseInterface
-     * @throws RedisException
      */
     public function get(): ResponseInterface
     {
-        $redis = RedisClient::getInstance();
-        $token = $redis->get(CacheKey::CLOUD_PLATFORM_FILE_TOKEN . env("FILE_A"));
-        if (empty($token)) {
-            $auth  = new Auth(env("FILE_A"), env("FILE_B"));
-            $token = $auth->uploadToken(env("FILE_B"));
-            $redis->set(CacheKey::CLOUD_PLATFORM_FILE_TOKEN . env("FILE_A"), $token, 7000);
-        }
+        $auth  = new Auth(env("FILE_A"), env("FILE_B"));
+        $token = $auth->uploadToken(env("FILE_B"));
 
         return $this->response->json([
             "uptoken" => $token
