@@ -20,7 +20,7 @@ class ArticleRepository implements ApiRepositoryInterface
         if (count($searchFields) === 0) {
             $searchFields = [
                 'uuid', 'title', 'file_uuid', 'source', 'read_number', 'author', "article_category_uuid as category_uid",
-                "click_number", "share_number", "collection_number",
+                "click_number", "share_number", "collection_number", "content_type"
             ];
         }
         $items = (new StoreArticle)::query()
@@ -56,7 +56,7 @@ class ArticleRepository implements ApiRepositoryInterface
         if (count($searchFields) === 0) {
             $searchFields = ['uuid', 'article_category_uuid as category_uid', 'title', 'file_uuid', 'content', 'publish_date',
                 'author', 'source', 'read_number', 'click_number', "read_score", "click_score", "share_score", "collection_score",
-                "read_expend_score",];
+                "read_expend_score", "content_type"];
         }
         $bean = (new StoreArticle)::query()
             ->with(['image:uuid,file_url as url,file_name as name,file_hash as hash'])

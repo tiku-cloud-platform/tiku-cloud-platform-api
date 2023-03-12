@@ -57,7 +57,7 @@ class ContentRepository implements ApiRepositoryInterface
     {
         if (count($searchFields) === 0) {
             $searchFields = [
-                "uuid", "title", "content", "author", "source", "read_number", "click_number", "collection_number"
+                "uuid", "title", "content", "author", "source", "read_number", "click_number", "collection_number", "content_type"
             ];
         }
         $bean = StoreBookContent::query()
