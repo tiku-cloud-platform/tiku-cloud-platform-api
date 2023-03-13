@@ -63,7 +63,7 @@ class ContentRepository implements ApiRepositoryInterface
         }
         $cate  = (new StoreBookCategory())::query()
             ->where($closure)
-            ->whereNull("parent_uuid")
+            ->whereNotNull("parent_uuid")
             ->orderBy("id")
             ->first(["uuid"]);
         $build = StoreBookContent::query()
