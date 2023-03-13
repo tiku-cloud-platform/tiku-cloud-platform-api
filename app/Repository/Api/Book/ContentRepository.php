@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace App\Repository\Api\Book;
 
+use App\Model\Api\StoreBookCategory;
 use App\Model\Api\StoreBookContent;
 use App\Repository\ApiRepositoryInterface;
 use Closure;
@@ -60,10 +61,20 @@ class ContentRepository implements ApiRepositoryInterface
                 "uuid", "title", "content", "author", "source", "read_number", "click_number", "collection_number", "content_type"
             ];
         }
-        $bean = StoreBookContent::query()
+        // 先查询数据第一篇目录，在根据分类的id查询查询第一篇。
+        $cate  = (new StoreBookCategory())::query()
             ->where($closure)
-            ->where([["is_show", "=", 1]])
+            ->where("parent_uuid", "=", "")
             ->orderBy("orders")
+            ->orderBy("id")
+            ->first(["uuid"]);
+        $build = StoreBookContent::query()
+            ->where($closure)
+            ->where([["is_show", "=", 1]]);
+        if (!empty($cate)) {
+            $build->where("store_book_category_uuid", "=", $cate->uuid);
+        }
+        $bean = $build
             ->first($searchFields);
 
         return !empty($bean) ? $bean->toArray() : [];
