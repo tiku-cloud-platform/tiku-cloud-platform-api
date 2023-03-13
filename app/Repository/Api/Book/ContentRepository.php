@@ -61,7 +61,6 @@ class ContentRepository implements ApiRepositoryInterface
                 "uuid", "title", "content", "author", "source", "read_number", "click_number", "collection_number", "content_type"
             ];
         }
-        // 先查询数据第一篇目录，在根据分类的id查询查询第一篇。
         $cate  = (new StoreBookCategory())::query()
             ->where($closure)
             ->whereNull("parent_uuid")
