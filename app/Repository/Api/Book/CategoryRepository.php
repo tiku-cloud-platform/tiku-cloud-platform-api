@@ -16,9 +16,9 @@ class CategoryRepository implements ApiRepositoryInterface
         }
         $items = (new StoreBookCategory())::query()
             ->where([
-                ["parent_uuid", "=", ""],
                 ["is_show", "=", 1]
             ])
+            ->whereNull("parent_uuid")
             ->where($closure)->get($searchFields);
         if (!empty($items)) return $items->toArray();
         return [];
