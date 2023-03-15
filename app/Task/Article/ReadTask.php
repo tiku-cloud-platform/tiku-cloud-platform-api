@@ -28,56 +28,52 @@ class ReadTask
         if (!empty($value)) {
             $value        = json_decode($value, true);
             $articleModel = new StoreArticle();
-            $article      = $articleModel::query()->where([["uuid", "=", $value["article_uuid"]]])->first(["read_score", "read_expend_score"]);
-            if (!empty($article)) {
-                $article = $article->toArray();
-                Db::beginTransaction();
-                try {
-                    $articleModel::query()->where([["uuid", "=", $value["article_uuid"]]])->increment("read_number");// 增加文章阅读量
-                    (new StoreArticleReadHistory())::query()->create([
-                        "uuid" => UUID::getUUID(),
-                        "store_uuid" => $value["store_uuid"],
-                        "article_uuid" => $value["article_uuid"],
-                        "user_uuid" => $value["user_uuid"],
-                    ]);
-                    RedisClient::getInstance()->incrByFloat(CacheKey::SCORE_TOTAL . $value["user_uuid"],
-                        ($article["read_score"] - $article["read_expend_score"]));// 更新Redis积分总数
-                    if (!empty($article["read_score"] - $article["read_expend_score"])) {
-                        (new StoreUserScoreCollection())::query()->where([
-                            ["user_uuid", "=", $value["user_uuid"]]
-                        ])->increment("score", $article["read_score"] - $article["read_expend_score"]);// 更新数据库积分总数
-                    }
-                    // 添加积分历史
-                    $userScoreHistory = new StoreUserScoreHistory();
-                    if (!empty($article["read_score"])) {
-                        $userScoreHistory::query()->create([
-                            "client_type" => 1,
-                            "uuid" => UUID::getUUID(),
-                            "type" => 1,
-                            "title" => "阅读文章",
-                            "score" => $article["read_score"],
-                            "user_uuid" => $value["user_uuid"],
-                            "store_uuid" => $value["store_uuid"],
-                        ]);
-                    }
-                    if (!empty($article["read_expend_score"])) {
-                        $userScoreHistory::query()->create([
-                            "client_type" => 1,
-                            "uuid" => UUID::getUUID(),
-                            "type" => 2,
-                            "title" => "阅读文章",
-                            "score" => $article["read_expend_score"],
-                            "user_uuid" => $value["user_uuid"],
-                            "store_uuid" => $value["store_uuid"],
-                        ]);
-                    }
-                    Db::commit();
-                } catch (Throwable $throwable) {
-                    Db::rollBack();
-                    RedisClient::getInstance()->incrByFloat(CacheKey::SCORE_TOTAL . $value["user_uuid"],
-                        $article["read_expend_score"] - $article["read_score"]);// 回退Redis积分总数
-                    RedisClient::getInstance()->lPush(CacheKey::ARTICLE_QUEUE, json_encode($value, JSON_UNESCAPED_UNICODE));
+            Db::beginTransaction();
+            try {
+                $articleModel::query()->where([["uuid", "=", $value["article_uuid"]]])->increment("read_number");// 增加文章阅读量
+                (new StoreArticleReadHistory())::query()->create([
+                    "uuid" => UUID::getUUID(),
+                    "store_uuid" => $value["store_uuid"],
+                    "article_uuid" => $value["article_uuid"],
+                    "user_uuid" => $value["user_uuid"],
+                ]);
+                RedisClient::getInstance()->incrByFloat(CacheKey::SCORE_TOTAL . $value["user_uuid"],
+                    ($value["read_score"] - $value["read_expend_score"]));// 更新Redis积分总数
+                if (!empty($value["read_score"] - $value["read_expend_score"])) {
+                    (new StoreUserScoreCollection())::query()->where([
+                        ["user_uuid", "=", $value["user_uuid"]]
+                    ])->increment("score", $value["read_score"] - $value["read_expend_score"]);// 更新数据库积分总数
                 }
+                // 添加积分历史
+                $userScoreHistory = new StoreUserScoreHistory();
+                if (!empty($value["read_score"])) {
+                    $userScoreHistory::query()->create([
+                        "client_type" => 1,
+                        "uuid" => UUID::getUUID(),
+                        "type" => 1,
+                        "title" => "阅读文章",
+                        "score" => $value["read_score"],
+                        "user_uuid" => $value["user_uuid"],
+                        "store_uuid" => $value["store_uuid"],
+                    ]);
+                }
+                if (!empty($value["read_expend_score"])) {
+                    $userScoreHistory::query()->create([
+                        "client_type" => 1,
+                        "uuid" => UUID::getUUID(),
+                        "type" => 2,
+                        "title" => "阅读文章",
+                        "score" => $value["read_expend_score"],
+                        "user_uuid" => $value["user_uuid"],
+                        "store_uuid" => $value["store_uuid"],
+                    ]);
+                }
+                Db::commit();
+            } catch (Throwable $throwable) {
+                Db::rollBack();
+                RedisClient::getInstance()->incrByFloat(CacheKey::SCORE_TOTAL . $value["user_uuid"],
+                    $value["read_expend_score"] - $value["read_score"]);// 回退Redis积分总数
+                RedisClient::getInstance()->lPush(CacheKey::ARTICLE_QUEUE, json_encode($value, JSON_UNESCAPED_UNICODE));
             }
         }
     }

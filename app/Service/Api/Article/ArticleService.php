@@ -60,7 +60,8 @@ class ArticleService implements ApiServiceInterface
             if (!empty(UserLoginInfo::getUserId())) {
                 User::checkoutScore((float)$bean["read_expend_score"]);
             }
-            (new ReadService())->serviceCreate(["uuid" => $requestParams["uuid"]]);
+            (new ReadService())->serviceCreate(["uuid" => $requestParams["uuid"], "read_score" => $bean["read_score"],
+                "read_expend_score" => $bean["read_expend_score"]]);
         }
         return $bean;
     }
