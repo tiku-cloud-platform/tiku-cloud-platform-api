@@ -44,24 +44,24 @@ class EvaluateHistoryRepository implements ApiRepositoryInterface
     public function repositoryCollection(string $uuid): array
     {
         // 平均评分
-        $totalScore = (new StoreBookEvaluateHistory())::query()->where([["book_uuid", "=", $uuid]])->sum("score");
-        $count      = (new StoreBookEvaluateHistory())::query()->where([["book_uuid", "=", $uuid]])->count();
+        $totalScore = (new StoreBookEvaluateHistory())::query()->where([["book_uuid", "=", $uuid], ["is_show", "=", 1]])->sum("score");
+        $count      = (new StoreBookEvaluateHistory())::query()->where([["book_uuid", "=", $uuid], ["is_show", "=", 1]])->count();
         $avgScore   = 0.00;
         if (!empty($count)) {
             $avgScore = number_format($totalScore / $count, 2);
         }
         // 不行评分
-        $third = (new StoreBookEvaluateHistory())::query()->where([["book_uuid", "=", $uuid]])
+        $third = (new StoreBookEvaluateHistory())::query()->where([["book_uuid", "=", $uuid], ["is_show", "=", 1]])
             ->where("score", ">=", "0.00")
             ->where("score", "<=", "3.00")
             ->count();
         // 一般评分
-        $second = (new StoreBookEvaluateHistory())::query()->where([["book_uuid", "=", $uuid]])
+        $second = (new StoreBookEvaluateHistory())::query()->where([["book_uuid", "=", $uuid], ["is_show", "=", 1]])
             ->where("score", ">", "3.00")
             ->where("score", "<=", "6.00")
             ->count();
         // 好看评分
-        $firstScore = (new StoreBookEvaluateHistory())::query()->where([["book_uuid", "=", $uuid]])
+        $firstScore = (new StoreBookEvaluateHistory())::query()->where([["book_uuid", "=", $uuid], ["is_show", "=", 1]])
             ->where("score", ">", "6.00")
             ->where("score", "<=", "10.00")
             ->count();
