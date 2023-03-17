@@ -21,6 +21,7 @@ class BannerController extends ApiBaseController
     /**
      * 轮播图列表
      * @GetMapping(path="list")
+     * @param PageValidate $validate
      * @return ResponseInterface
      */
     public function index(PageValidate $validate): ResponseInterface
