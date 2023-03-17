@@ -16,8 +16,9 @@ class CateRepository implements ApiRepositoryInterface
     public function repositoryAll(Closure $closure): array
     {
         return (new StoreAttacheCate())::query()
-            ->with(["children:uuid,title"])
+            ->with(["children:uuid,title,parent_uuid"])
             ->where($closure)
+            ->whereNull("parent_uuid")
             ->orderByDesc("id")
             ->get(["uuid", "title", "parent_uuid"])
             ->toArray();
