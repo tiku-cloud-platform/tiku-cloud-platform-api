@@ -55,6 +55,9 @@ class AttacheService implements ApiServiceInterface
             $bean               = (new AttacheRepository())->repositoryFind(self::searchWhere($requestParams), ["content"]);
             $bean["bind_email"] = 1;
             $bean["message"]    = "";
+            (new AttacheRepository())->repositoryUpdate([
+                ["uuid", "=", $requestParams["uuid"]]
+            ], []);
             return $bean;
         }
         return ["bind_email" => 2, "message" => "请完善邮箱信息", "url" => "/packageA/pages/user/info/setting"];
