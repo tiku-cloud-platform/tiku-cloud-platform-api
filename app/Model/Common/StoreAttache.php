@@ -17,8 +17,17 @@ class StoreAttache extends BaseModel
         "file_uuid"
     ];
 
+    protected $casts = [
+        "created_at" => "date",
+    ];
+
     public function cover(): BelongsTo
     {
         return $this->belongsTo(StorePlatformFile::class, "file_uuid", "uuid");
     }
+
+//    public function getCreatedAtAttribute($key)
+//    {
+//        return date("Y-m-d", strtotime($key));
+//    }
 }

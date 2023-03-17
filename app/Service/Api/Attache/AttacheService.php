@@ -30,7 +30,7 @@ class AttacheService implements ApiServiceInterface
     {
         return (new AttacheRepository())->repositorySelect(self::searchWhere($requestParams),
             (int)($requestParams["size"] ?? 20),
-            ["uuid", "title", "type", "file_uuid", "download_number", "created_at"]);
+            ["uuid", "title", "type", "file_uuid", "download_number as download", "created_at"]);
     }
 
     public function serviceCreate(array $requestParams): bool
