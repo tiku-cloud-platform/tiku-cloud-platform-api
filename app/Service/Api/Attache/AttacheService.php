@@ -52,8 +52,11 @@ class AttacheService implements ApiServiceInterface
     {
         $userInfo = UserLoginInfo::getUserLoginInfo();
         if (isset($userInfo["email"]) && $userInfo["email"] != "") {
-            return (new AttacheRepository())->repositoryFind(self::searchWhere($requestParams), ["content"]);
+            $bean               = (new AttacheRepository())->repositoryFind(self::searchWhere($requestParams), ["content"]);
+            $bean["bind_email"] = 2;
+            $bean["message"]    = "请完善邮箱信息";
+            return $bean;
         }
-        return ["bind_email" => 2];
+        return ["bind_email" => 2, "message" => "请完善邮箱信息"];
     }
 }
