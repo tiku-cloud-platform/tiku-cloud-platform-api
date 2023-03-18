@@ -19,6 +19,7 @@ class StoreAttacheCate extends BaseModel
 
     public function children(): HasMany
     {
-        return $this->hasMany(StoreAttacheCate::class, "parent_uuid", "uuid");
+        return $this->hasMany(StoreAttacheCate::class, "parent_uuid", "uuid")
+            ->where("is_show", "=", 1);
     }
 }
