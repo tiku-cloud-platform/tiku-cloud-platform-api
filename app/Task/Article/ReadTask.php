@@ -26,7 +26,8 @@ class ReadTask
 //            "user_uuid" => UserLoginInfo::getUserId(),
         $value = RedisClient::getInstance()->rPop(CacheKey::ARTICLE_QUEUE);
         if (!empty($value)) {
-            $value        = json_decode($value, true);
+            $value = json_decode($value, true);
+            var_dump("缓存信息", $value);
             $articleModel = new StoreArticle();
             Db::beginTransaction();
             try {
