@@ -37,6 +37,8 @@ class ReadService implements ApiServiceInterface
             "article_uuid" => $requestParams["uuid"],
             "store_uuid" => RequestApp::getStoreUuid(),
             "user_uuid" => UserLoginInfo::getUserId(),
+            "read_score" => $requestParams["read_score"],
+            "read_expend_score" => $requestParams["read_expend_score"],
         ];
         $len          = RedisClient::getInstance()->lPush(CacheKey::ARTICLE_QUEUE, json_encode($cacheArticle, JSON_UNESCAPED_UNICODE));
         return is_integer($len);
