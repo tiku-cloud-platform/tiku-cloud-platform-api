@@ -19,7 +19,7 @@ class CateRepository implements ApiRepositoryInterface
             ->with(["children:uuid,title,parent_uuid"])
             ->where($closure)
             ->whereNull("parent_uuid")
-            ->orderByDesc("id")
+            ->orderByDesc("orders")
             ->get(["uuid", "title", "parent_uuid"])
             ->toArray();
     }
