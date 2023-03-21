@@ -15,7 +15,8 @@ class StoreBookCategory extends \App\Model\Common\StoreBookCategory
     public function getChildrenAttribute()
     {
         $items = self::query()->where([
-            ["parent_uuid", "=", $this->getAttribute("uuid")]
+            ["parent_uuid", "=", $this->getAttribute("uuid")],
+            ["is_show", "=", 1]
         ])->get(["title", "uuid"]);
         if (!empty($items)) {
             $items     = $items->toArray();
