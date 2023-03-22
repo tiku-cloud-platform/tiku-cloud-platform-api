@@ -7,6 +7,7 @@ namespace App\Service\Api\Exam;
 use App\Repository\Api\Exam\CollectionRepository;
 use App\Service\ApiServiceInterface;
 use Closure;
+use Hyperf\HttpServer\Annotation\GetMapping;
 
 /**
  * 试卷
@@ -40,6 +41,7 @@ class CollectionService implements ApiServiceInterface
 
     /**
      * 首页推荐试卷
+     * @GetMapping(path="recommend")
      * @param array $requestParams
      * @return array
      */
