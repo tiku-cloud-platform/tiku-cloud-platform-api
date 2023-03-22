@@ -44,7 +44,7 @@ class ClientMiddleware implements MiddlewareInterface
     // {"uuid":"35c28259-9b55-e438-3830-dfc79f592709","appid":"cld_d1e7a97fdc","client":"wechat_miniprogram"}
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        var_dump("请求信息", $this->request);
+        var_dump("请求信息", $this->request->getHeaders(), $this->request->all());
         // 参数是否存在与参数是否合法
         $appIdSecret = $this->request->header('App', '');
         if (empty($appIdSecret)) {
