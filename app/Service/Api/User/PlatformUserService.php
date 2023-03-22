@@ -58,6 +58,9 @@ class PlatformUserService implements ApiServiceInterface
      */
     public function serviceUpdate(array $requestParams): int
     {
+        $ip                        = !empty($requestParams["x-real-ip"]) ? $requestParams["x-real-ip"] :
+            (!empty($requestParams["x-forwarded-for"]) ? $requestParams["x-forwarded-for"] : "");
+        $requestParams["login_ip"] = $ip;
         // 查询邮箱是否存在
         if (isset($requestParams["email"])) {
             $bean = (new PlatformUserRepository())->repositoryFind(function ($query) use ($requestParams) {
@@ -82,6 +85,7 @@ class PlatformUserService implements ApiServiceInterface
                     $userInfo["email"]      = $requestParams["email"];
                     $userInfo["age"]        = $requestParams["age"];
                     $userInfo["avatar_url"] = $requestParams["avatar_url"];
+                    $userInfo["user-agent"] = $requestParams["user-agent"],
                     RedisClient::getInstance()->set(
                         CacheKey::MINI_LOGIN_TOKEN . UserLoginInfo::getLoginToken(),
                         json_encode($userInfo, JSON_UNESCAPED_UNICODE),

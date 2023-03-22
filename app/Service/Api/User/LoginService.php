@@ -43,6 +43,8 @@ class LoginService implements ApiServiceInterface
         $userInfo = $this->miniUserRepository->repositoryFind(function ($query) use ($jsonCode) {
             $query->where("openid", "=", $jsonCode["openid"]);
         });
+        $ip       = !empty($requestParams["x-real-ip"]) ? $requestParams["x-real-ip"] :
+            (!empty($requestParams["x-forwarded-for"]) ? $requestParams["x-forwarded-for"] : "");
         $userId   = UUID::getUUID();
         // 不存在则创建（提前生成用户uuid，当返回值为true时，表示用户创建成功，则把改uuid插入队列，方便队列对该用户增加额外的业务操作）。
         $userGrade = [];
@@ -52,6 +54,8 @@ class LoginService implements ApiServiceInterface
             $insertUser = $this->miniUserRepository->repositoryCreate([
                 "openid" => $jsonCode["openid"],
                 "user_uuid" => $userId,
+                "register_ip" => $ip,
+                "login_ip" => $ip,
                 "grade_uuid" => isset($userGrade["uuid"]) ? $userGrade["uuid"] : "",
                 "device" => $requestParams["device"] ?? [],
             ]);

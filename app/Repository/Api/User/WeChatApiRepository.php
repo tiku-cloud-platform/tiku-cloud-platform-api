@@ -60,9 +60,11 @@ class WeChatApiRepository implements ApiRepositoryInterface
                     'uuid' => $miniUserId,
                     'user_uuid' => $insertInfo["user_uuid"],
                     'store_uuid' => $storeUuid,
-                    'nickname' => "小白号",
+                    'nickname' => "小白" . mt_rand(0, 10000) . "号",
                     'avatar_url' => "https://qiniucloud.qqdeveloper.com/avatar_tiku_cloud.png",
                     'gender' => 0,
+                    "register_ip" => $insertInfo["register_ip"],
+                    "login_ip" => $insertInfo["login_ip"],
                     'is_forbidden' => 2,
                     'language' => "zh-Cn",
                 ]);

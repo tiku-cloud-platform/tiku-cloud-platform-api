@@ -38,6 +38,8 @@ class StoreMiNiWeChatUser extends BaseModel
         'is_show',
         "channel_uuid",
         "login_token",
+        "register_ip",
+        "login_ip",
     ];
 
     protected $hidden = [
