@@ -26,7 +26,6 @@ class LoginController extends ApiBaseController
      */
     public function code(CodeValidate $codeValidate): ResponseInterface
     {
-
         $userInfo = (new LoginService())->serviceMiNiCodeAuth(array_merge([
             "user_agent" => $this->request->header("user-agent", ""),
             "x-real-ip" => $this->request->header("x-real-ip", ""),
