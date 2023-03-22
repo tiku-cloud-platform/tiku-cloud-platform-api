@@ -79,7 +79,8 @@ class LoginService implements ApiServiceInterface
             "birthday" => $userInfo["user"]["birthday"],
             "remark" => $userInfo["user"]["remark"],
             "user_uuid" => $userInfo["user"]["uuid"],
-            "store_uuid" => $userInfo["store_uuid"]
+            "store_uuid" => $userInfo["store_uuid"],
+            "user_agent" => $requestParams["user_agent"],
         ]);
         RedisClient::getInstance()->lPush(CacheKey::USER_REGISTER, json_encode([
             "store_uuid" => RequestApp::getStoreUuid(),

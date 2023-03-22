@@ -10,6 +10,7 @@ use App\Mapping\HttpDataResponse;
 use App\Mapping\RedisClient;
 use App\Mapping\Request\RequestApp;
 use Hyperf\Di\Annotation\Inject;
+use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\Utils\Context;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -34,6 +35,12 @@ class UserAuthMiddleware implements MiddlewareInterface
      */
     protected $httpResponse;
 
+    /**
+     * @Inject
+     * @var RequestInterface
+     */
+    protected $request;
+
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
@@ -50,13 +57,15 @@ class UserAuthMiddleware implements MiddlewareInterface
                 $userInfo = RedisClient::getInstance()->get(CacheKey::MINI_LOGIN_TOKEN . $loginToken);
             }
             if (!empty($userInfo)) {
-                Context::set("login:info", array_merge(json_decode($userInfo, true), ["login_token" => $loginToken]));
+                $userInfo = array_merge(json_decode($userInfo, true), ["login_token" => $loginToken]);
+                // 验证登录的user_agent是否一致
+                $userAgent = $this->request->header("user-agent", "");
+                if ($userAgent != $userInfo["user_agent"]) {
+                    return $this->httpResponse->error([], ErrorCode::REQUEST_ERROR, "请求不合法", HttpCode::NO_AUTH);
+                }
+                Context::set("login:info", $userInfo);
             } else {
-                return $this->httpResponse->error([],
-                    ErrorCode::REQUEST_ERROR,
-                    "登录已失效",
-                    HttpCode::NO_AUTH
-                );
+                return $this->httpResponse->error([], ErrorCode::REQUEST_ERROR, "登录已失效", HttpCode::NO_AUTH);
             }
         } else {
             return $this->httpResponse->error([],

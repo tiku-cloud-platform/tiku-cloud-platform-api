@@ -45,6 +45,18 @@ class ClientMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         var_dump("请求信息", $this->request->getHeaders(), $this->request->all());
+        $refer = $this->request->header("referer", "");
+        if (empty($refer)) {
+            return (new HttpDataResponse)->response('请求不合法', 0, [], HttpCode::BAD_REQUEST);
+        }
+        $referHost = parse_url($refer)["host"];
+        if (!in_array($referHost, ["servicewechat.com", "it.tiku-cloud.com"])) {
+            return (new HttpDataResponse)->response('请求不合法', 0, [], HttpCode::BAD_REQUEST);
+        }
+        $userAgent = $this->request->header("user-agent", "");
+        if (empty($userAgent)) {
+            return (new HttpDataResponse)->response('请求不合法', 0, [], HttpCode::BAD_REQUEST);
+        }
         // 参数是否存在与参数是否合法
         $appIdSecret = $this->request->header('App', '');
         if (empty($appIdSecret)) {
