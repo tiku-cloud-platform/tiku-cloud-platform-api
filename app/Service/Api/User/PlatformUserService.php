@@ -85,7 +85,7 @@ class PlatformUserService implements ApiServiceInterface
                     $userInfo["email"]      = $requestParams["email"];
                     $userInfo["age"]        = $requestParams["age"];
                     $userInfo["avatar_url"] = $requestParams["avatar_url"];
-                    $userInfo["user-agent"] = $requestParams["user-agent"],
+                    $userInfo["user-agent"] = $requestParams["user-agent"];
                     RedisClient::getInstance()->set(
                         CacheKey::MINI_LOGIN_TOKEN . UserLoginInfo::getLoginToken(),
                         json_encode($userInfo, JSON_UNESCAPED_UNICODE),
