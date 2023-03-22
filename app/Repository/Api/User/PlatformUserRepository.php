@@ -50,7 +50,7 @@ class PlatformUserRepository implements ApiRepositoryInterface
     {
         $nickname = $updateInfo["nickname"];
         unset($updateInfo["nickname"], $updateInfo["user_uuid"], $updateInfo["store_uuid"],
-            $updateInfo["login_token"]);
+            $updateInfo["login_token"], $updateInfo["user_agent"]);
         if (empty($updateInfo["mobile"])) {
             unset($updateInfo["mobile"]);
         }
