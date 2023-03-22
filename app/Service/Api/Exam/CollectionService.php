@@ -39,8 +39,18 @@ class CollectionService implements ApiServiceInterface
     }
 
     /**
-     * 查询数据
-     *
+     * 首页推荐试卷
+     * @param array $requestParams
+     * @return array
+     */
+    public function servicesHome(array $requestParams): array
+    {
+        return (new CollectionRepository())->repositorySelect(self::searchWhere($requestParams), 6,
+            ["uuid", "title", "file_uuid"]);
+    }
+
+    /**
+     * 试卷列表
      * @param array $requestParams 请求参数
      * @return array 查询结果
      */

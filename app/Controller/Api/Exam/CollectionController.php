@@ -39,4 +39,14 @@ class CollectionController extends ApiBaseController
         $bean = (new CollectionService())->serviceFind($this->request->all());
         return $this->httpResponse->success($bean);
     }
+
+    /**
+     * 首页推荐试题
+     * @GetMapping(path="home")
+     * @return ResponseInterface
+     */
+    public function home(): ResponseInterface
+    {
+        return $this->httpResponse->success((new CollectionService())->servicesHome(["is_recommend" => 1]));
+    }
 }

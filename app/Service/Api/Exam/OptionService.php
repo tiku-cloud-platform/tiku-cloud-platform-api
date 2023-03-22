@@ -34,15 +34,17 @@ class OptionService implements ApiServiceInterface
     }
 
     /**
-     * 查询数据
-     *
+     * 查询单选试题选项列表
      * @param array $requestParams 请求参数
      * @return array 查询结果
      */
     public function serviceSelect(array $requestParams): array
     {
-        return (new OptionRepository)->repositorySelect(self::searchWhere($requestParams),
-            (int)($requestParams['size'] ?? 20));
+        if (!empty($requestParams["exam_uuid"])) {
+            return (new OptionRepository)->repositorySelect(self::searchWhere($requestParams),
+                (int)($requestParams['size'] ?? 20));
+        }
+        return [];
     }
 
     /**

@@ -15,7 +15,6 @@ use Psr\Http\Message\ResponseInterface;
 
 /**
  * 单选试题
- *
  * @Middlewares({
  *     @Middleware(UserAuthMiddleware::class)
  *     })
@@ -26,6 +25,7 @@ use Psr\Http\Message\ResponseInterface;
 class OptionController extends ApiBaseController
 {
     /**
+     * 单选试题选项列表
      * @GetMapping(path="list")
      * @param PageValidate $pageValidate
      * @return ResponseInterface
