@@ -44,7 +44,6 @@ class ClientMiddleware implements MiddlewareInterface
     // {"uuid":"35c28259-9b55-e438-3830-dfc79f592709","appid":"cld_d1e7a97fdc","client":"wechat_miniprogram"}
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        var_dump("请求信息", $this->request->getHeaders(), $this->request->all());
         $refer = $this->request->header("referer", "");
         if (empty($refer)) {
             return (new HttpDataResponse)->response('请求不合法', 0, [], HttpCode::BAD_REQUEST);

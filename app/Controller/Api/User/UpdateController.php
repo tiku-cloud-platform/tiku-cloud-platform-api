@@ -34,13 +34,14 @@ class UpdateController extends ApiBaseController
      */
     public function updateInfo(MainValidate $mainValidate): ResponseInterface
     {
+        var_dump("controller", $this->request->getHeaders());
         $updateResult = (new PlatformUserService())->serviceUpdate(array_merge([
-            ["user_agent" => $this->request->header("user-agent", "")],
-            ["x-real-ip" => $this->request->header("x-real-ip", "")],
-            ["x-forwarded-for" => $this->request->header("x-forwarded-for", "")],
-            ["user-agent" => $this->request->header("user-agent", "")],
+            "user_agent" => $this->request->header("user-agent", ""),
+            "x-real-ip" => $this->request->header("x-real-ip", ""),
+            "x-forwarded-for" => $this->request->header("x-forwarded-for", ""),
+        ],
             $this->request->all()
-        ]));
+        ));
         if ($updateResult === 100) {
             return $this->httpResponse->error(["error" => ErrorCode::REQUEST_ERROR, "message" => "邮箱已存在"]);
         } elseif ($updateResult > 0 && $updateResult !== 100) {

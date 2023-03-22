@@ -50,7 +50,7 @@ class PlatformUserRepository implements ApiRepositoryInterface
     {
         $nickname = $updateInfo["nickname"];
         unset($updateInfo["nickname"], $updateInfo["user_uuid"], $updateInfo["store_uuid"],
-            $updateInfo["login_token"], $updateInfo["user_agent"]);
+            $updateInfo["login_token"], $updateInfo["user_agent"], $updateInfo["x-real-ip"], $updateInfo["x-forwarded-for"]);
         if (empty($updateInfo["mobile"])) {
             unset($updateInfo["mobile"]);
         }
@@ -62,7 +62,7 @@ class PlatformUserRepository implements ApiRepositoryInterface
             (new StoreMiNiWeChatUser())::query()->where([
                 ["user_uuid", "=", UserLoginInfo::getUserId()]
             ])->update(["nickname" => $nickname, "avatar_url" => $updateInfo["avatar_url"], "login_ip" => $updateInfo["login_ip"]]);
-            unset($updateInfo["avatar_url"], $updateInfo["user-agent"], $updateInfo["login_ip"]);
+            unset($updateInfo["avatar_url"], $updateInfo["login_ip"]);
             (new StorePlatformUser)::query()->where($updateWhere)->update($updateInfo);
             $row = 1;
         });
