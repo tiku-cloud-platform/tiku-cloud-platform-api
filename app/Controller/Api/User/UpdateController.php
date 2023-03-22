@@ -34,7 +34,6 @@ class UpdateController extends ApiBaseController
      */
     public function updateInfo(MainValidate $mainValidate): ResponseInterface
     {
-        var_dump("controller", $this->request->getHeaders(), "IP地址", $this->request->header("x-real-ip"));
         $updateResult = (new PlatformUserService())->serviceUpdate(array_merge([
             "user_agent" => $this->request->header("user-agent", ""),
             "x-real-ip" => $this->request->header("x-real-ip", ""),

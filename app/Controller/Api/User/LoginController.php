@@ -27,10 +27,11 @@ class LoginController extends ApiBaseController
     public function code(CodeValidate $codeValidate): ResponseInterface
     {
 
-        $userInfo = (new LoginService())->serviceMiNiCodeAuth(array_merge(
-            ["user_agent" => $this->request->header("user-agent", "")],
-            ["x-real-ip" => $this->request->header("x-real-ip", "")],
-            ["x-forwarded-for" => $this->request->header("x-forwarded-for", "")],
+        $userInfo = (new LoginService())->serviceMiNiCodeAuth(array_merge([
+            "user_agent" => $this->request->header("user-agent", ""),
+            "x-real-ip" => $this->request->header("x-real-ip", ""),
+            "x-forwarded-for" => $this->request->header("x-forwarded-for", ""),
+        ],
             $this->request->all()
         ));
         return $this->httpResponse->success($userInfo);
