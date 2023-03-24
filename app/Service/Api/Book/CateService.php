@@ -27,7 +27,7 @@ class CateService implements ApiServiceInterface
     public function serviceAllSelect(array $requestParams): array
     {
         return (new CateRepository())->repositoryAll(self::searchWhere($requestParams),
-            (int)($requestParams["size"] ?? 20), ["uuid", "title"]);
+            (int)($requestParams["size"] ?? 20), ["uuid as value", "title as text"]);
     }
 
     public function serviceSelect(array $requestParams): array
