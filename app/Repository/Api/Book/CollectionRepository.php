@@ -21,6 +21,9 @@ class CollectionRepository implements ApiRepositoryInterface
         }
         $items = (new StoreBookCollection())::query()
             ->with(["book:uuid,file_uuid,title,author,version,source,content_desc"])
+            ->whereHas("book", function ($query) {
+                $query->where("is_show", "=", 1);
+            })
             ->where($closure)
             ->paginate($perSize, $searchFields);
 
