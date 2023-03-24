@@ -9,6 +9,7 @@ use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\Middlewares;
 use App\Middleware\Auth\UserAuthMiddleware;
 use Psr\Http\Message\ResponseInterface;
+use Hyperf\HttpServer\Annotation\Middleware;
 
 /**
  * 教程收藏
