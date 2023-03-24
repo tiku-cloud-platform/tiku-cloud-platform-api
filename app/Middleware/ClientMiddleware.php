@@ -63,7 +63,7 @@ class ClientMiddleware implements MiddlewareInterface
         }
         $secretString = AesEncrypt::getInstance()->aesDecrypt($appIdSecret);
         if ($secretString === "") {
-            return (new HttpDataResponse)->response("解密失败", 0, [], HttpCode::BAD_REQUEST);
+            return (new HttpDataResponse)->response("商户配置错误", 0, [], HttpCode::BAD_REQUEST);
         }
         $configArray = json_decode($secretString, true);
         if (empty($configArray)) {
