@@ -38,7 +38,7 @@ class CollectionService implements ApiServiceInterface
     public function serviceSelect(array $requestParams): array
     {
         $requestParams["user_uuid"] = UserLoginInfo::getUserId();
-        return (new CollectionRepository())->repositorySelect(self::searchWhere($requestParams), (int)($requestParams["page"] ?? 1),
+        return (new CollectionRepository())->repositorySelect(self::searchWhere($requestParams), (int)($requestParams["size"] ?? 20),
             ["book_uuid"]);
     }
 
