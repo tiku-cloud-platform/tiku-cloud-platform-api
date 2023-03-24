@@ -60,9 +60,13 @@ class CollectionRepository implements ApiRepositoryInterface
 
     public function repositoryCount(string $userUuid): int
     {
-        return (new StoreBookCollection())::query()->where([
-            ["user_uuid", "=", $userUuid]
-        ])->count();
+        return (new StoreBookCollection())::query()
+            ->whereHas("book", function ($query) {
+                $query->where("is_show", "=", 1);
+            })
+            ->where([
+                ["user_uuid", "=", $userUuid]
+            ])->count();
     }
 
     public function repositoryAdd(array $addInfo): int
