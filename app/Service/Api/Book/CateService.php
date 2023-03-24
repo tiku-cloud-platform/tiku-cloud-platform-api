@@ -17,11 +17,9 @@ class CateService implements ApiServiceInterface
     {
         return function ($query) use ($requestParams) {
             extract($requestParams);
+            $query->whereNull("parent_uuid");
             if (!empty($is_home)) {
                 $query->where("is_home", "=", $is_home);
-            }
-            if (!empty($is_second)) {
-                $query->whereNull("parent_uuid");
             }
         };
     }
