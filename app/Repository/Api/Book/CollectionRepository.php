@@ -16,7 +16,20 @@ class CollectionRepository implements ApiRepositoryInterface
 {
     public function repositorySelect(Closure $closure, int $perSize, array $searchFields = []): array
     {
-        return [];
+        if (count($searchFields) == 0) {
+            return [];
+        }
+        $items = (new StoreBookCollection())::query()
+            ->with(["book:uuid,file_uuid,title,author,version,source"])
+            ->where($closure)
+            ->paginate($perSize, $searchFields);
+
+        return [
+            "items" => $items->items(),
+            "page" => $items->currentPage(),
+            "size" => $items->perPage(),
+            "total" => $items->total(),
+        ];
     }
 
     public function repositoryCreate(array $insertInfo): bool
@@ -40,6 +53,13 @@ class CollectionRepository implements ApiRepositoryInterface
                 throw new DbDataMessageException("收藏失败");
             }
         }
+    }
+
+    public function repositoryCount(string $userUuid): int
+    {
+        return (new StoreBookCollection())::query()->where([
+            ["user_uuid", "=", $userUuid]
+        ])->count();
     }
 
     public function repositoryAdd(array $addInfo): int

@@ -6,6 +6,7 @@ namespace App\Service\Api\Book;
 use App\Mapping\Request\RequestApp;
 use App\Mapping\Request\UserLoginInfo;
 use App\Mapping\UUID;
+use App\Model\Api\StoreBookCollection;
 use App\Repository\Api\Book\CollectionRepository;
 use App\Service\ApiServiceInterface;
 use Closure;
@@ -25,9 +26,20 @@ class CollectionService implements ApiServiceInterface
         };
     }
 
+    /**
+     * 收藏总数
+     * @return int
+     */
+    public function serviceCount(): int
+    {
+        return (new CollectionRepository())->repositoryCount(UserLoginInfo::getUserId());
+    }
+
     public function serviceSelect(array $requestParams): array
     {
-        // TODO: Implement serviceSelect() method.
+        $requestParams["user_uuid"] = UserLoginInfo::getUserId();
+        return (new CollectionRepository())->repositorySelect(self::searchWhere($requestParams), (int)($requestParams["page"] ?? 1),
+            ["book_uuid"]);
     }
 
     public function serviceCreate(array $requestParams): bool
