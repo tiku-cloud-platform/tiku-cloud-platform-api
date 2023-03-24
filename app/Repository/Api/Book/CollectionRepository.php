@@ -25,6 +25,7 @@ class CollectionRepository implements ApiRepositoryInterface
                 $query->where("is_show", "=", 1);
             })
             ->where($closure)
+            ->orderByDesc("id")
             ->paginate($perSize, $searchFields);
 
         return [
