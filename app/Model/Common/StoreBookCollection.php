@@ -23,6 +23,9 @@ class StoreBookCollection extends BaseModel
     public function book(): BelongsTo
     {
         return $this->belongsTo(StoreBook::class, "book_uuid", "uuid")
+            ->where([
+                ["is_show", "=", 1]
+            ])
             ->with(["image:uuid,file_url,file_name as file_path"]);
     }
 }
