@@ -7,6 +7,9 @@ use App\Model\Api\StoreBookCategory;
 use App\Repository\ApiRepositoryInterface;
 use Closure;
 
+/**
+ * 章节分类
+ */
 class CategoryRepository implements ApiRepositoryInterface
 {
     public function repositoryAllSelect(Closure $closure, array $searchFields = []): array

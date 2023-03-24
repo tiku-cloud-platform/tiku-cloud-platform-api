@@ -1,10 +1,8 @@
 <?php
 declare(strict_types = 1);
 
-
 namespace App\Listener;
 
-use App\Constants\LogKey;
 use Hyperf\Database\Events\QueryExecuted;
 use Hyperf\Event\Annotation\Listener;
 use Hyperf\Event\Contract\ListenerInterface;
@@ -37,6 +35,7 @@ class DbQueryExecutedListener implements ListenerInterface
     }
 
     /**
+     * 监听SQL语句
      * @param object $event
      */
     public function process(object $event)

@@ -19,8 +19,22 @@ class BookService implements ApiServiceInterface
             if (!empty($uuid)) {
                 $query->where("uuid", "=", $uuid);
             }
+            if (!empty($cate_uuid)) {
+                $query->where("cate_uuid", "=", $cate_uuid);
+            }
             if (!empty($is_recommend)) {
                 $query->where("is_recommend", "=", $is_recommend);
+            }
+            if (!empty($level)) {
+                if ($level == 1) {
+                    $query->whereBetween("level", [1, 3]);
+                }
+                if ($level == 2) {
+                    $query->whereBetween("level", [3, 4]);
+                }
+                if ($level == 3) {
+                    $query->whereBetween("level", [4, 3]);
+                }
             }
             if (!empty($title)) {
                 $query->where("title", "like", "%" . $title . "%");

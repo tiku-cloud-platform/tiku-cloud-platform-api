@@ -7,7 +7,6 @@ use Hyperf\Validation\Request\FormRequest;
 
 /**
  * 详情传递uuid验证
- *
  * Class UUIDValidate
  */
 class UUIDValidate extends FormRequest

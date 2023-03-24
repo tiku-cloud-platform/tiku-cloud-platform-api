@@ -3,35 +3,38 @@ declare(strict_types = 1);
 
 namespace App\Service\Api\Book;
 
-use App\Repository\Api\Book\CategoryRepository;
+use App\Repository\Api\Book\CateRepository;
 use App\Service\ApiServiceInterface;
 use Closure;
 
 /**
- * 教程章节分类
+ * 教程分类
  */
-class CategoryService implements ApiServiceInterface
+class CateService implements ApiServiceInterface
 {
+
     public static function searchWhere(array $requestParams): Closure
     {
         return function ($query) use ($requestParams) {
             extract($requestParams);
-            if (!empty($book_uuid)) {
-                $query->where("store_book_uuid", "=", $book_uuid);
+            if (!empty($is_home)) {
+                $query->where("is_home", "=", $is_home);
+            }
+            if (!empty($is_second)) {
+                $query->whereNull("parent_uuid");
             }
         };
     }
 
     public function serviceAllSelect(array $requestParams): array
     {
-        $requestParams["book_uuid"] = $requestParams["uuid"];
-        unset($requestParams["uuid"]);
-        return (new CategoryRepository())->repositoryAllSelect(self::searchWhere($requestParams));
+        return (new CateRepository())->repositoryAll(self::searchWhere($requestParams),
+            (int)($requestParams["size"] ?? 20), ["uuid", "title"]);
     }
 
     public function serviceSelect(array $requestParams): array
     {
-        // TODO: Implement serviceSelect() method.
+        return [];
     }
 
     public function serviceCreate(array $requestParams): bool

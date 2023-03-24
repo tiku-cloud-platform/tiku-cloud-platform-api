@@ -4,7 +4,6 @@ declare(strict_types = 1);
 namespace App\Controller\Api\Book;
 
 use App\Controller\ApiBaseController;
-use App\Request\Api\Common\PageValidate;
 use App\Request\Store\Common\UUIDValidate;
 use App\Service\Api\Book\CategoryService;
 use App\Service\Api\Book\ContentService;

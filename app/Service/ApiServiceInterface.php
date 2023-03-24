@@ -6,6 +6,7 @@ namespace App\Service;
 use Closure;
 
 /**
+ * 接口公共interface
  * Interface UserServiceInterface.
  */
 interface ApiServiceInterface
