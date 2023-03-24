@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace App\Controller\Api\Book;
 
 use App\Controller\ApiBaseController;
+use App\Service\Api\Book\CollectionService;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\Middlewares;
@@ -27,7 +28,7 @@ class CollectionController extends ApiBaseController
      */
     public function count(): ResponseInterface
     {
-        return $this->httpResponse->success();
+        return $this->httpResponse->success(["count" => (new CollectionService())->serviceCount()]);
     }
 
     /**
@@ -37,6 +38,6 @@ class CollectionController extends ApiBaseController
      */
     public function list(): ResponseInterface
     {
-        return $this->httpResponse->success();
+        return $this->httpResponse->success((new CollectionService())->serviceSelect($this->request->all()));
     }
 }
