@@ -20,7 +20,7 @@ class CollectionRepository implements ApiRepositoryInterface
             return [];
         }
         $items = (new StoreBookCollection())::query()
-            ->with(["book:uuid,file_uuid,title,author,version,source"])
+            ->with(["book:uuid,file_uuid,title,author,version,source,content_desc"])
             ->where($closure)
             ->paginate($perSize, $searchFields);
 
