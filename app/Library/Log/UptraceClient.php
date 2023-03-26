@@ -21,8 +21,8 @@ class UptraceClient
         if (count($logMessage) > 0) {
             $logMessage["log_time"] = date("Y-m-d H:i:s");
             $conf                   = new Config();
-            $conf->setDsn('https://QLXnm4UlgQKrtHmpCRU3CA@uptrace.dev/1444');
-            $conf->setServiceName('platform_api');
+            $conf->setDsn(env("UPTRACE_RUL", ""));
+            $conf->setServiceName(env("SERVICE_NAME", ""));
             $conf->setServiceVersion('1.0.0');
 
             $uptrace        = new Distro($conf);
