@@ -17,14 +17,15 @@ class StoreBookCategory extends \App\Model\Common\StoreBookCategory
         $items = self::query()->where([
             ["parent_uuid", "=", $this->getAttribute("uuid")],
             ["is_show", "=", 1]
-        ])->get(["title", "uuid"]);
+        ])->orderBy("orders")->get(["title", "uuid"]);
         if (!empty($items)) {
             $items     = $items->toArray();
             $bookModel = new StoreBookContent();
             foreach ($items as $key => $value) {
-                $items[$key]["children"] = $bookModel::query()->where([
-                    ["store_book_category_uuid", "=", $value["uuid"]],
-                ])->get(["uuid", "title"]);
+                $items[$key]["children"] = $bookModel::query()
+                    ->where([
+                        ["store_book_category_uuid", "=", $value["uuid"]],
+                    ])->orderByDesc("orders")->get(["uuid", "title"]);
             }
         } else {
             $items["children"] = [];
